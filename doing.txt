@@ -1,0 +1,17 @@
+Jede Seite erhält einen Ordner
+Jede Komponente erhält einen Ordner
+Jeder Service erhält eine eigene Datei (bei Bedarf Ordner)
+
+Seiten sind:
+- Login-Seite
+- Auflistung (wird verwendet für Suche/Favoriten/Kochbücher)
+- Kochbücher 
+
+Komponenten sind:
+- Suchleiste (mit Buttons Filter und Zufall)
+- Listenansicht von Rezepten
+
+Services sind:
+- Helper: Logging
+- Firebase
+- 
