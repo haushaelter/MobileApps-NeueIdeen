@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { SearchbarComponent } from './searchbar/searchbar.component';
+import { ListRezeptComponent } from './list-rezept/list-rezept.component';
 
 const PAGES_COMPONENTS = [
-  SearchbarComponent
+  SearchbarComponent,
+  ListRezeptComponent
 ]
 
 @NgModule({

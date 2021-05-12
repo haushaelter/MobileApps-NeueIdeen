@@ -10,6 +10,7 @@ Seiten sind:
 Komponenten sind:
 - Suchleiste (mit Buttons Filter und Zufall)
 - Listenansicht von Rezepten
+- (hinzufügen: ionic generate component components/Komponentenname --export)
 
 Services sind:
 - Helper: Logging
