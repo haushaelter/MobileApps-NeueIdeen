@@ -28,7 +28,7 @@ export class Logging{
             });
         } catch (e){
             //bei einem Fehler wird dieser in der Console ausgegeben
-            this.logging("", e, 3)
+            this.logging("", e)
         }
     }
 
@@ -44,7 +44,7 @@ export class Logging{
 
         } catch (e){
             //bei einem Fehler wird dieser in der Console ausgegeben
-            this.logging("", e, 3)
+            this.logging("", e)
         }
     }
 }
