@@ -9,7 +9,7 @@ export class Logging{
      * Erwartet ggfs Titel, Nachricht und Ziffer 1 oder 2. Daran wird entschieden, ob Dialog oder Toast angezeigt wird
      * 1 = Dialog, 2 = Toast, nichts/anders = nur console
      */
-    logging(titel: string, nachricht: string, art:number){
+    logging(titel: string, nachricht: string){
         //Anfangs alle Möglichkeiten auskommentiert und nur die console logt.
 
         // if(art==1){
