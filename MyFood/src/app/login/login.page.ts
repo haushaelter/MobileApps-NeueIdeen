@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FirebaseService } from '../services/firebase.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPage implements OnInit {
 
-  constructor() { }
+  user:any = {};
+
+  constructor(
+    private firebaseService: FirebaseService
+  ) { }
 
   ngOnInit() {
+  }
+
+  login(){
+    if(this.user.email && this.user.passwort) {
+      this.firebaseService.login(this.user.email, this.user.passwort);
+    }
   }
 
 }

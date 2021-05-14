@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Login</ion-title>
+    <ion-buttons solt="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registrierung</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,8 +17,10 @@
       <ion-label position="stacked">Passwort</ion-label>
       <ion-input type="password" [(ngModel)]="user.passwort"></ion-input>
     </ion-item>
-    <ion-button fill="clear" routerLink="/forget">Passwort vergessen</ion-button>
-    <ion-button (click)="login()">Login</ion-button>
-    <ion-button fill="outline" routerLink="/register">Registrieren</ion-button>
+    <ion-item>
+      <ion-label position="stacked">Passwort wiederholen</ion-label>
+      <ion-input type="password" [(ngModel)]="user.passwortWiederholung"></ion-input>
+    </ion-item>
+    <ion-button (click)="register()">Registrierung</ion-button>
   </ion-list>
 </ion-content>
