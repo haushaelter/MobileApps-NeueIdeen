@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FirebaseService } from '../services/firebase.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,9 +9,9 @@ import { FirebaseService } from '../services/firebase.service';
 export class LoginPage implements OnInit {
 
   user:any = {};
-
+  
   constructor(
-    private firebaseService: FirebaseService
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -19,7 +19,7 @@ export class LoginPage implements OnInit {
 
   login(){
     if(this.user.email && this.user.passwort) {
-      this.firebaseService.login(this.user.email, this.user.passwort);
+      this.authService.login(this.user.email, this.user.passwort);
     }
   }
 

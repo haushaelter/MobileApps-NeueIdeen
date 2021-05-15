@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { Router } from '@angular/router';
-import { FirebaseService } from '../services/firebase.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-forget',
@@ -13,7 +11,7 @@ export class ForgetPage implements OnInit {
   email:any;
 
   constructor(
-    private firebaseService: FirebaseService
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -21,7 +19,7 @@ export class ForgetPage implements OnInit {
 
   forget () {
     if(this.email)
-      this.firebaseService.passwortVergessen(this.email);
+      this.authService.passwortVergessen(this.email);
   }
 
 }

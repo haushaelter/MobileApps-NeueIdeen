@@ -2,6 +2,7 @@ import { CompileTemplateMetadata } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import {  } from '@angular/fire/'
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -9,12 +10,10 @@ import { Router } from '@angular/router';
 })
 export class FirebaseService {
 
-  tasks:any = [];
-
   constructor(
     private firestore: AngularFirestore,
-    private auth:AngularFireAuth,
-    private router:Router
+    private auth: AngularFireAuth,
+    private router: Router
   ) { }
 
   /**
@@ -34,44 +33,29 @@ export class FirebaseService {
     return temp;
   }
 
-  /**
-   * Registrierung, ohne Prüfung, ob alle Felder korrekt ausgefüllt wurden
-   * @param email 
-   * @param passwort 
-   */
-  registrieren(email, passwort) {
-    this.auth.createUserWithEmailAndPassword(email, passwort).then((res) => {
-      this.router.navigateByUrl("/login");
-      console.log("Registrierung durchgeführt.");
-    }).catch(e => {
-      console.log(e);
-    });
-  }
+  // Platzhalter für spätere Umsetzung
+  // Helfer-Funktionen für Objekt-Erstellung
+  getZutatenObject() { }
+  getRezeptInhalte() { }
 
-  /**
-   * Login, ohne Prüfung, ob alle Felder korrekt ausgefüllt wurden
-   * @param email 
-   * @param passwort 
-   */
-  login(email, passwort) {
-    this.auth.signInWithEmailAndPassword(email, passwort).then((res) => {
-      this.router.navigateByUrl("/home");
-      console.log("Nutzer eingeloggt.");
-    }).catch(e => {
-      console.log(e);
-    });
-  }
+  createRezept(name: string, userId: string, zutaten: object, inhalte: object) { }
+  setEigenesRezept(rezeptName: string, userId: string) { }
+  getRezeptByName(name: string) {
+    let test = {};
+    this.firestore.collection("Rezepte").doc(name).snapshotChanges().subscribe(res => {
+      test = res.payload.data();
+    });  
 
-  /**
-   * Passwort zurücksetzen, ohne Prüfung, ob alle Felder korrekt ausgefüllt wurden
-   * @param email 
-   */
-  passwortVergessen(email) {
-    this.auth.sendPasswordResetEmail(email).then((r) => {
-      console.log("Mail versendet.");
-      this.router.navigateByUrl("/login");
-    }).catch(e => {
-      console.log(e);
-    });
+    return test;
   }
+  getRezepteByName(name: Array<string>) { } // Filtermöglichkeiten hier hinzufügen
+  getAlleRezepte() { }
+
+  createZutat(name: string, einheit: string, kalorien: number) { }
+  getZutat(name: string) { }
+  getZutaten(name: Array<string>) { }
+  getAlleZutaten() { }
+
+  setFavorit(rezeptName: string, userId: string) { }
+  getAlleFavoriten(userId: string) { }
 }
