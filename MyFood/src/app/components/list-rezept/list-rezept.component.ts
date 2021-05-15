@@ -15,17 +15,17 @@ export class ListRezeptComponent implements OnInit {
 
   logging = null;
   @Input() 
-  set rezept (rezept:String[]){
+  set rezept (rezept:JSON){
     //Define Title
-    if(typeof rezept[0] == "string" && rezept[0] !=="undefined"){
-      this._titel = `${rezept[0]}`;
+    if(typeof rezept['titel'] == "string" && rezept['titel'] !=="undefined"){
+      this._titel = `${rezept['titel']}`;
     } else {
       this.logging.logging("Kein Titel übergeben")
     }
 
     //Define Number of Likes (Problem: Überprüfen, ob keine Anzahl an Sternen übergeben wurde)
-    if(typeof rezept[1] == "number"){
-      this._anzahl = (Number)(rezept[1]);
+    if(typeof rezept['anzahl'] == "number"){
+      this._anzahl = rezept['anzahl'];
     } else {
       this.logging.logging("Keine Anzahl an Bewertungen übergeben");
     }
@@ -34,8 +34,8 @@ export class ListRezeptComponent implements OnInit {
     let i = 0; 
     //Bei 0 Bewertungen wird die Bewertung auch auf 0 gesetzt
     if(this._anzahl != 0){
-      for(i; i<(Number)(rezept[2]); ){
-        if((Number)(rezept[2])<++i){
+      for(i; i<rezept['bewertung'] && i<5; ){
+        if(rezept['bewertung']<++i){
           this._sterne.push("star-half-outline");
         } else {
           this._sterne.push("star");
@@ -47,7 +47,7 @@ export class ListRezeptComponent implements OnInit {
     }
 
     //Überprüfen auf Favorit 
-    if((Boolean)(rezept[3])){
+    if(rezept['favorit']){
       this._fav = "star";
     }
   }
