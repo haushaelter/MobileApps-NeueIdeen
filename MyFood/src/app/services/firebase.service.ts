@@ -27,7 +27,7 @@ export class FirebaseService {
 
     this.firestore.collection(colName).snapshotChanges().subscribe(res => {
       res.forEach(task => {
-        temp.push({ title: task.payload.doc.id })
+        temp.push({ ...task.payload.doc.data });
       });
     });
 
@@ -41,7 +41,8 @@ export class FirebaseService {
    */
   registrieren(email, passwort) {
     this.auth.createUserWithEmailAndPassword(email, passwort).then((res) => {
-      this.router.navigateByUrl("/home");
+      this.router.navigateByUrl("/login");
+      console.log("Registrierung durchgeführt.");
     }).catch(e => {
       console.log(e);
     });
@@ -55,6 +56,7 @@ export class FirebaseService {
   login(email, passwort) {
     this.auth.signInWithEmailAndPassword(email, passwort).then((res) => {
       this.router.navigateByUrl("/home");
+      console.log("Nutzer eingeloggt.");
     }).catch(e => {
       console.log(e);
     });
@@ -66,8 +68,8 @@ export class FirebaseService {
    */
   passwortVergessen(email) {
     this.auth.sendPasswordResetEmail(email).then((r) => {
-      console.log("Passwort zurück gesetzt.");
-      this.router.navigateByUrl("Login");
+      console.log("Mail versendet.");
+      this.router.navigateByUrl("/login");
     }).catch(e => {
       console.log(e);
     });
