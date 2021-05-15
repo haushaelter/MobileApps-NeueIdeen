@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FirebaseService } from '../services/firebase.service';
 
 @Component({
@@ -11,7 +12,8 @@ export class RegisterPage implements OnInit {
   user: any = {};
 
   constructor(
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -20,7 +22,9 @@ export class RegisterPage implements OnInit {
   register() {
     if (this.user.email && this.user.passwort) {
       if (this.user.passwort === this.user.passwortWiederholung) {
-        this.firebaseService.registrieren(this.user.email, this.user.passwort);
+        if (this.firebaseService.registrieren(this.user.email, this.user.passwort)) {
+          this.router.navigateByUrl("/home");
+        }
       } else {
         console.log("Passwörter stimmen nicht überein.");
       }

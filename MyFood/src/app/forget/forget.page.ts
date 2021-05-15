@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { FirebaseService } from '../services/firebase.service';
 
@@ -10,18 +9,22 @@ import { FirebaseService } from '../services/firebase.service';
 })
 export class ForgetPage implements OnInit {
 
-  email:any;
+  email: any;
 
   constructor(
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private router: Router
   ) { }
 
   ngOnInit() {
   }
 
-  forget () {
-    if(this.email)
-      this.firebaseService.passwortVergessen(this.email);
+  forget() {
+    if (this.email) {
+      if (this.firebaseService.passwortVergessen(this.email)) {
+        this.router.navigateByUrl("Login");
+      }
+    }
   }
 
 }
