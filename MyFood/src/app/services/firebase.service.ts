@@ -27,7 +27,7 @@ export class FirebaseService {
 
     this.firestore.collection(colName).snapshotChanges().subscribe(res => {
       res.forEach(task => {
-        temp.push({ ...task.payload.doc.data });
+        temp.push({ title: task.payload.doc.id })
       });
     });
 
@@ -40,17 +40,11 @@ export class FirebaseService {
    * @param passwort 
    */
   registrieren(email, passwort) {
-    let regOk:boolean;
-
     this.auth.createUserWithEmailAndPassword(email, passwort).then((res) => {
-      regOk = true;
-      console.log("Registrierung durchgeführt.");
+      this.router.navigateByUrl("/home");
     }).catch(e => {
-      regOk = false;
       console.log(e);
     });
-    
-    return regOk;
   }
 
   /**
@@ -59,17 +53,11 @@ export class FirebaseService {
    * @param passwort 
    */
   login(email, passwort) {
-    let loginOk:boolean;
-    
     this.auth.signInWithEmailAndPassword(email, passwort).then((res) => {
-      loginOk = true;
-      console.log("Nutzer eingeloggt.");
+      this.router.navigateByUrl("/home");
     }).catch(e => {
-      loginOk = false;
       console.log(e);
     });
-
-    return loginOk;
   }
 
   /**
@@ -77,16 +65,11 @@ export class FirebaseService {
    * @param email 
    */
   passwortVergessen(email) {
-    let zuruecksetzenOk:boolean;
-
     this.auth.sendPasswordResetEmail(email).then((r) => {
-      zuruecksetzenOk = true;
       console.log("Passwort zurück gesetzt.");
+      this.router.navigateByUrl("Login");
     }).catch(e => {
-      zuruecksetzenOk = false;
       console.log(e);
     });
-
-    return zuruecksetzenOk;
   }
 }
