@@ -9,7 +9,7 @@ export class Logging{
      */
     logging(nachricht: string){
          
-        console.log((new Date()).toLocaleTimeString() + nachricht);
+        console.log(`${(new Date()).toLocaleTimeString()} ${nachricht}`);
     }
 
     /**

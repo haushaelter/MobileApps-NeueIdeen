@@ -1,22 +1,21 @@
 <ion-grid>
-  <ion-row>
+  <ion-row class="grid-row-long">
     <ion-col>
-      <ion-icon name="star"></ion-icon>
+      <ion-icon [name]="_fav"></ion-icon>
     </ion-col>
     <ion-col>
-      <ion-title>Titel</ion-title>
+      <ion-title>{{_titel}}</ion-title>
+    </ion-col>
+    <ion-col>
+      <ion-img alt="Picture" class="grid-col-pic"></ion-img>
     </ion-col>
   </ion-row>
-  <ion-row>
+  <ion-row class="grid-row">
     <ion-col>
-      <ion-icon name="star"></ion-icon>
-      <ion-icon name="star"></ion-icon>
-      <ion-icon name="star"></ion-icon>
-      <ion-icon name="star-half-outline"></ion-icon>
-      <ion-icon name="star-outline"></ion-icon>
+      <ion-icon *ngFor="let eintrag of _sterne" [name]="eintrag" class="grid-icon"></ion-icon>
     </ion-col>
     <ion-col>
-      <ion-title>Anzahl</ion-title>
+      <ion-title>{{_anzahl}} Bewertungen</ion-title>
     </ion-col>
   </ion-row>
 </ion-grid>

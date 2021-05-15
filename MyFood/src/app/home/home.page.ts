@@ -9,7 +9,7 @@ import { ComponentsModule } from '../components/components.module';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  private rezepte = [["1"], ["2"], ["3"]]  
+  rezepte = [[, 312, 3.5, false], ["Rezept 2", "true", 4.5, true], ["Rezept 3",312 , , true],["Rezept 4",42 , 4, ]]  
   
   constructor (
     private auth: AngularFireAuth,
