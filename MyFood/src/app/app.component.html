@@ -1,3 +1,10 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <div>
+    <ion-router-outlet id="menuContent"></ion-router-outlet>
+  </div>
+  <div>
+    <ion-button routerLink="/home" routerDirection="forward">Suche</ion-button>
+    <ion-button routerLink="/favoriten" routerDirection="forward">Favoriten</ion-button>
+    <ion-button routerLink="/kochbuecher" routerDirection="forward">Kochbücher</ion-button>
+  </div>
 </ion-app>
