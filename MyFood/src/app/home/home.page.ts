@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { ComponentsModule } from '../components/components.module';
+import { Logging } from '../services/helper';
 
 @Component({
   selector: 'app-home',
@@ -33,14 +33,15 @@ export class HomePage {
   
   constructor (
     private auth: AngularFireAuth,
-    private router: Router
+    private router: Router,
+    private logging: Logging
   ) {}
 
   logout () {
     this.auth.signOut().then(() => {
       this.router.navigateByUrl("/login");
     }).catch(e => {
-      console.log(e);
+      this.logging.logging(e);
     });
   }
 }

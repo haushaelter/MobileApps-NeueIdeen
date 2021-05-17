@@ -38,7 +38,7 @@ export class AuthService {
           this.logging.logging("Operation nicht erlaubt. Eingabe: " + email);
           break;
         case "auth/weak-password":
-          this.logging.zeigeToast("Passwort zu schwach.");
+          this.logging.zeigeToast("Passwort zu schwach. Mindestens 6 Zeichen benötigt.");
           this.logging.logging("Passwort zu schwach. Eingabe: " + email);
           break;
         default:
@@ -82,7 +82,7 @@ export class AuthService {
           break;
         default:
           this.logging.zeigeToast("Es ist ein Fehler aufgetreten.");
-          this.logging.logging("Anmeldefehler. Fehldercode noch nicht als Case hinzugefügt.");
+          this.logging.logging("Anmeldefehler. Fehlercode noch nicht als Case hinzugefügt.");
       }
       this.logging.logging("Fehler-Code: " + e.code + "; E-Mail: " + email);
     });
