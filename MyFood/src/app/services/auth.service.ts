@@ -76,6 +76,10 @@ export class AuthService {
           this.logging.zeigeToast("Falsches Passwort.");
           this.logging.logging("Falsches Passwort für " + email + " eingegeben");
           break;
+        case "auth/user-not-found":
+          this.logging.zeigeToast("User wurde nicht gefunden");
+          this.logging.logging("User " + email + " existert nicht. Möglicherweise wurde er gelöscht");
+          break;
         default:
           this.logging.zeigeToast("Es ist ein Fehler aufgetreten.");
           this.logging.logging("Anmeldefehler. Fehldercode noch nicht als Case hinzugefügt.");
