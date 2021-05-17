@@ -8,11 +8,11 @@
   <ion-list>
     <ion-item>
       <ion-label position="stacked">Email</ion-label>
-      <ion-input type="text" [(ngModel)]="user.email"></ion-input>
+      <ion-input type="email" [(ngModel)]="user.email" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Passwort</ion-label>
-      <ion-input type="password" [(ngModel)]="user.passwort"></ion-input>
+      <ion-input type="password" [(ngModel)]="user.passwort" required></ion-input>
     </ion-item>
     <ion-button fill="clear" routerLink="/forget">Passwort vergessen</ion-button>
     <ion-button (click)="login()">Login</ion-button>
