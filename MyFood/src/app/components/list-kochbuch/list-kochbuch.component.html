@@ -1,0 +1,24 @@
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <ion-row>
+        <ion-col>{{_titel}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>{{_verlag}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-icon *ngFor="let eintrag of _sterne" [name]="eintrag" class="grid-icon"></ion-icon>
+      </ion-row>
+      <ion-row>
+        <ion-col>{{_anzahl}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button>PDF Download</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <ion-img alt="Picture"></ion-img>
+  </ion-row>
+</ion-grid>
