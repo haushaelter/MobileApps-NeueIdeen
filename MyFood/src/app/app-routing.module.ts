@@ -10,7 +10,8 @@ const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
-  },  {
+  },
+  {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'forget',
     loadChildren: () => import('./forget/forget.module').then( m => m.ForgetPageModule)
+  },
+  {
+    path: 'favoriten',
+    loadChildren: () => import('./favoriten/favoriten.module').then( m => m.FavoritenPageModule)
   },
 
 ];
