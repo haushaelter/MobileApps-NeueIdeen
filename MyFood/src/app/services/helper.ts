@@ -25,8 +25,10 @@ export class Logging {
         try {
             const toast = await this.toastCtrl.create({
                 message: nachricht,
-                duration: 2000
+                duration: 2000,
             });
+
+            await toast.present();
         } catch (e) {
             //bei einem Fehler wird dieser geloggt
             this.logging(e.message);
