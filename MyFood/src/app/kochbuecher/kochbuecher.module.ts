@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { KochbuecherPageRoutingModule } from './kochbuecher-routing.module';
 
 import { KochbuecherPage } from './kochbuecher.page';
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    KochbuecherPageRoutingModule
+    KochbuecherPageRoutingModule,
+    ComponentsModule
   ],
   declarations: [KochbuecherPage]
 })
