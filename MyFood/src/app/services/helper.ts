@@ -29,6 +29,7 @@ export class Logging {
             });
 
             await toast.present();
+            this.logging("Toast: " + nachricht);
         } catch (e) {
             //bei einem Fehler wird dieser geloggt
             this.logging(e.message);
@@ -49,7 +50,7 @@ export class Logging {
             });
 
             await meinAlert.present();
-
+            this.logging("Dialog: " + nachricht);
         } catch (e) {
             //bei einem Fehler wird dieser geloggt
             this.logging(e.message);
