@@ -24,8 +24,28 @@ export class AuthService {
       this.logging.logging("Registrierung durchgeführt.");
       this.router.navigateByUrl("/login");
     }).catch(e => {
-      this.logging.logging("Fehler bei der Registrierung");
-      this.logging.logging(e);
+      switch (e.code) {
+        case "auth/email-already-in-use":
+          this.logging.zeigeToast("E-Mail bereits vergeben.");
+          this.logging.logging("E-Mail bereits vergeben. Eingabe: " + email);
+          break;
+        case "auth/invalid-email":
+          this.logging.zeigeToast("Invalide E-Mail");
+          this.logging.logging("Invalide E-Mail. Eingabe: " + email);
+          break;
+        case "auth/operation-not-allowed":
+          this.logging.zeigeToast("Operation nicht erlaubt.");
+          this.logging.logging("Operation nicht erlaubt. Eingabe: " + email);
+          break;
+        case "auth/weak-password":
+          this.logging.zeigeToast("Passwort zu schwach.");
+          this.logging.logging("Passwort zu schwach. Eingabe: " + email);
+          break;
+        default:
+          this.logging.zeigeToast("Unbekannter Fehler.");
+          this.logging.logging(e);
+      }
+      this.logging.logging("Fehler-Code: " + e.code + "; E-Mail: " + email);
     });
   }
 
@@ -40,18 +60,22 @@ export class AuthService {
       this.router.navigateByUrl("/home");
     }).catch(e => {
       switch (e.code) {
-        case "auth/wrong-password":
-          this.logging.zeigeToast("Falsches Passwort.");
-          this.logging.logging("Falsches Passwort für " + email + " eingegeben");
+        case "auth/invalid-email":
+          this.logging.zeigeToast("Invalide E-Mail.");
+          this.logging.logging("Invalide E-Mail. Eingabe: " + email);
+          break;
+        case "auth/user-disabled":
+          this.logging.zeigeToast("Nutzer deaktiviert");
+          this.logging.logging("Nutzer deaktiviert. Nutzer E-Mail: " + email);
           break;
         case "auth/too-many-requests":
           this.logging.zeigeToast("Zu viele Anfragen, bitte versuchen Sie es später erneut.");
           this.logging.logging("Zu oft falsches Passwort für " + email + " eingegeben");
           break;
-        case "auth/invalid-email":
-            this.logging.zeigeToast("Invalide E-Mail.");
-            this.logging.logging("Invalide E-Mail. Eingabe: " + email);
-            break;
+        case "auth/wrong-password":
+          this.logging.zeigeToast("Falsches Passwort.");
+          this.logging.logging("Falsches Passwort für " + email + " eingegeben");
+          break;
         default:
           this.logging.zeigeToast("Es ist ein Fehler aufgetreten.");
           this.logging.logging("Anmeldefehler. Fehldercode noch nicht als Case hinzugefügt.");
@@ -74,11 +98,12 @@ export class AuthService {
           this.logging.zeigeToast("Invalide E-Mail.");
           this.logging.logging("Invalide E-Mail. Eingabe: " + email);
           break;
-          case "auth/user-not-found":
-            this.logging.zeigeToast("Unbekannte E-Mail.");
-            this.logging.logging("Unbekannte E-Mail. Eingabe: " + email);
-            break;
+        case "auth/user-not-found":
+          this.logging.zeigeToast("Unbekannte E-Mail.");
+          this.logging.logging("Unbekannte E-Mail. Eingabe: " + email);
+          break;
         default:
+          this.logging.zeigeToast("Unbekannter Fehler.");
           this.logging.logging(e);
       }
       this.logging.logging("Fehler-Code: " + e.code + "; E-Mail: " + email);
