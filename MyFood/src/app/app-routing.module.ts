@@ -24,8 +24,20 @@ const routes: Routes = [
     loadChildren: () => import('./forget/forget.module').then( m => m.ForgetPageModule)
   },
   {
+    path: 'rezept',
+    loadChildren: () => import('./rezept/rezept.module').then( m => m.RezeptPageModule)
+  },
+  {
+    path: 'kochbuecher',
+    loadChildren: () => import('./kochbuecher/kochbuecher.module').then( m => m.KochbuecherPageModule)
+  },
+  {
     path: 'favoriten',
     loadChildren: () => import('./favoriten/favoriten.module').then( m => m.FavoritenPageModule)
+  },
+  {
+    path: 'kochbuch',
+    loadChildren: () => import('./kochbuch/kochbuch.module').then( m => m.KochbuchPageModule)
   },
 
 ];

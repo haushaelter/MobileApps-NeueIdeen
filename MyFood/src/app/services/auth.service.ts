@@ -51,6 +51,7 @@ export class AuthService {
         case "auth/invalid-email":
             this.logging.zeigeToast("Invalide E-Mail.");
             this.logging.logging("Invalide E-Mail. Eingabe: " + email);
+            break;
         default:
           this.logging.zeigeToast("Es ist ein Fehler aufgetreten.");
           this.logging.logging("Anmeldefehler. Fehldercode noch nicht als Case hinzugefügt.");
