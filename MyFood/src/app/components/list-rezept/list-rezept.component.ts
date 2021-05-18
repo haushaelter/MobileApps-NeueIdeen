@@ -10,12 +10,17 @@ import { Logging } from '../../services/helper';
 export class ListRezeptComponent implements OnInit {
   _titel = 'Titel nicht gefunden';
   _anzahl = 0;
+  _anzahlText = "keine Bewertungen";
   _sterne = Array<String>(5);
   _fav = "star-outline";
-
-  logging = null;
+  _bearbeitet = false;
+  _bewertung = 'bewertung';
   @Input() 
   set rezept (rezept:JSON){
+
+    if(rezept ==null){
+      return;
+    }
     //Define Title
     if(typeof rezept['titel'] == "string" && rezept['titel'] !=="undefined"){
       this._titel = `${rezept['titel']}`;
@@ -29,13 +34,19 @@ export class ListRezeptComponent implements OnInit {
     } else {
       this.logging.logging("Keine Anzahl an Bewertungen übergeben");
     }
+    this._anzahlText = `${this._anzahl} Bewertungen`;
 
     //Define Number of stars
     let i = 0; 
+    //Überprüfen, ob eine eigene Bewertung gemacht wurde
+    if(rezept['eigeneBewertung']!=false && rezept['eigeneBewertung'] !=undefined){
+      this._bewertung= 'eigeneBewertung';
+      this._anzahlText = 'eigene Bewertung'
+    }
     //Bei 0 Bewertungen wird die Bewertung auch auf 0 gesetzt
     if(this._anzahl != 0){
-      for(i; i<rezept['bewertung'] && i<5; ){
-        if(rezept['bewertung']<++i){
+      for(i; i<rezept[this._bewertung] && i<5; ){
+        if(rezept[this._bewertung]<++i){
           this._sterne.push("star-half-outline");
         } else {
           this._sterne.push("star");
@@ -50,12 +61,18 @@ export class ListRezeptComponent implements OnInit {
     if(rezept['favorit']){
       this._fav = "star";
     }
+
+    //Bearbeitet
+    if(typeof rezept['bearbeitet'] == "boolean"){
+      this._bearbeitet=rezept['bearbeitet'];
+    }
   }
 
-  constructor(private alertCtrl: AlertController, private toastCtrl: ToastController) {
-    this.logging = new Logging(alertCtrl, toastCtrl);
-    // this.logging.logging("Rezeptliste: ", `${this.rezept[0]}`);
-  }
+  constructor(
+    private alertCtrl: AlertController, 
+    private toastCtrl: ToastController,
+    private logging: Logging
+    ) {}
 
   ngOnInit() {}
 

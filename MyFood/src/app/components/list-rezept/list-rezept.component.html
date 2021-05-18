@@ -8,6 +8,13 @@
     <ion-col>
       <ion-row>
         <ion-title>{{_titel}}</ion-title>
+        <ion-icon *ngIf="_bearbeitet" name="brush-outline"></ion-icon>
+        <ion-icon *ngIf="_bearbeitet" name="clipboard-outline"></ion-icon>
+        <ion-icon *ngIf="_bearbeitet" name="create-outline"></ion-icon>
+        <ion-icon *ngIf="_bearbeitet" name="document-text-outline"></ion-icon>
+        <ion-icon *ngIf="_bearbeitet" name="layers-outline"></ion-icon>
+        <ion-icon *ngIf="_bearbeitet" name="list-outline"></ion-icon>
+        <ion-icon *ngIf="_bearbeitet" name="pencil-outline"></ion-icon>
       </ion-row>
     </ion-col>
     <ion-col>
@@ -22,7 +29,7 @@
     </ion-col>
     <ion-col>
       <ion-row>
-        <ion-title>{{_anzahl}} Bewertungen</ion-title>
+        <ion-title>{{_anzahlText}}</ion-title>
       </ion-row>
     </ion-col>
   </ion-row>

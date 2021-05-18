@@ -22,7 +22,7 @@ export class AuthService {
   registrieren(email, passwort) {
     this.auth.createUserWithEmailAndPassword(email, passwort).then((res) => {
       this.logging.logging("Registrierung durchgeführt.");
-      this.router.navigateByUrl("/login");
+      this.router.navigateByUrl("/home");
     }).catch(e => {
       switch (e.code) {
         case "auth/email-already-in-use":
