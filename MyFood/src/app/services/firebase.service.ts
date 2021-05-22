@@ -42,7 +42,7 @@ export class FirebaseService {
   /**
    * Liest einzelnes Rezept aus und speichert alles aus der Datenbank in einem JSON-Object
    * @param name 
-   * @returns 
+   * @returns Object des angefragten Rezept
    */
   getRezeptByName(name: string): Object {
     let rezept:any = {
@@ -56,22 +56,9 @@ export class FirebaseService {
       rezept.ersteller = Object.values(res.payload.data())[0];
     });
 
+    // Abfrage der Inhalte & Zutaten des Rezept
     rezept.inhalte = this.getInhalteFuerRezept(name);
     rezept.zutaten = this.getZutatenFuerRezept(name);
-
-    /*// Get Collection "Inhalte" aus dem übergebenen Document
-    this.firestore.collection("Rezepte").doc(name).collection("Inhalte").snapshotChanges().subscribe(res => {
-      res.forEach(item => {
-        rezept.inhalte[item.payload.doc.id] = item.payload.doc.data();
-      });
-    });
-
-    // Get Collection "Inhalte" aus dem übergebenen Document
-    this.firestore.collection("Rezepte").doc(name).collection("Zutaten").snapshotChanges().subscribe(res => {
-      res.forEach(item => {
-        rezept.zutaten[item.payload.doc.id] = item.payload.doc.data();
-      });
-    });*/
 
     return rezept;
   }
@@ -79,7 +66,7 @@ export class FirebaseService {
   /**
    * Führt getRezeptByName öfter aus und gibt ein Object mit mehreren Rezepten zurück
    * @param name 
-   * @returns 
+   * @returns Object aller angefragten Rezepte
    */
   getRezepteByName(name: Array<string>): Object {
     let rezepte = {};
@@ -91,6 +78,10 @@ export class FirebaseService {
     return rezepte;
   } // Filtermöglichkeiten hier hinzufügen
   
+  /**
+   * Fragt alle Rezepte einzeln an
+   * @returns Object mit allen Rezepten
+   */
   getAlleRezepte(): Object {
     let rezepte = {};
 
@@ -102,12 +93,11 @@ export class FirebaseService {
           "inhalte": {},
           "zutaten": {}
         };
+        // Anfragen der Inhalte & Zutaten des Rezept
         rezepte[element.id].inhalte = this.getInhalteFuerRezept(element.id);
         rezepte[element.id].zutaten = this.getZutatenFuerRezept(element.id);
       });
     });
-
-    
 
     return rezepte;
   }
@@ -115,7 +105,7 @@ export class FirebaseService {
   /**
    * Anfrage von Collections innerhalb eines Documents
    * @param name 
-   * @returns 
+   * @returns Object der Inhalte des übergebenen Rezept
    */
   getInhalteFuerRezept(name: string): Object {
     let inhalte = {};
@@ -132,7 +122,7 @@ export class FirebaseService {
   /**
    * Anfrage von Collections innerhalb eines Documents
    * @param name 
-   * @returns 
+   * @returns Object der Zutaten des übergebenen Rezept
    */
   getZutatenFuerRezept(name: string): Object {
     let zutaten = {};
