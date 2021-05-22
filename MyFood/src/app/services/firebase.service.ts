@@ -1,6 +1,5 @@
 import { CompileTemplateMetadata } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import {  } from '@angular/fire/'
 import { Router } from '@angular/router';
@@ -12,7 +11,6 @@ export class FirebaseService {
 
   constructor(
     private firestore: AngularFirestore,
-    private auth: AngularFireAuth,
     private router: Router
   ) { }
 
@@ -40,13 +38,38 @@ export class FirebaseService {
 
   createRezept(name: string, userId: string, zutaten: object, inhalte: object) { }
   setEigenesRezept(rezeptName: string, userId: string) { }
+  /**
+   * Liest einzelnes Rezept aus und speichert alles aus der Datenbank in einem JSON-Object
+   * @param name 
+   * @returns 
+   */
   getRezeptByName(name: string) {
-    let test = {};
-    this.firestore.collection("Rezepte").doc(name).snapshotChanges().subscribe(res => {
-      test = res.payload.data();
-    });  
+    let rezept = {
+      "ersteller": {},
+      "inhalte": {},
+      "zutaten": {}
+    };
 
-    return test;
+    // Get alle Werte aus dem übergebenen Document
+    this.firestore.collection("Rezepte").doc(name).snapshotChanges().subscribe(res => {
+      rezept.ersteller = Object.values(res.payload.data())[0];
+    });
+
+    // Get Collection "Inhalte" aus dem übergebenen Document
+    this.firestore.collection("Rezepte").doc(name).collection("Inhalte").snapshotChanges().subscribe(res => {
+      res.forEach(item => {
+        rezept.inhalte[item.payload.doc.id] = item.payload.doc.data();
+      });
+    });
+
+    // Get Collection "Inhalte" aus dem übergebenen Document
+    this.firestore.collection("Rezepte").doc(name).collection("Zutaten").snapshotChanges().subscribe(res => {
+      res.forEach(item => {
+        rezept.zutaten[item.payload.doc.id] = item.payload.doc.data();
+      });
+    });
+
+    return rezept;
   }
   getRezepteByName(name: Array<string>) { } // Filtermöglichkeiten hier hinzufügen
   getAlleRezepte() { }

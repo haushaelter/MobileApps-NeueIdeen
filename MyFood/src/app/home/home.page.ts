@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { AuthService } from "../services/auth.service";
+import { FirebaseService } from "../services/firebase.service";
 import { Router } from '@angular/router';
 import { HelperService } from '../services/helper.service';
 
@@ -32,16 +33,13 @@ export class HomePage {
   rezepte = [this.rezept1, this.rezept2, this.rezept3, this.rezept4];
   
   constructor (
-    private auth: AngularFireAuth,
+    private auth: AuthService,
+    private firebase: FirebaseService,
     private router: Router,
     private logging: HelperService
   ) {}
 
   logout () {
-    this.auth.signOut().then(() => {
-      this.router.navigateByUrl("/login");
-    }).catch(e => {
-      this.logging.logging(e);
-    });
+    this.auth.logout();
   }
 }
