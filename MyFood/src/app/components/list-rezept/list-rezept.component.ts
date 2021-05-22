@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
-import { HelperService } from '../../services/helper';
+import { HelperService } from '../../services/helper.service';
 
 @Component({
   selector: 'app-list-rezept',

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { HelperService } from '../services/helper';
+import { HelperService } from '../services/helper.service';
 
 @Component({
   selector: 'app-home',
