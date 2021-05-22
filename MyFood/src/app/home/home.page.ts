@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { Logging } from '../services/helper';
+import { HelperService } from '../services/helper';
 
 @Component({
   selector: 'app-home',
@@ -34,7 +34,7 @@ export class HomePage {
   constructor (
     private auth: AngularFireAuth,
     private router: Router,
-    private logging: Logging
+    private logging: HelperService
   ) {}
 
   logout () {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Logging } from '../services/helper';
+import { HelperService } from '../services/helper';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,7 @@ export class LoginPage implements OnInit {
   
   constructor(
     private authService: AuthService,
-    private logging: Logging
+    private logging: HelperService
   ) { }
 
   ngOnInit() {

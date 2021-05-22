@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Logging } from '../../services/helper';
+import { HelperService } from '../../services/helper';
 
 @Component({
   selector: 'app-list-kochbuch',
@@ -54,7 +54,7 @@ export class ListKochbuchComponent implements OnInit {
     }
   }
   constructor(
-    private logging: Logging
+    private logging: HelperService
   ) { }
 
   ngOnInit() {}

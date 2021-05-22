@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
-import { Logging } from '../../services/helper';
+import { HelperService } from '../../services/helper';
 
 @Component({
   selector: 'app-list-rezept',
@@ -71,7 +71,7 @@ export class ListRezeptComponent implements OnInit {
   constructor(
     private alertCtrl: AlertController, 
     private toastCtrl: ToastController,
-    private logging: Logging
+    private logging: HelperService
     ) {}
 
   ngOnInit() {}

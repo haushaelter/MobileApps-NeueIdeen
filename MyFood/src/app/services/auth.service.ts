@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { Logging } from "./helper";
+import { HelperService } from "./helper";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class AuthService {
   constructor(
     private auth: AngularFireAuth,
     private router: Router,
-    private logging: Logging
+    private logging: HelperService
   ) { }
 
   /**

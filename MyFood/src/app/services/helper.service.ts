@@ -1,13 +1,12 @@
-import { AlertController, ToastController } from "@ionic/angular";
 import { Injectable } from '@angular/core';
+import { AlertController, ToastController } from '@ionic/angular';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
+export class HelperService {
 
-export class Logging {
-
-    constructor(private alertCtrl: AlertController, private toastCtrl: ToastController) { }
+  constructor(private alertCtrl: AlertController, private toastCtrl: ToastController) { }
     /**
      * Methode zum Schreiben von logs
      * @param nachricht 
