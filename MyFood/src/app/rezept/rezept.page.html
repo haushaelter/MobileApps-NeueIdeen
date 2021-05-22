@@ -1,9 +1,51 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>rezept</ion-title>
+    <ion-title>{{_titel}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-grid> 
+    <ion-row>
+      <ion-col>{{_titel}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col> 
+        <ion-row>
+          <ion-col>
+            <ion-icon [name]="_favorit" class="grid-icon"></ion-icon>
+          </ion-col>
+          <ion-col>
+            <ion-icon *ngIf="_bearbeitet" name="brush-outline"></ion-icon>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          {{_anzahl}}/5,0
+        </ion-row>
+        <ion-row>
+          {{_anzahl}} Bewertungen
+        </ion-row>
+        <ion-row>
+          Zutaten
+        </ion-row>
+      </ion-col>
+      <ion-col>
+        <ion-img alt="Picture" class="grid-col-pic" src="../../../assets/icon/favicon.png"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let eintrag of _zutaten">
+      <ion-col>{{eintrag}}</ion-col>
+    </ion-row>
+    
+    <ion-row *ngFor="let eintrag of _schritte; let i = index">
+      <ion-col>
+        <ion-row>
+          <ion-col>Schritt {{i + 1}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>{{eintrag}}</ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
