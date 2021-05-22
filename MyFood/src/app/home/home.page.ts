@@ -38,10 +38,8 @@ export class HomePage {
     private router: Router,
     private logging: HelperService
   ) {}
-  rezept:any
+  
   logout () {
-    console.log(this.rezept);
-    this.rezept = this.firebase.getAlleRezepte();
-    //this.auth.logout();
+    this.auth.logout();
   }
 }
