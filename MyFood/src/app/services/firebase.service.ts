@@ -14,23 +14,6 @@ export class FirebaseService {
     private router: Router
   ) { }
 
-  /**
-   * Firestore Collection auslesen
-   * @param colName 
-   * @returns Liste aller Documents
-   */
-  getCollection(colName) {
-    let temp = [];
-
-    this.firestore.collection(colName).snapshotChanges().subscribe(res => {
-      res.forEach(task => {
-        temp.push({ ...task.payload.doc.data });
-      });
-    });
-
-    return temp;
-  }
-
   // Platzhalter für spätere Umsetzung
   // Helfer-Funktionen für Objekt-Erstellung
   getZutatenObject() { }
