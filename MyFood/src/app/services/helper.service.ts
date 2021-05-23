@@ -40,12 +40,12 @@ export class HelperService {
      * @param titel 
      * @param nachricht 
      */
-    async zeigeDialog(titel: string, nachricht: string) {
+    async zeigeDialog(titel: string, nachricht: string, buttons) {
         try {
             const meinAlert = await this.alertCtrl.create({
                 header: titel,
                 message: nachricht,
-                buttons: ["Ok"]
+                buttons: buttons
             });
 
             await meinAlert.present();
