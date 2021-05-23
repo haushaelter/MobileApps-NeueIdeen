@@ -11,14 +11,14 @@ export class ListRezeptComponent implements OnInit {
   _titel = 'Titel nicht gefunden';
   _anzahl = 0;
   _anzahlText = "keine Bewertungen";
-  _sterne = Array<String>(5);
-  _fav = "star-outline";
+  _sterne = Array<String>();
+  _fav;
   _bearbeitet = false;
   _bewertung = 'bewertung';
   @Input() 
   set rezept (rezept:JSON){
 
-    if(rezept ==null){
+    if(rezept === null){
       return;
     }
     //Define Title
@@ -60,6 +60,8 @@ export class ListRezeptComponent implements OnInit {
     //Überprüfen auf Favorit 
     if(rezept['favorit']){
       this._fav = "star";
+    } else {
+      this._fav = "star-outline";
     }
 
     //Bearbeitet

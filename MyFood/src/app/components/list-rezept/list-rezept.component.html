@@ -1,36 +1,28 @@
-<ion-grid>
-  <ion-row class="grid-row-long">
-    <ion-col>
-      <ion-row>
-        <ion-icon [name]="_fav"></ion-icon>
-      </ion-row>
+<ion-grid class="grid">
+  <ion-row class="grid-row">
+    <ion-col class="grid-col-first">
+      <ion-icon *ngIf="_fav!==undefined"class="icon fav-icon" [name]="_fav"></ion-icon>
     </ion-col>
-    <ion-col>
-      <ion-row>
-        <ion-title>{{_titel}}</ion-title>
-        <ion-icon *ngIf="_bearbeitet" name="brush-outline"></ion-icon>
+    <ion-col class="grid-col-second">
+      <ion-label>{{_titel}}</ion-label>
+        <ion-icon class ="icon" *ngIf="_bearbeitet" name="brush-outline"></ion-icon>
         <ion-icon *ngIf="_bearbeitet" name="clipboard-outline"></ion-icon>
         <ion-icon *ngIf="_bearbeitet" name="create-outline"></ion-icon>
         <ion-icon *ngIf="_bearbeitet" name="document-text-outline"></ion-icon>
         <ion-icon *ngIf="_bearbeitet" name="layers-outline"></ion-icon>
         <ion-icon *ngIf="_bearbeitet" name="list-outline"></ion-icon>
         <ion-icon *ngIf="_bearbeitet" name="pencil-outline"></ion-icon>
-      </ion-row>
     </ion-col>
     <ion-col>
       <ion-img alt="Picture" class="grid-col-pic" src="../../../assets/icon/favicon.png"></ion-img>
     </ion-col>
   </ion-row>
   <ion-row class="grid-row">
-    <ion-col>
-      <ion-row>
-        <ion-icon *ngFor="let eintrag of _sterne" [name]="eintrag" class="grid-icon"></ion-icon>
-      </ion-row>
+    <ion-col class="grid-col-first">
+      <ion-icon *ngFor="let eintrag of _sterne" [name]="eintrag" class="icon bewertung-icon"></ion-icon>
     </ion-col>
-    <ion-col>
-      <ion-row>
-        <ion-title>{{_anzahlText}}</ion-title>
-      </ion-row>
+    <ion-col class="grid-col-second">
+      <ion-label>{{_anzahlText}}</ion-label>
     </ion-col>
   </ion-row>
 </ion-grid>
