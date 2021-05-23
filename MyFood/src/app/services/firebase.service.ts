@@ -3,6 +3,11 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import {  } from '@angular/fire/'
 import { Router } from '@angular/router';
+import { Rezept } from '../models/rezept';
+import { Zutat } from '../models/zutat';
+import { RezeptPage } from '../rezept/rezept.page';
+import { Inhalte } from '../models/inhalte';
+import { Schritt } from '../models/schritt';
 
 @Injectable({
   providedIn: 'root'
@@ -16,18 +21,63 @@ export class FirebaseService {
 
   // Platzhalter für spätere Umsetzung
   // Helfer-Funktionen für Objekt-Erstellung
-  getZutatenObject() { }
-  getRezeptInhalte() { }
+  /*getZutatObject(zutatMenge:number):Zutat {
+    let zutat: Zutat;
 
-  createRezept(name: string, userId: string, zutaten: object, inhalte: object) { }
-  setEigenesRezept(rezeptName: string, userId: string) { }
+    zutat = {
+      "Menge": zutatMenge
+    }
+
+    return zutat;
+  }*/
+
+  // getRezeptInhalte(
+  //   beschreibung: string,
+  //   titel: string,
+  //   bewertung: number,
+  //   schritte: Array<Schritt>
+  // ):Inhalte {
+  //   let inhalte: Inhalte;
+    
+  //   inhalte.Basis = {
+  //     Beschreibung: beschreibung,
+  //     Titel: titel
+  //   }
+  //   inhalte.Bewertung= {
+  //     Anzahl: 1,
+  //     Bewertung: bewertung
+  //   }
+
+  //   /*schritte.forEach((item, index) => {
+  //     inhalte[index] = item;
+  //   });*/
+
+  //   return inhalte;
+  // }
+
+  // setRezept(name: string, userId: string, zutaten: object, inhalte: object) {
+  //   this.firestore.collection("Rezept").doc(name).set({
+  //     ersteller: userId
+  //   });
+  //   for(let item in inhalte){
+  //     this.firestore.collection("Rezept").doc(name).collection("inhalte").doc(item.).set({
+
+  //     });
+  //   }
+    
+  // }
+  // setEigenesRezept(rezeptName: string, userId: string) {
+  //   this.firestore.collection("User").doc(userId).update({
+  //     //EigeneRezepte: rezeptName
+  //   });
+  // }
 
   /**
    * Liest einzelnes Rezept aus und speichert alles aus der Datenbank in einem JSON-Object
    * @param name 
    * @returns Object des angefragten Rezept
    */
-  getRezeptByName(name: string): Object {
+  getRezeptByName(name: string): JSON {
     let rezept:any = {
       "ersteller": {},
       "inhalte": {},
@@ -43,7 +93,7 @@ export class FirebaseService {
     rezept.inhalte = this.getInhalteFuerRezept(name);
     rezept.zutaten = this.getZutatenFuerRezept(name);
 
-    return rezept;
+    return <JSON>rezept;
   }
 
   /**
@@ -51,37 +101,36 @@ export class FirebaseService {
    * @param name 
    * @returns Object aller angefragten Rezepte
    */
-  getRezepteByName(name: Array<string>): Object {
+  getRezepteByName(name: Array<string>): JSON {
     let rezepte = {};
     
     name.forEach(item => {
       rezepte[item] = this.getRezeptByName(item);
     });
 
-    return rezepte;
+    return <JSON>rezepte;
   } // Filtermöglichkeiten hier hinzufügen
   
   /**
    * Fragt alle Rezepte einzeln an
    * @returns Object mit allen Rezepten
    */
-  getAlleRezepte(): Object {
-    let rezepte = {};
+  getAlleRezepte(): Array<JSON> {
+    let rezepte = [];
 
     this.firestore.collection("Rezepte").get().subscribe(res => {
       console.log(res);
       res.docs.forEach(element => {
-        rezepte[element.id] = {
-          "ersteller": element.data(),
-          "inhalte": {},
-          "zutaten": {}
-        };
-        // Anfragen der Inhalte & Zutaten des Rezept
-        rezepte[element.id].inhalte = this.getInhalteFuerRezept(element.id);
-        rezepte[element.id].zutaten = this.getZutatenFuerRezept(element.id);
+        rezepte.push({
+          id: element.id,
+          ersteller: Object.values(element.data())[0],
+          inhalte: this.getInhalteFuerRezept(element.id),
+          zutaten: this.getZutatenFuerRezept(element.id)
+        })
+        
       });
     });
-
+    
     return rezepte;
   }
 
