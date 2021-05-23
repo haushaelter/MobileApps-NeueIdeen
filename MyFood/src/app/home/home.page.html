@@ -16,8 +16,8 @@
     </ion-toolbar>
   </ion-header>
   <app-searchbar></app-searchbar>
-  <ion-list *ngFor="let eintrag of rezepte">
-    <app-list-rezept [rezept]="eintrag"></app-list-rezept>
+  <ion-list *ngFor="let eintrag of rezepte | jsonToArray">
+    <app-list-rezept [rezept]="eintrag.value"></app-list-rezept>
   </ion-list>
   
 </ion-content>

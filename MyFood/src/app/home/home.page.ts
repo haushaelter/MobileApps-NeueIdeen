@@ -30,7 +30,7 @@ export class HomePage {
     "anzahl": 622, 
     "bewertung": 5, 
   };
-  rezepte = [this.rezept1, this.rezept2, this.rezept3, this.rezept4];
+  rezepte = {rezept1: this.rezept1, rezept2: this.rezept2, rezept3: this.rezept4};
   
   constructor (
     private auth: AuthService,
