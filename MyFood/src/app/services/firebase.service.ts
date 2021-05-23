@@ -3,11 +3,6 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import {  } from '@angular/fire/'
 import { Router } from '@angular/router';
-import { Rezept } from '../models/rezept';
-import { Zutat } from '../models/zutat';
-import { RezeptPage } from '../rezept/rezept.page';
-import { Inhalte } from '../models/inhalte';
-import { Schritt } from '../models/schritt';
 
 @Injectable({
   providedIn: 'root'
