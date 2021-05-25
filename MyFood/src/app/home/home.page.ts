@@ -11,35 +11,40 @@ import { HelperService } from '../services/helper.service';
 })
 export class HomePage {
   rezept1 = {
-    "anzahl": 312, 
-    "bewertung": 3.5, 
+    "anzahl": 312,
+    "bewertung": 3.5,
     "favorit": true
   };
-  rezept2=  {
+  rezept2 = {
     "titel": "Titel",
-    "bewertung": 4, 
+    "bewertung": 4,
     "favorit": false
   };
-  rezept3= {
+  rezept3 = {
     "titel": "Rezept",
-    "anzahl": 511, 
+    "anzahl": 511,
     "favorit": true
   };
-  rezept4 ={
+  rezept4 = {
     "titel": "Rezept 4",
-    "anzahl": 622, 
-    "bewertung": 5, 
+    "anzahl": 622,
+    "bewertung": 5,
   };
   rezepte = [this.rezept1, this.rezept2, this.rezept3, this.rezept4];
-  
-  constructor (
+
+  constructor(
     private auth: AuthService,
     private firebase: FirebaseService,
     private router: Router,
     private logging: HelperService
-  ) {}
-  
-  logout () {
-    this.auth.logout();
+  ) { }
+
+  temp;
+  async logout() {
+    console.log(this.temp);
+    if (this.temp == null) {
+      this.temp = this.firebase.getUsers(["Olf7J48ZKgWCCjW3wfICFSFkerh1"]);
+    }
+    //this.auth.logout();
   }
 }

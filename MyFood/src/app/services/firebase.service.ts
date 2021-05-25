@@ -1,7 +1,10 @@
+import { templateJitUrl } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Rezept } from "../models/rezepte/rezept.model";
+import { User } from '../models/User/user.model';
+import { Zutat } from '../models/Zutaten/zutat.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +16,15 @@ export class FirebaseService {
   ) { }
 
   getAlleRezepte(): Array<Rezept> {
-    let rezepte: Array<Rezept> = [];
-    let rezept, inhalte = {}, zutaten = {};
+    let inhalte, zutaten, rezepte: Array<Rezept> = [];
 
     this.firestore.collection("Rezepte").get().subscribe(res => {
       res.docs.forEach(element => {
         this.getInhalteFuerRezept(element.id).subscribe(resIn => {
           this.getZutatenFuerRezept(element.id).subscribe(resZut => {
+
+            inhalte = {};
+            zutaten = {};
 
             resIn.forEach(item => {
               inhalte[item.payload.doc.id] = item.payload.doc.data();
@@ -29,19 +34,15 @@ export class FirebaseService {
               zutaten[item.payload.doc.id] = item.payload.doc.data();
             });
 
-            rezept = {
-              ersteller: Object.values(element.data())[0],
-              id: element.id,
-              inhalte: inhalte,
-              zutaten: zutaten
-            }
-
             rezepte.push(
-              new Rezept().deserialize(rezept)
+              new Rezept().deserialize({
+                ersteller: Object.values(element.data())[0],
+                id: element.id,
+                inhalte: inhalte,
+                zutaten: zutaten
+              })
             );
 
-            inhalte = {};
-            zutaten = {};
           });
         });
       });
@@ -50,55 +51,46 @@ export class FirebaseService {
     return rezepte;
   }
 
-  getRezepteByName(name: Array<string>): Array<Rezept> {
+  getRezepte(names: Array<string>): Array<Rezept> {
     let rezepte: Array<Rezept> = [];
 
-    name.forEach(async item => {
-      rezepte.push(await this.getRezeptByName(item));
+    names.forEach(item => {
+      rezepte.push(this.getRezept(item));
     });
 
     return rezepte;
   } // Filtermöglichkeiten hier hinzufügen
 
-  getRezeptByName(name: string): Promise<Rezept> {
-    let returnRezept: Rezept;
-    let rezept, inhalte, zutaten;
+  getRezept(name: string): Rezept {
+    let inhalte, zutaten, rezept = new Rezept();
 
-    return new Promise(resolve => {
-      // Get alle Werte aus dem übergebenen Document
-      this.firestore.collection("Rezepte").doc(name).snapshotChanges().subscribe(res => {
-        this.getInhalteFuerRezept(name).subscribe(resIn => {
-          this.getZutatenFuerRezept(name).subscribe(resZut => {
+    // Get alle Werte aus dem übergebenen Document
+    this.firestore.collection("Rezepte").doc(name).snapshotChanges().subscribe(res => {
+      this.getInhalteFuerRezept(name).subscribe(resIn => {
+        this.getZutatenFuerRezept(name).subscribe(resZut => {
 
-            inhalte = {};
-            zutaten = {};
+          inhalte = {};
+          zutaten = {};
 
-            resIn.forEach(item => {
-              inhalte[item.payload.doc.id] = item.payload.doc.data();
-            });
+          resIn.forEach(item => {
+            inhalte[item.payload.doc.id] = item.payload.doc.data();
+          });
 
-            resZut.forEach(item => {
-              zutaten[item.payload.doc.id] = item.payload.doc.data();
-            });
+          resZut.forEach(item => {
+            zutaten[item.payload.doc.id] = item.payload.doc.data();
+          });
 
-            rezept = res.payload.data();
-            rezept["inhalte"] = inhalte;
-            rezept["zutaten"] = zutaten;
-
-            returnRezept = (new Rezept().deserialize({
-              ersteller: res.payload.data()["Ersteller"],
-              id: res.payload.data()["id"],
-              inhalte: inhalte,
-              zutaten: zutaten
-            }));
-
-
-
-            resolve(returnRezept);
+          rezept = rezept.deserialize({
+            ersteller: res.payload.data()["Ersteller"],
+            id: res.payload.data()["id"],
+            inhalte: inhalte,
+            zutaten: zutaten
           });
         });
       });
     });
+
+    return rezept;
   }
 
   getInhalteFuerRezept(name: string): Observable<any> {
@@ -111,11 +103,107 @@ export class FirebaseService {
     return this.firestore.collection("Rezepte").doc(name).collection("Zutaten").snapshotChanges();
   }
 
-  createZutat(name: string, einheit: string, kalorien: number) { }
-  getZutat(name: string) { }
-  getZutaten(name: Array<string>) { }
-  getAlleZutaten() { }
+  getAlleUser(): Array<User> {
+    let temp, user: Array<User> = [];
 
+    this.firestore.collection("User").get().subscribe(res => {
+      res.docs.forEach(element => {
+        this.firestore.collection("User").doc(element.id).collection("Individuelle Angaben").snapshotChanges().subscribe(resIA => {
+
+          temp = {};
+
+          resIA.forEach(item => {
+            temp[item.payload.doc.id] = item.payload.doc.data();
+          });
+
+          user.push(
+            new User().deserialize({
+              id: element.id,
+              eigeneRezept: element.data()["EigeneRezepte"],
+              favoriten: element.data()["Favoriten"],
+              individuelleAngaben: temp
+            })
+          );
+        });
+      });
+    });
+
+    return user;
+  }
+
+  getUsers(names: Array<string>): Array<User> {
+    let user: Array<User> = [];
+
+    names.forEach(item => {
+      user.push(this.getUser(item));
+    });
+
+    return user;
+  }
+
+  getUser(name: string): User {
+    let temp, user: User = new User();
+
+    this.firestore.collection("User").doc(name).snapshotChanges().subscribe(res => {
+      this.firestore.collection("User").doc(name).collection("Individuelle Angaben").snapshotChanges().subscribe(resIA => {
+
+        temp = {};
+
+        resIA.forEach(item => {
+          temp[item.payload.doc.id] = item.payload.doc.data();
+        });
+
+        user = user.deserialize({
+          id: res.payload.id,
+          eigeneRezept: res.payload.data()["EigeneRezepte"],
+          favoriten: res.payload.data()["Favoriten"],
+          individuelleAngaben: temp
+        });
+      });
+    });
+
+    return user;
+  }
+
+  getAlleZutaten(): Array<Zutat> {
+    let temp, user: Array<Zutat> = [];
+
+    this.firestore.collection("Zutaten").get().subscribe(res => {
+      res.docs.forEach(element => {
+
+        temp = element.data();
+        temp["id"] = element.id;
+
+        user.push(new Zutat().deserialize(temp));
+
+      });
+    });
+
+    return user;
+  }
+
+  getZutaten(names: Array<string>): Array<Zutat> {
+    let zutat: Array<Zutat> = [];
+
+    names.forEach(item => {
+      zutat.push(this.getZutat(item));
+    });
+
+    return zutat;
+  }
+
+  getZutat(name: string): Zutat {
+    let zutat: Zutat = new Zutat();
+
+    this.firestore.collection("Zutaten").doc(name).snapshotChanges().subscribe(res => {
+      zutat = zutat.deserialize(res.payload.data());
+    });
+
+    return zutat;
+  }
+
+  setRezept() { }
+  setZutat(name: string, einheit: string, kalorien: number) { }
   setFavorit(rezeptName: string, userId: string) { }
   getAlleFavoriten(userId: string) { }
 }
