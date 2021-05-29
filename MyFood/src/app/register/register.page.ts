@@ -8,6 +8,7 @@ import { HelperService } from '../services/helper.service';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
+  readonly seitentitel = "Registrierung";
 
   user: any = {};
 
@@ -17,6 +18,7 @@ export class RegisterPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    document.getElementById("footer").style.display = "none";
   }
 
   register() {

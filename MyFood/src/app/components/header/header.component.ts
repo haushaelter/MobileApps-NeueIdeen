@@ -13,9 +13,6 @@ export class HeaderComponent implements OnInit {
   @Input() 
   set titel(titel:string){
     this._titel=titel;
-    if(this._titel=="Login"){
-      document.getElementById("logout").style.display = "none";
-    }
   }
 
   constructor(

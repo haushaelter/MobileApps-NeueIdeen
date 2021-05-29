@@ -33,5 +33,7 @@ export class HomePage {
 
   constructor(
     private logging: HelperService
-  ) { }
+  ) { 
+    document.getElementById("footer").style.display = "block";
+  }
 }

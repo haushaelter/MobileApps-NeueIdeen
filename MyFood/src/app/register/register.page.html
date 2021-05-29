@@ -1,26 +1,19 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons solt="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>Registrierung</ion-title>
-  </ion-toolbar>
-</ion-header>
-
+<app-header [titel]="seitentitel"></app-header>
 <ion-content>
   <ion-list>
-    <ion-item>
+    <ion-item class="item">
       <ion-label position="stacked">Email</ion-label>
       <ion-input type="text" [(ngModel)]="user.email" required></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item class="item item-behind">
       <ion-label position="stacked" required>Passwort</ion-label>
       <ion-input type="password" [(ngModel)]="user.passwort"></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item class="item item-behind">
       <ion-label position="stacked" required>Passwort wiederholen</ion-label>
       <ion-input type="password" [(ngModel)]="user.passwortWiederholung"></ion-input>
     </ion-item>
-    <ion-button (click)="register()">Registrierung</ion-button>
+    <ion-button class="btn-register btn" (click)="register()">Registrierung</ion-button>
+    <ion-button class="btn-login btn" fill="outline" routerLink="/login">Login</ion-button>
   </ion-list>
 </ion-content>

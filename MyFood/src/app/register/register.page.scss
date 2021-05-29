@@ -1,0 +1,49 @@
+.item{
+    margin: 10rem 2rem 0;
+    align-items: center;
+    padding: 0;
+}
+
+.item-behind{
+    margin-top: 0;
+}
+
+.btn{
+    width: calc((100% - 4rem - 1%)/2);
+    margin-left: 2rem;
+    margin-top: 1rem;
+}
+
+.btn-login{
+    margin-left: 1%;
+}
+
+@media(min-width:700px){
+    .item{
+        margin-left: 4rem;
+        margin-right: 5.2rem;
+    }
+
+    .btn{
+        width: calc((100% - 10.4rem - 1%)/2);
+    }
+
+    .btn-register{
+        margin-left: 5.2rem;
+    }
+}
+  
+@media(min-width: 1200px){
+    .item{
+        margin-left: 10rem;
+        margin-right: 10em;
+    }
+
+    .btn{
+        width: calc((100% - 20rem - 1%)/2);
+    }
+
+    .btn-register{
+        margin-left: 10.1rem;
+    }
+}
