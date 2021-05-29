@@ -2,9 +2,9 @@
   <div>
     <ion-router-outlet id="menuContent"></ion-router-outlet>
   </div>
-  <div>
-    <ion-button routerLink="/home" routerDirection="forward">Suche</ion-button>
-    <ion-button routerLink="/favoriten" routerDirection="forward">Favoriten</ion-button>
-    <ion-button routerLink="/kochbuecher" routerDirection="forward">Kochbücher</ion-button>
-  </div>
+  <ion-footer class="footer" opaque>
+    <ion-button routerLink="/home" routerDirection="forward" class="nav-btn btn-first">Suche</ion-button>
+    <ion-button routerLink="/favoriten" routerDirection="forward" class="nav-btn">Favoriten</ion-button>
+    <ion-button routerLink="/kochbuecher" routerDirection="forward" class="nav-btn">Kochbücher</ion-button>
+  </ion-footer>
 </ion-app>
