@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { HelperService } from '../services/helper.service';
 
@@ -8,15 +9,18 @@ import { HelperService } from '../services/helper.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  readonly seitentitel = "Login";
 
   user:any = {};
   
   constructor(
     private authService: AuthService,
-    private logging: HelperService
+    private logging: HelperService,
+    private navCtrl: NavController
   ) { }
 
   ngOnInit() {
+    document.getElementById("footer").style.display = "none";
   }
 
   login(){
@@ -27,6 +31,10 @@ export class LoginPage implements OnInit {
     } else {
       this.logging.zeigeToast("Bitte E-Mail eingeben");
     }
+  }
+
+  goToForgetPage(){
+    this.navCtrl.navigateForward('/forget');
   }
 
 }

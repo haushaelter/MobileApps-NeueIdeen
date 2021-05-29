@@ -1,21 +1,21 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header [titel]="seitentitel"></app-header>
 
 <ion-content>
   <ion-list>
-    <ion-item>
+    <ion-item class="item-email item">
       <ion-label position="stacked">Email</ion-label>
       <ion-input type="email" [(ngModel)]="user.email" required></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item class="item-passwort item">
       <ion-label position="stacked">Passwort</ion-label>
       <ion-input type="password" [(ngModel)]="user.passwort" required></ion-input>
     </ion-item>
-    <ion-button fill="clear" routerLink="/forget">Passwort vergessen</ion-button>
-    <ion-button (click)="login()">Login</ion-button>
-    <ion-button fill="outline" routerLink="/register">Registrieren</ion-button>
+    <div class="btn btn-forget">
+      <a (click)="goToForgetPage()">Passwort vergessen</a>
+    </div>
+    <div class="btn-collection">
+      <ion-button class="btn-login btn" (click)="login()">Login</ion-button>
+      <ion-button class="btn-register btn" fill="outline" routerLink="/register">Registrieren</ion-button>
+    </div>
   </ion-list>
 </ion-content>
