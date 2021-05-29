@@ -1,0 +1,36 @@
+.ios .title{
+  text-align: start;
+  position: fixed;
+  padding: 0;
+  margin-left: 1rem;
+  font-size: larger;
+}
+
+.header{
+  align-items: center;
+}
+
+.ios .header-toolbar{
+  height: 2.5rem;
+  margin: 0.5rem 0;
+}
+
+@media(min-width:700px){
+  .ios .title{
+    margin-left: 2rem;
+  }
+
+  .ios .header-toolbar{
+    height: 3rem;
+  }
+}
+
+@media(min-width: 1200px){
+  .title{
+    font-size: 24px;
+  }
+
+  .header-toolbar{
+    height: 3.5rem;
+  }
+}

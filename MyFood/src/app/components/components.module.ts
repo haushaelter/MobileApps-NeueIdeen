@@ -4,11 +4,13 @@ import { IonicModule } from '@ionic/angular';
 import { SearchbarComponent } from './searchbar/searchbar.component';
 import { ListRezeptComponent } from './list-rezept/list-rezept.component';
 import { ListKochbuchComponent } from './list-kochbuch/list-kochbuch.component';
+import { HeaderComponent } from './header/header.component';
 
 const PAGES_COMPONENTS = [
   SearchbarComponent,
   ListRezeptComponent,
-  ListKochbuchComponent
+  ListKochbuchComponent,
+  HeaderComponent
 ]
 
 @NgModule({

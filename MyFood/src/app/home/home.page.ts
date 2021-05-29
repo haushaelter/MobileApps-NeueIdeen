@@ -1,7 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import { AuthService } from "../services/auth.service";
-import { FirebaseService } from "../services/firebase.service";
-import { Router } from '@angular/router';
 import { HelperService } from '../services/helper.service';
 
 @Component({
@@ -10,6 +7,8 @@ import { HelperService } from '../services/helper.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  readonly seitentitel = "Suche"
+
   rezept1 = {
     "anzahl": 312,
     "bewertung": 3.5,
@@ -33,18 +32,6 @@ export class HomePage {
   rezepte = [this.rezept1, this.rezept2, this.rezept3, this.rezept4];
 
   constructor(
-    private auth: AuthService,
-    private firebase: FirebaseService,
-    private router: Router,
     private logging: HelperService
   ) { }
-
-  temp;
-  async logout() {
-    console.log(this.temp);
-    if (this.temp == null) {
-      this.temp = this.firebase.getUsers(["Olf7J48ZKgWCCjW3wfICFSFkerh1"]);
-    }
-    //this.auth.logout();
-  }
 }
