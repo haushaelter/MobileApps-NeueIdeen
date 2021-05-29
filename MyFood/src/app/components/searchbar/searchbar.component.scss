@@ -1,4 +1,50 @@
+.btn-medium{
+    display: none;
+}
+
 .searchbar-div{
-    width: auto;
+    margin-left: 2%;
+    margin-top: 2%;
+    width: 95%;
+    height: 3rem;
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchbar-bar{
+    height: 3rem;
+    width: 70%;
+}
+
+.searchbar-btn{
+    width: 3rem;
+    margin-left: 0.5%;
+}
+
+@media(min-width:700px){
+    .btn-small{
+        display: none;
+    }
+    
+    .btn-medium{
+        display: flex;
+    }
+
+    .searchbar-div{
+        margin-left: 3%;
+        width: 90%;
+    }
+
+    .searchbar-btn{
+        width: 6rem;
+        margin-left: 1%;
+    }
+}
+
+@media(min-width: 1200px){
+    .searchbar-div{
+        margin-left: 5%;
+        width: 80%;
+    }
 }
