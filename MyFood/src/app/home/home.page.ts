@@ -7,7 +7,7 @@ import { HelperService } from '../services/helper.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  readonly seitentitel = "Suche"
+  readonly seitentitel = "Suche";
 
   rezept1 = {
     "anzahl": 312,

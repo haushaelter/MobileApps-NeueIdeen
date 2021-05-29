@@ -7,6 +7,8 @@ import { ComponentsModule } from '../components/components.module';
   styleUrls: ['./favoriten.page.scss'],
 })
 export class FavoritenPage implements OnInit {
+  readonly seitentitel = "Favoriten";
+
   rezept1 = {
     "anzahl": 312, 
     "bewertung": 3.5, 
