@@ -1,20 +1,6 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      {{kochbuchname}}
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="logout()">Logout</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-header [titel]="seitentitel"></app-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Kochbuch</ion-title>
-    </ion-toolbar>
-  </ion-header>
   <app-searchbar></app-searchbar>
   <ion-list *ngFor="let eintrag of rezepte">
     <app-list-rezept [rezept]="eintrag"></app-list-rezept>
