@@ -1,31 +1,28 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>{{_titel}}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header [titel]="_titel"></app-header>
 
 <ion-content>
-  <ion-grid> 
-    <ion-row>
-      <ion-col>{{_titel}}</ion-col>
+  <ion-grid class="grid"> 
+    <ion-row class="row-titel">
+      <ion-col class="col-titel">{{_titel}}</ion-col>
     </ion-row>
-    <ion-row>
+
+    <ion-row class="grid-row-infos">
       <ion-col> 
-        <ion-row>
+        <ion-row class="row-infos-inner">
           <ion-col>
-            <ion-icon [name]="_favorit" class="grid-icon"></ion-icon>
+            <ion-icon [name]="_favorit" class="icon fav-icon"></ion-icon>
           </ion-col>
           <ion-col>
             <ion-icon *ngIf="_bearbeitet" name="brush-outline"></ion-icon>
           </ion-col>
         </ion-row>
-        <ion-row>
-          {{_anzahl}}/5,0
+        <ion-row class="row-infos-inner">
+          &empty; {{_anzahl}} / 5,0
         </ion-row>
-        <ion-row>
+        <ion-row class="row-infos-inner">
           {{_anzahl}} Bewertungen
         </ion-row>
-        <ion-row>
+        <ion-row class="row-infos-inner row-zutaten">
           Zutaten
         </ion-row>
       </ion-col>
@@ -33,19 +30,22 @@
         <ion-img alt="Picture" class="grid-col-pic" src="../../../assets/icon/favicon.png"></ion-img>
       </ion-col>
     </ion-row>
+
     <ion-row *ngFor="let eintrag of _zutaten">
       <ion-col>{{eintrag}}</ion-col>
     </ion-row>
     
     <ion-row *ngFor="let eintrag of _schritte; let i = index">
-      <ion-col>
-        <ion-row>
-          <ion-col>Schritt {{i + 1}}</ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>{{eintrag}}</ion-col>
-        </ion-row>
-      </ion-col>
+      <ion-row class="row-schritt">
+        <ion-col>Schritt {{i + 1}}</ion-col>
+      </ion-row>
+      <ion-row class="row-doing">
+        <ion-col>{{eintrag}}</ion-col>
+      </ion-row>
     </ion-row>
   </ion-grid>
+
+  <ion-infinite-scroll >
+    <ion-infinite-scroll-content loadingSpinner="none"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

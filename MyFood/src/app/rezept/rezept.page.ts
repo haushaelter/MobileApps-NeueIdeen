@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { IonInfiniteScroll } from '@ionic/angular';
 import { HelperService } from '../services/helper.service';
 
 @Component({
@@ -11,8 +12,8 @@ export class RezeptPage implements OnInit {
   _anzahl = 0;
   _favorit = "star-outline";
   _bewertung = 0;
-  _zutaten = Array<String>();
-  _schritte = Array<String>();
+  _zutaten = ["Ei", "Mehl", "Butter", "Milch"];
+  _schritte = ["Mach was mit dem Mehl und der Milch", "Hau ein Ei dazu"];
 
   @Input() 
   set rezept (rezept:JSON){
@@ -48,5 +49,5 @@ export class RezeptPage implements OnInit {
 
   ngOnInit() {
   }
-
+  
 }
