@@ -221,11 +221,11 @@ export class FirebaseService {
     });
   }
 
-  getAlleFavoriten(userId: string): Array<string> {
-    let returnVal: Array<string>;
+  getAlleFavoriten(userId: string): Array<Rezept> {
+    let returnVal: Array<Rezept>;
 
     this.firestore.collection("User").doc(userId).snapshotChanges().subscribe(res => {
-      returnVal = res.payload["favoriten"];
+      returnVal = this.getRezepte(res.payload["favoriten"]);
     });
 
     return returnVal;

@@ -22,7 +22,7 @@ export class AuthService {
   registrieren(email, passwort) {
     this.auth.createUserWithEmailAndPassword(email, passwort).then((res) => {
       this.logging.logging("Registrierung durchgeführt.");
-      this.router.navigateByUrl("/home");
+      this.login(email, passwort);
     }).catch(e => {
       switch (e.code) {
         case "auth/email-already-in-use":
@@ -36,6 +36,9 @@ export class AuthService {
           break;
         case "auth/weak-password":
           this.logging.zeigeToast("Passwort zu schwach. Mindestens 6 Zeichen benötigt.");
+          break;
+        case "auth/email-already-in-use":
+          this.logging.zeigeToast("E-Mail bereits vergeben.");
           break;
         default:
           this.logging.zeigeToast("Unbekannter Fehler.");
