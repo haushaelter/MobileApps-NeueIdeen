@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./kochbuch.page.scss'],
 })
 export class KochbuchPage implements OnInit {
-  kochbuchname = "Mein Kochbuch";
+  seitentitel = "Mein Kochbuch";
   rezept1 = {
     "anzahl": 312, 
     "bewertung": 3.5, 
