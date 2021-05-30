@@ -202,8 +202,32 @@ export class FirebaseService {
     return zutat;
   }
 
-  setRezept() { }
-  setZutat(name: string, einheit: string, kalorien: number) { }
-  setFavorit(rezeptName: string, userId: string) { }
-  getAlleFavoriten(userId: string) { }
+  setRezept(rezept: Rezept): void {
+    this.firestore.collection("Rezepte").doc(rezept.id).set(rezept);
+  }
+  setZutat(zutat: Zutat): void {
+    this.firestore.collection("Zutaten").doc(zutat.id).set(zutat);
+  }
+  setFavorit(rezeptName: string, userId: string) {
+    let favoritenArr: Array<string>;
+
+    this.firestore.collection("User").doc(userId).snapshotChanges().subscribe(res => {
+      favoritenArr = res.payload["favoriten"];
+      favoritenArr.push(rezeptName);
+      
+      this.firestore.collection("User").doc(userId).update({
+        favoriten: favoritenArr
+      });
+    });
+  }
+
+  getAlleFavoriten(userId: string): Array<string> {
+    let returnVal: Array<string>;
+
+    this.firestore.collection("User").doc(userId).snapshotChanges().subscribe(res => {
+      returnVal = res.payload["favoriten"];
+    });
+
+    return returnVal;
+  }
 }
