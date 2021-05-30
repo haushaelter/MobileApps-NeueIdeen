@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { RegisterPageRoutingModule } from './register-routing.module';
+import { RegistrierungPageRoutingModule } from './registrierung-routing.module';
 
-import { RegisterPage } from './register.page';
+import { RegistrierungPage } from './registrierung.page';
 import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
@@ -15,8 +15,8 @@ import { ComponentsModule } from '../components/components.module';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    RegisterPageRoutingModule
+    RegistrierungPageRoutingModule
   ],
-  declarations: [RegisterPage]
+  declarations: [RegistrierungPage]
 })
-export class RegisterPageModule {}
+export class RegistrierungPageModule {}

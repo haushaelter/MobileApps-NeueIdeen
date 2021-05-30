@@ -3,11 +3,11 @@ import { AuthService } from '../services/auth.service';
 import { HelperService } from '../services/helper.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.page.html',
-  styleUrls: ['./register.page.scss'],
+  selector: 'app-registrierung',
+  templateUrl: './registrierung.page.html',
+  styleUrls: ['./registrierung.page.scss'],
 })
-export class RegisterPage implements OnInit {
+export class RegistrierungPage implements OnInit {
   readonly seitentitel = "Registrierung";
 
   user: any = {};
@@ -21,7 +21,7 @@ export class RegisterPage implements OnInit {
     document.getElementById("footer").style.display = "none";
   }
 
-  register() {
+  registrieren() {
     if (this.user.email && this.user.passwort) {
       if (this.user.passwort === this.user.passwortWiederholung) {
         this.authService.registrieren(this.user.email, this.user.passwort);

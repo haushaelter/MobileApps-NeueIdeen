@@ -16,12 +16,12 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'register',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+    path: 'registrierung',
+    loadChildren: () => import('./registrierung/registrierung.module').then( m => m.RegistrierungPageModule)
   },
   {
-    path: 'forget',
-    loadChildren: () => import('./forget/forget.module').then( m => m.ForgetPageModule)
+    path: 'passwort-vergessen',
+    loadChildren: () => import('./passwort-vergessen/passwort-vergessen.module').then( m => m.PasswortVergessenPageModule)
   },
   {
     path: 'rezept',

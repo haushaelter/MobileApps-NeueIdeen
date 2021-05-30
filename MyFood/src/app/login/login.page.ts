@@ -33,8 +33,8 @@ export class LoginPage implements OnInit {
     }
   }
 
-  goToForgetPage(){
-    this.navCtrl.navigateForward('/forget');
+  passwortVergessen(){
+    this.navCtrl.navigateForward('/passwort-vergessen');
   }
 
 }

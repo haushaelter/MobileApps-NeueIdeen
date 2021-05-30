@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-forget',
-  templateUrl: './forget.page.html',
-  styleUrls: ['./forget.page.scss'],
+  selector: 'app-passwort-vergessen',
+  templateUrl: './passwort-vergessen.page.html',
+  styleUrls: ['./passwort-vergessen.page.scss'],
 })
-export class ForgetPage implements OnInit {
+export class PasswortVergessenPage implements OnInit {
 
   email:any;
 
@@ -17,7 +17,7 @@ export class ForgetPage implements OnInit {
   ngOnInit() {
   }
 
-  forget () {
+  passwortVergessen () {
     if(this.email)
       this.authService.passwortVergessen(this.email);
   }
