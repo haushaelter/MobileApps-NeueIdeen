@@ -1,18 +1,8 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Kochbücher</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header [titel]="seitentitel"></app-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Kochbücher</ion-title>
-    </ion-toolbar>
-  </ion-header>
   <app-searchbar></app-searchbar>
-  <ion-list *ngFor="let eintrag of buecher">
-    <app-list-kochbuch [buch]="eintrag"></app-list-kochbuch>
+  <ion-list>
+    <app-list-kochbuch *ngFor="let eintrag of buecher" [buch]="eintrag"></app-list-kochbuch>
   </ion-list>
-  
 </ion-content>

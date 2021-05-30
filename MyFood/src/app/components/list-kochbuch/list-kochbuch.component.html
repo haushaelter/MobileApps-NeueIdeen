@@ -1,24 +1,26 @@
-<ion-grid>
-  <ion-row>
-    <ion-col>
+<ion-grid class="grid">
+  <ion-row class="grid-row">
+    <ion-col class="grid-col-info">
       <ion-row>
-        <ion-col>{{_titel}}</ion-col>
+        <ion-col class="col-titel col-info">{{_titel}}</ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>{{_verlag}}</ion-col>
+        <ion-col class="col-verlag col-info">{{_verlag}}</ion-col>
       </ion-row>
       <ion-row>
-        <ion-icon *ngFor="let eintrag of _sterne" [name]="eintrag" class="grid-icon"></ion-icon>
+        <ion-icon *ngFor="let eintrag of _sterne" [name]="eintrag" class="icon col-sterne col-info"></ion-icon>
       </ion-row>
       <ion-row>
-        <ion-col>{{_anzahl}}</ion-col>
+        <ion-col class="col-anzahl col-info">{{_anzahl}} Bewertungen</ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>
-          <ion-button>PDF Download</ion-button>
+        <ion-col class="col-download col-info">
+          <ion-button class="btn">PDF Download</ion-button>
         </ion-col>
       </ion-row>
     </ion-col>
-    <ion-img alt="Picture"></ion-img>
+    <ion-col class="grid-col-img">
+      <ion-img class="img" src="../../../assets/icon/favicon.png" alt="Picture"></ion-img>
+    </ion-col>
   </ion-row>
 </ion-grid>

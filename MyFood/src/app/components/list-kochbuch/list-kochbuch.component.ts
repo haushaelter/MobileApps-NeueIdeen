@@ -12,7 +12,7 @@ export class ListKochbuchComponent implements OnInit {
   _verlag = "Kein Verlag";
   _bewertung = 0;
   _anzahl = 0;
-  _sterne = Array<String>(5);
+  _sterne = Array<String>();
 
   @Input ()
   set buch(buch:JSON){

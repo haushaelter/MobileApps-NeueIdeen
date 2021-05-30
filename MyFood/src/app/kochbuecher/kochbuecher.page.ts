@@ -7,6 +7,7 @@ import { ComponentsModule } from '../components/components.module';
   styleUrls: ['./kochbuecher.page.scss'],
 })
 export class KochbuecherPage implements OnInit {
+  readonly seitentitel = "Kochbücher";
   buch1= {
     "titel": "Buch1",
     "verlag": "Verlag",
