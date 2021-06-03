@@ -9,7 +9,7 @@ export class Inhalte implements Deserialize {
     };
     bewertung: {
         anzahl: number;
-        bewrtung: number;
+        bewertung: number;
     };
     [schritte: number]: Schritt;
 
