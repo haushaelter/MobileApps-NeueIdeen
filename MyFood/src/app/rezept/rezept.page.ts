@@ -1,6 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { IonInfiniteScroll } from '@ionic/angular';
+import { Rezept } from '../models/rezepte/rezept.model';
+import { Schritt } from '../models/rezepte/schritt.model';
+import { FirebaseService } from '../services/firebase.service';
 import { HelperService } from '../services/helper.service';
+import { ListService } from '../services/list.service';
 
 @Component({
   selector: 'app-rezept',
@@ -8,46 +13,43 @@ import { HelperService } from '../services/helper.service';
   styleUrls: ['./rezept.page.scss'],
 })
 export class RezeptPage implements OnInit {
-  _titel = "Rezepttitel";
-  _anzahl = 0;
+  private id: string = this.activatedRoute.snapshot.queryParamMap.get("id");
+  private data: Rezept;
+  private schritte: Array<Schritt> = new Array;
   _favorit = "star-outline";
-  _bewertung = 0;
-  _zutaten = ["Ei", "Mehl", "Butter", "Milch"];
-  _schritte = ["Mach was mit dem Mehl und der Milch", "Hau ein Ei dazu"];
 
   @Input() 
-  set rezept (rezept:JSON){
-    //Define Title
-    if(typeof rezept['titel'] == "string" && rezept['titel'] !=="undefined"){
-      this._titel = `${rezept['titel']}`;
-    } else {
-      this.logging.logging("Kein Titel übergeben")
-    }
-
-    //Define Number of Likes (Problem: Überprüfen, ob keine Anzahl an Sternen übergeben wurde)
-    if(typeof rezept['anzahl'] == "number"){
-      this._anzahl = rezept['anzahl'];
-    } else {
-      this.logging.logging("Keine Anzahl an Bewertungen übergeben");
-    }
-
-    //Define Zutaten
-    for(let i = 0; i<rezept['zutaten'].length; i++){
-      this._zutaten.push(rezept['zutaten'][i]);
-    }
-
-    //Define Schritte
-    for(let i = 0; i<rezept['schritte'].length; i++){
-      this._schritte.push(rezept['schritte'][i]);
-    }
-
+  set rezept (rezept:Rezept){
+    this.data = rezept;
   }
 
   constructor(
-    private logging: HelperService
-  ) {}
+    private activatedRoute: ActivatedRoute,
+    private firebase: FirebaseService,
+    private listService: ListService
+  ) {
+    this.id = this.id.replace("%20", " ");
+    this.data = firebase.getRezept(this.id);
+  }
 
   ngOnInit() {
+  }
+
+  readData(){
+    this.data.id = this.listService.checkString("Titel", this.data.id);    
+
+    this.data.inhalte.bewertung.anzahl = this.listService.checkNumber(this.data.inhalte.bewertung.anzahl);
+
+    this.data.inhalte.bewertung.bewertung = this.listService.checkNumber(this.data.inhalte.bewertung.bewertung);
+
+    this.schritte = new Array;
+    for(let item in this.data.inhalte){
+      
+      this.schritte.push(this.data.inhalte[item]);
+      
+    }
+    
+
   }
   
 }

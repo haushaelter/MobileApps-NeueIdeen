@@ -1,9 +1,10 @@
 <app-header [titel]="_titel"></app-header>
 
 <ion-content>
-  <ion-grid class="grid"> 
+  <ion-grid class="grid" *ngIf="data.id!==undefined && data.inhalte.bewertung!==undefined"> 
+    {{readData()}}
     <ion-row class="row-titel">
-      <ion-col class="col-titel">{{_titel}}</ion-col>
+      <ion-col class="col-titel">{{data.id}}</ion-col>
     </ion-row>
 
     <ion-row class="grid-row-infos">
@@ -17,10 +18,10 @@
           </ion-col>
         </ion-row>
         <ion-row class="row-infos-inner">
-          &empty; {{_anzahl}} / 5,0
+          &empty; {{data.inhalte.bewertung.bewertung}} / 5,0
         </ion-row>
         <ion-row class="row-infos-inner">
-          {{_anzahl}} Bewertungen
+          {{data.inhalte.bewertung.anzahl}} Bewertungen
         </ion-row>
         <ion-row class="row-infos-inner row-zutaten">
           Zutaten
@@ -31,17 +32,19 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngFor="let eintrag of _zutaten">
-      <ion-col>{{eintrag}}</ion-col>
+    <ion-row *ngFor="let eintrag of data.zutaten | keyvalue">
+      <ion-col>{{eintrag.key}}</ion-col>
     </ion-row>
     
-    <ion-row *ngFor="let eintrag of _schritte; let i = index">
-      <ion-row class="row-schritt">
-        <ion-col>Schritt {{i + 1}}</ion-col>
-      </ion-row>
-      <ion-row class="row-doing">
-        <ion-col>{{eintrag}}</ion-col>
-      </ion-row>
+    <ion-row *ngFor="let eintrag of data.inhalte | keyvalue">
+      <div *ngIf="eintrag.key!=='basis' && eintrag.key!=='bewertung'">
+        <ion-row class="row-schritt">
+          <ion-col>Schritt {{eintrag.key}}</ion-col>
+        </ion-row>
+        <ion-row class="row-doing">
+          <ion-col>{{eintrag.value.beschreibung}}</ion-col>
+        </ion-row>
+      </div>
     </ion-row>
   </ion-grid>
 
