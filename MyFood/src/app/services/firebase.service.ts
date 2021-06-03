@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Rezept } from "../models/rezepte/rezept.model";
-import { User } from '../models/User/user.model';
-import { Zutat } from '../models/Zutaten/zutat.model';
+import { User } from '../models/user/user.model';
+import { Zutat } from '../models/zutaten/zutat.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ import { Zutat } from '../models/Zutaten/zutat.model';
 export class FirebaseService {
 
   constructor(
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
   ) { }
 
   getAlleRezepte(): Array<Rezept> {
@@ -81,7 +81,7 @@ export class FirebaseService {
           });
 
           rezept = rezept.deserialize({
-            ersteller: res.payload.data()["Ersteller"],
+            ersteller: res.payload.data()["ersteller"],
             id: res.payload.data()["id"],
             inhalte: inhalte,
             zutaten: zutaten
@@ -94,13 +94,36 @@ export class FirebaseService {
   }
 
   getInhalteFuerRezept(name: string): Observable<any> {
-    // Get Collection "Inhalte" aus dem übergebenen Document
-    return this.firestore.collection("Rezepte").doc(name).collection("Inhalte").snapshotChanges();
+    // Get Collection "inhalte" aus dem übergebenen Document
+    return this.firestore.collection("Rezepte").doc(name).collection("inhalte").snapshotChanges();
   }
 
   getZutatenFuerRezept(name: string): Observable<any> {
-    // Get Collection "Zutaten" aus dem übergebenen Document
-    return this.firestore.collection("Rezepte").doc(name).collection("Zutaten").snapshotChanges();
+    // Get Collection "zutaten" aus dem übergebenen Document
+    return this.firestore.collection("Rezepte").doc(name).collection("zutaten").snapshotChanges();
+  }
+
+  setRezept(rezept: Rezept): void {
+    this.firestore.collection("Rezepte").doc(rezept.id).set({
+      ersteller: rezept.ersteller,
+      id: rezept.id
+    });
+
+    for (let item in rezept.inhalte) {
+      this.firestore.collection("Rezepte").doc(rezept.id).collection("inhalte").doc(item).set(
+        JSON.parse(JSON.stringify(rezept.inhalte[item]))
+      );
+    }
+
+    for (let item in rezept.zutaten) {
+      this.firestore.collection("Rezepte").doc(rezept.id).collection("zutaten").doc(item).set(
+        JSON.parse(JSON.stringify(rezept.zutaten[item]))
+      );
+    }
+  }
+
+  deleteRezept(id: string): void {
+    //this.firestore.
   }
 
   getAlleUser(): Array<User> {
@@ -145,30 +168,46 @@ export class FirebaseService {
     let temp, user: User = new User();
 
     this.firestore.collection("User").doc(name).snapshotChanges().subscribe(res => {
-      this.firestore.collection("User").doc(name).collection("Individuelle Angaben").snapshotChanges().subscribe(resIA => {
+      if (res.payload.data() !== undefined) {
+        this.firestore.collection("User").doc(name).collection("Individuelle Angaben").snapshotChanges().subscribe(resIA => {
 
-        temp = {};
+          temp = {};
 
-        resIA.forEach(item => {
-          temp[item.payload.doc.id] = item.payload.doc.data();
+          resIA.forEach(item => {
+            temp[item.payload.doc.id] = item.payload.doc.data();
+          });
+
+          user = user.deserialize({
+            id: res.payload.id,
+            eigeneRezept: res.payload.data()["EigeneRezepte"],
+            favoriten: res.payload.data()["Favoriten"],
+            individuelleAngaben: temp
+          });
         });
-
-        user = user.deserialize({
-          id: res.payload.id,
-          eigeneRezept: res.payload.data()["EigeneRezepte"],
-          favoriten: res.payload.data()["Favoriten"],
-          individuelleAngaben: temp
-        });
-      });
+      }
     });
 
     return user;
   }
 
+  setUser(user: User): void {
+    this.firestore.collection("User").doc(user.id).set({
+      id: user.id,
+      favoriten: user.favoriten,
+      eigeneRezepte: user.eigeneRezepte
+    });
+
+    for(let item in user.individuelleAngaben){
+      this.firestore.collection("User").doc(user.id).collection("Individuelle Angaben").doc(item).set(
+        JSON.parse(JSON.stringify(user.individuelleAngaben[item]))
+      );
+    }
+  }
+
   getAlleZutaten(): Array<Zutat> {
     let temp, user: Array<Zutat> = [];
 
-    this.firestore.collection("Zutaten").get().subscribe(res => {
+    this.firestore.collection("zutaten").get().subscribe(res => {
       res.docs.forEach(element => {
 
         temp = element.data();
@@ -195,26 +234,24 @@ export class FirebaseService {
   getZutat(name: string): Zutat {
     let zutat: Zutat = new Zutat();
 
-    this.firestore.collection("Zutaten").doc(name).snapshotChanges().subscribe(res => {
+    this.firestore.collection("zutaten").doc(name).snapshotChanges().subscribe(res => {
       zutat = zutat.deserialize(res.payload.data());
     });
 
     return zutat;
   }
 
-  setRezept(rezept: Rezept): void {
-    this.firestore.collection("Rezepte").doc(rezept.id).set(rezept);
-  }
   setZutat(zutat: Zutat): void {
-    this.firestore.collection("Zutaten").doc(zutat.id).set(zutat);
+    this.firestore.collection("zutaten").doc(zutat.id).set(zutat);
   }
+
   setFavorit(rezeptName: string, userId: string) {
     let favoritenArr: Array<string>;
 
     this.firestore.collection("User").doc(userId).snapshotChanges().subscribe(res => {
       favoritenArr = res.payload["favoriten"];
       favoritenArr.push(rezeptName);
-      
+
       this.firestore.collection("User").doc(userId).update({
         favoriten: favoritenArr
       });

@@ -3,10 +3,12 @@ import { IndividuelleAngaben } from "./individuelle-angaben.model";
 
 export class RezeptReferenz implements Deserialize {
 
-    [name: number]: IndividuelleAngaben;
+    bewertung: number;
+    notizen: string;
 
-    deserialize(input:any){
+    deserialize(input: any) {
         Object.assign(this, input);
+
         return this;
     }
 
