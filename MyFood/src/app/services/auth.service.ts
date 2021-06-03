@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { FirebaseService } from './firebase.service';
 import { HelperService } from "./helper.service";
 
 @Injectable({
@@ -15,7 +16,11 @@ export class AuthService {
     private router: Router,
     private logging: HelperService
   ) {
-    this.auth.authState.subscribe(user => {
+    this.checkAuthState();
+  }
+
+  checkAuthState(){
+    this.auth.onAuthStateChanged(user => {
       this.setAktuellerUser(user);
     });
   }
@@ -61,7 +66,6 @@ export class AuthService {
    */
   login(email, passwort) {
     this.auth.signInWithEmailAndPassword(email, passwort).then((res) => {
-      this.setAktuellerUser(res.user);
       this.logging.logging("Nutzer eingeloggt.");
       this.router.navigateByUrl("/home");
     }).catch(e => {
@@ -123,7 +127,7 @@ export class AuthService {
     });
   }
 
-  private setAktuellerUser(user: object){    
+  private setAktuellerUser(user: object): void {
     this.aktuellerUser = user;
   }
 

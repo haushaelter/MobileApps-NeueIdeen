@@ -7,17 +7,12 @@ export class User implements Deserialize {
     id: string;
     eigeneRezepte: Array<string>;
     favoriten: Array<string>;
-    individuelleAngaben: {
-        [rezeptId: string]: IndividuelleAngaben;
-    };
-    
+    individuelleAngaben: IndividuelleAngaben;    
 
     deserialize(input: any) {
         Object.assign(this, input);
 
-        for(let i in input.rezeptId){
-            console.log(i);
-        }
+        this.individuelleAngaben = new IndividuelleAngaben().deserialize(this.individuelleAngaben);
 
         return this;
     }
