@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationExtras } from '@angular/router';
+import { NavController } from '@ionic/angular';
+import { Rezept } from 'src/app/models/rezepte/rezept.model';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-searchbar',
@@ -7,8 +11,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private navCtrl: NavController
+  ) { }
 
   ngOnInit() {}
+
+  zufall(){
+    let id = "Hartgekochtes Ei";
+    
+    this.navCtrl.navigateForward(`/rezept?id=${id}`);
+  }
 
 }
