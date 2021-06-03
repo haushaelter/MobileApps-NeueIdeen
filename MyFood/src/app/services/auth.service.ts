@@ -8,11 +8,17 @@ import { HelperService } from "./helper.service";
 })
 export class AuthService {
 
+  private aktuellerUser;
+
   constructor(
     private auth: AngularFireAuth,
     private router: Router,
     private logging: HelperService
-  ) { }
+  ) {
+    this.auth.authState.subscribe(user => {
+      this.setAktuellerUser(user);
+    });
+  }
 
   /**
    * Registrierung, ohne Prüfung, ob alle Felder korrekt ausgefüllt wurden
@@ -53,8 +59,9 @@ export class AuthService {
    * @param email 
    * @param passwort 
    */
-  async login(email, passwort) {
+  login(email, passwort) {
     this.auth.signInWithEmailAndPassword(email, passwort).then((res) => {
+      this.setAktuellerUser(res.user);
       this.logging.logging("Nutzer eingeloggt.");
       this.router.navigateByUrl("/home");
     }).catch(e => {
@@ -114,5 +121,13 @@ export class AuthService {
     }).catch(e => {
       this.logging.logging(e);
     });
+  }
+
+  private setAktuellerUser(user: object){    
+    this.aktuellerUser = user;
+  }
+
+  getAktuellerUser(){
+    return this.aktuellerUser;
   }
 }
