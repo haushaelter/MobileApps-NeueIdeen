@@ -1,10 +1,10 @@
 <ion-grid class="grid">
-  <ion-row class="grid-row">
+  <ion-row class="grid-row" *ngIf="data!==undefined">
     <ion-col class="grid-col-first">
       <ion-icon *ngIf="_fav!==undefined"class="icon fav-icon" [name]="_fav"></ion-icon>
     </ion-col>
     <ion-col class="grid-col-second">
-      <ion-label>{{_titel}}</ion-label>
+      <ion-label>{{data.id}}</ion-label>
         <ion-icon class ="icon" *ngIf="_bearbeitet" name="clipboard-outline"></ion-icon>
     </ion-col>
     <ion-col>

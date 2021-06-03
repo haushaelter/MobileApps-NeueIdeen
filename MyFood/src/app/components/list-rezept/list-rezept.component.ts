@@ -1,5 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
+import { Rezept } from 'src/app/models/rezepte/rezept.model';
+import { User } from 'src/app/models/User/user.model';
+import { AuthService } from 'src/app/services/auth.service';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { ListService } from 'src/app/services/list.service';
 import { HelperService } from '../../services/helper.service';
 
 @Component({
@@ -8,54 +13,40 @@ import { HelperService } from '../../services/helper.service';
   styleUrls: ['./list-rezept.component.scss'],
 })
 export class ListRezeptComponent implements OnInit {
-  _titel = 'Titel nicht gefunden';
-  _anzahl = 0;
+  readonly authentication = this.authService.getAktuellerUser();
+  //readonly userCollection:User = this.firebase.getUser(this.authentication.uid);
+
+  data:Rezept;
+
+
   _anzahlText = "keine Bewertungen";
   _sterne = Array<String>();
   _fav;
   _bearbeitet = false;
   _bewertung = 'bewertung';
   @Input() 
-  set rezept (rezept:JSON){
-
+  set rezept (rezept:Rezept){
+    
     if(rezept === null){
       return;
     }
-    //Define Title
-    if(typeof rezept['titel'] == "string" && rezept['titel'] !=="undefined"){
-      this._titel = `${rezept['titel']}`;
-    } else {
-      this.logging.logging("Kein Titel übergeben")
-    }
 
-    //Define Number of Likes (Problem: Überprüfen, ob keine Anzahl an Sternen übergeben wurde)
-    if(typeof rezept['anzahl'] == "number"){
-      this._anzahl = rezept['anzahl'];
-    } else {
-      this.logging.logging("Keine Anzahl an Bewertungen übergeben");
-    }
-    this._anzahlText = `${this._anzahl} Bewertungen`;
+    this.data = rezept;
 
-    //Define Number of stars
-    let i = 0; 
-    //Überprüfen, ob eine eigene Bewertung gemacht wurde
-    if(rezept['eigeneBewertung']!=false && rezept['eigeneBewertung'] !=undefined){
-      this._bewertung= 'eigeneBewertung';
-      this._anzahlText = 'eigene Bewertung'
-    }
-    //Bei 0 Bewertungen wird die Bewertung auch auf 0 gesetzt
-    if(this._anzahl != 0){
-      for(i; i<rezept[this._bewertung] && i<5; ){
-        if(rezept[this._bewertung]<++i){
-          this._sterne.push("star-half-outline");
-        } else {
-          this._sterne.push("star");
-        }
-      }
-    }
-    for( i; i<5; i++){
-      this._sterne.push("star-outline");
-    }
+    this.data.id = this.listService.checkString("Titel", rezept.id);    
+
+    this.data.inhalte.bewertung.anzahl = this.listService.checkNumber(rezept.inhalte.bewertung.anzahl);
+    this._anzahlText = `${this.data.inhalte.bewertung.anzahl} Bewertungen`;
+
+    this._sterne = this.listService.checkStars(rezept.inhalte.bewertung.bewertung);
+
+    
+
+    // //Überprüfen, ob eine eigene Bewertung gemacht wurde
+    // if(rezept['eigeneBewertung']!=false && rezept['eigeneBewertung'] !=undefined){
+    //   this._bewertung= 'eigeneBewertung';
+    //   this._anzahlText = 'eigene Bewertung'
+    // }
 
     //Überprüfen auf Favorit 
     if(rezept['favorit']){
@@ -73,7 +64,10 @@ export class ListRezeptComponent implements OnInit {
   constructor(
     private alertCtrl: AlertController, 
     private toastCtrl: ToastController,
-    private logging: HelperService
+    private logging: HelperService,
+    private listService: ListService,
+    private authService: AuthService,
+    private firebase: FirebaseService
     ) {}
 
   ngOnInit() {}
