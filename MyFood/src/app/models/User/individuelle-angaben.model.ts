@@ -1,12 +1,15 @@
 import { Deserialize } from "../deserialize";
+import { RezeptReferenz } from "./rezept-referenz.model";
 
 export class IndividuelleAngaben implements Deserialize {
 
-    bewertung: number;
-    notizen: string;
+    [name: number]: RezeptReferenz;
 
     deserialize(input:any){
-        Object.assign(this, input);
+        for (let i in input) {
+            this[i] = new RezeptReferenz().deserialize(input[i]);
+        }
+
         return this;
     }
 
