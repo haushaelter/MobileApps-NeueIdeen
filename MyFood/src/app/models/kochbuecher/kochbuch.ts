@@ -7,6 +7,7 @@ export class Kochbuch implements Deserialize{
         anzahl: number;
         bewertung: number;
     };
+    verlag: string;
     rezepte: Array<string>
 
     deserialize(input:any){
