@@ -51,6 +51,18 @@ export class FirebaseService {
     return rezepte;
   }
 
+  getAlleRezeptIds(): Array<string> {
+    let names: Array<string> = new Array<string>();
+
+    this.firestore.collection("Rezepte").ref.get().then(res => {
+      res.docs.forEach(ele => {
+        names.push(ele.data()["id"]);
+      });
+    });
+
+    return names;
+  }
+
   getRezepte(names: Array<string>): Array<Rezept> {
     let rezepte: Array<Rezept> = [];
 
@@ -197,7 +209,7 @@ export class FirebaseService {
       eigeneRezepte: user.eigeneRezepte
     });
 
-    for(let item in user.individuelleAngaben){
+    for (let item in user.individuelleAngaben) {
       this.firestore.collection("User").doc(user.id).collection("Individuelle Angaben").doc(item).set(
         JSON.parse(JSON.stringify(user.individuelleAngaben[item]))
       );
