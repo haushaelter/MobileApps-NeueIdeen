@@ -17,7 +17,7 @@ export class ListService {
    * @returns Alternativen Text oder gefundenes Ergebnis
    */
   checkString(suche: string, ergebnis):string{
-    if(ergebnis!==undefined || ergebnis!==null){
+    if(ergebnis!=undefined || ergebnis!=null){      
       return `${ergebnis}`;
     } else {
       this.logging.logging(`Fehler: ${suche} = ${ergebnis}`)
@@ -31,7 +31,7 @@ export class ListService {
    * @returns übergebene Nummer oder 0
    */
   checkNumber(num):number{
-    if(typeof num!== "number"){
+    if(typeof num!= "number"){
       this.logging.logging(`Fehler: typeof number = ${typeof num}`)
       return 0;
     } else {

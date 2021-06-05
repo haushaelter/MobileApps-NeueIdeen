@@ -3,6 +3,9 @@
 <ion-content [fullscreen]="true">
   <app-searchbar></app-searchbar>
   <ion-list>
-    <app-list-kochbuch *ngFor="let eintrag of buecher" [buch]="eintrag"></app-list-kochbuch>
+    <app-list-kochbuch *ngFor="let eintrag of kochbuecher" [buch]="eintrag"></app-list-kochbuch>
   </ion-list>
+  <ion-infinite-scroll >
+    <ion-infinite-scroll-content loadingSpinner="none"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

@@ -2,16 +2,16 @@
   <ion-row class="grid-row">
     <ion-col class="grid-col-info">
       <ion-row>
-        <ion-col class="col-titel col-info">{{_titel}}</ion-col>
+        <ion-col class="col-titel col-info">{{data.id}}</ion-col>
       </ion-row>
       <ion-row>
-        <ion-col class="col-verlag col-info">{{_verlag}}</ion-col>
+        <ion-col class="col-verlag col-info">{{data.verlag}}</ion-col>
       </ion-row>
       <ion-row>
         <ion-icon *ngFor="let eintrag of _sterne" [name]="eintrag" class="icon col-sterne col-info"></ion-icon>
       </ion-row>
       <ion-row>
-        <ion-col class="col-anzahl col-info">{{_anzahl}} Bewertungen</ion-col>
+        <ion-col class="col-anzahl col-info">{{data.bewertung.anzahl}} Bewertungen</ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="col-download col-info">
