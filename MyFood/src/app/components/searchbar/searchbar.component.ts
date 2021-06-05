@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { NavigationExtras } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Rezept } from 'src/app/models/rezepte/rezept.model';
-import { FirebaseService } from 'src/app/services/firebase.service';
+import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-searchbar',
@@ -10,16 +8,30 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   styleUrls: ['./searchbar.component.scss'],
 })
 export class SearchbarComponent implements OnInit {
+  private rezepteListe:Array<string>;
+
+  @Input()
+  set rezeptListe(rezeptListe){
+    this.rezepteListe = rezeptListe;
+  }
 
   constructor(
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private logging: HelperService
   ) { }
 
   ngOnInit() {}
 
-  zufall(){
-    let id = "Hartgekochtes Ei";
+  zufall(){    
+    let i = Math.round((Math.random())*this.rezepteListe.length);
     
+    let id = this.rezepteListe[i];
+    if(id==undefined){
+      this.logging.logging("Fehler aufgetreten. Keine zufällige ID gefunden");
+      this.zufall();
+      return;
+    }
+
     this.navCtrl.navigateForward(`/rezept?id=${id}`);
   }
 
