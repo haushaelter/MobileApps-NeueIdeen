@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ComponentsModule } from '../components/components.module';
+import { Rezept } from '../models/rezepte/rezept.model';
+import { AuthService } from '../services/auth.service';
+import { FirebaseService } from '../services/firebase.service';
 
 @Component({
   selector: 'app-favoriten',
@@ -8,42 +11,27 @@ import { ComponentsModule } from '../components/components.module';
 })
 export class FavoritenPage implements OnInit {
   readonly seitentitel = "Favoriten";
+  private rezepte: Array<Rezept>;
+  private rezeptListe: Array<string>
 
-  rezept1 = {
-    "anzahl": 312, 
-    "bewertung": 3.5, 
-    "eigeneBewertung": false,
-    "favorit": true,
-    "bearbeitet": true
-  };
-  rezept2=  {
-    "titel": "Titel",
-    "bewertung": 4, 
-    "favorit": false,
-    "bearbeitet": false
-  };
-  rezept3= {
-    "titel": "Rezept",
-    "anzahl": 511, 
-    "eigeneBewertung": 4,
-    "favorit": true
-  };
-  rezept4 ={
-    "titel": "Rezept 4",
-    "anzahl": 622, 
-    "bewertung": 5, 
-    "eigeneBewertung": false,
-    "bearbeitet": true
-  };
-  rezept5 ={
-    "titel": "Rezept 5",
-    "anzahl": 67, 
-    "bewertung": 2, 
-    "bearbeitet": true,
-    "favorit": true
-  };
-  private rezepte=[this.rezept1, this.rezept2, this.rezept3, this.rezept4, this.rezept5];
-  constructor() {}
+  constructor(
+    private firebase: FirebaseService,
+    private auth: AuthService
+  ) {
+    this.getFavoriten();
+  }
+
+  /**
+   * Zugreifen auf Favoriten des eingeloggten Users in der Datenbank
+   */
+  async getFavoriten(){
+    if(this.firebase.getAlleFavoriten(this.auth.getAktuellerUser().uid)!=undefined){
+      this.rezepte = this.firebase.getAlleFavoriten(this.auth.getAktuellerUser().uid);
+    }
+    
+    this.rezeptListe = this.firebase.getAlleRezeptIds();
+    
+  }
 
   ngOnInit() {
   }
