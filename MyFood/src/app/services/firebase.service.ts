@@ -2,9 +2,11 @@ import { templateJitUrl } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { Kochbuch } from '../models/kochbuecher/kochbuch';
 import { Rezept } from "../models/rezepte/rezept.model";
 import { User } from '../models/user/user.model';
 import { Zutat } from '../models/zutaten/zutat.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,7 @@ export class FirebaseService {
 
   constructor(
     private firestore: AngularFirestore,
+    private auth: AuthService
   ) { }
 
   getAlleRezepte(): Array<Rezept> {
@@ -246,7 +249,7 @@ export class FirebaseService {
   getZutat(name: string): Zutat {
     let zutat: Zutat = new Zutat();
 
-    this.firestore.collection("zutaten").doc(name).snapshotChanges().subscribe(res => {
+    this.firestore.collection("Zutaten").doc(name).snapshotChanges().subscribe(res => {      
       zutat = zutat.deserialize(res.payload.data());
     });
 
@@ -278,5 +281,40 @@ export class FirebaseService {
     });
 
     return returnVal;
+  }
+
+  setKochbuch(kochbuch: Kochbuch):void{
+    this.firestore.collection("kochbuecher").doc(kochbuch.id).set(JSON.parse(JSON.stringify(kochbuch)));
+  }
+
+  getKochbuch(buchName:string):Kochbuch{
+    let kochbuch: Kochbuch = new Kochbuch();
+    this.firestore.collection("kochbuecher").doc(buchName).snapshotChanges().subscribe(res =>{
+      kochbuch = kochbuch.deserialize(res.payload.data());
+    })
+
+    return kochbuch;
+  }
+
+  getAlleKochbuecher(): Array<Kochbuch> {
+    let kochbuecher: Array<Kochbuch> = [];
+
+    this.firestore.collection("kochbuecher").get().subscribe(res => {
+      res.docs.forEach(element => {
+        kochbuecher.push(new Kochbuch().deserialize(element.data()));
+      });
+    });
+
+    return kochbuecher;
+  }
+
+  getKochbuecher(names: Array<string>): Array<Kochbuch> {
+    let zutat: Array<Kochbuch> = [];
+
+    names.forEach(item => {
+      zutat.push(this.getKochbuch(item));
+    });
+
+    return zutat;
   }
 }
