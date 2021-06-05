@@ -283,10 +283,19 @@ export class FirebaseService {
     return returnVal;
   }
 
+  /**
+   * Speichern eines neuen Kochbuches
+   * @param kochbuch Zu speicherndes Kochbuch als Typ Kochbuch
+   */
   setKochbuch(kochbuch: Kochbuch):void{
     this.firestore.collection("kochbuecher").doc(kochbuch.id).set(JSON.parse(JSON.stringify(kochbuch)));
   }
 
+  /**
+   * Aufrufen eines Kochbuches
+   * @param buchName string mit Name des gewünschten Kochbuches
+   * @returns gesuchtes Kochbuch
+   */
   getKochbuch(buchName:string):Kochbuch{
     let kochbuch: Kochbuch = new Kochbuch();
     this.firestore.collection("kochbuecher").doc(buchName).snapshotChanges().subscribe(res =>{
@@ -296,6 +305,10 @@ export class FirebaseService {
     return kochbuch;
   }
 
+  /**
+   * Aufrufen aller Kochbücher
+   * @returns Liste aller Kochbücher
+   */
   getAlleKochbuecher(): Array<Kochbuch> {
     let kochbuecher: Array<Kochbuch> = [];
 
@@ -308,6 +321,11 @@ export class FirebaseService {
     return kochbuecher;
   }
 
+  /**
+   * Aufrufen mehrere Kochbücher durch Namen
+   * @param names Array mit strings der Namen der gewünschten Kochbücher
+   * @returns Liste der gewünschten Bücher
+   */
   getKochbuecher(names: Array<string>): Array<Kochbuch> {
     let zutat: Array<Kochbuch> = [];
 
