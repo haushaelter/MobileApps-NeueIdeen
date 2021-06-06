@@ -17,11 +17,11 @@ export class FirebaseService {
   //unveränderliche Konstante mit den Namen der Collections
   readonly collections = {
     kochbuecher: "kochbucher",
-    rezepte: "Rezepte",
+    rezepte: "rezepte",
     rezeptinhalte: "inhalte",
     user: "user",
     nutzerangaben: "individuelle Angaben",
-    zutaten: "zgutaten"
+    zutaten: "zutaten"
   }
 
   constructor(
@@ -79,6 +79,7 @@ export class FirebaseService {
               rezept.inhalte[item.id] = item.data();
             })
 
+            rezept.zutaten = {};
             resZutaten.forEach(item => {
               rezept.zutaten[item.id] = new ZutatReferenz().deserialize(item.data());
             });
@@ -145,6 +146,7 @@ export class FirebaseService {
             rezept.inhalte[item.id] = item.data();
           });
 
+          rezept.zutaten = {};
           resZutaten.forEach(item => {
             rezept.zutaten[item.id] = new ZutatReferenz().deserialize(item.data());
           });
