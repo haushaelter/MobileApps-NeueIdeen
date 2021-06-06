@@ -357,13 +357,21 @@ export class FirebaseService {
    * @returns 
    */
   getAlleFavoriten(userId: string): Array<Rezept> {
-    let returnVal: Array<Rezept>;
-
+    let returnVal: Array<Rezept> = new Array<Rezept>();
+    let temp: Array<Rezept>;
+    
     this.firestore.collection(this.collections.user).doc(userId).snapshotChanges().subscribe(res => {
+      
       if (res.payload.data()["favoriten"] != undefined) {
-        returnVal = this.getRezepte(res.payload.data()["favoriten"]);
-      }
+        
+        temp = this.getRezepte(res.payload.data()["favoriten"]);
+        for(let item in temp){
+          returnVal.push(temp[item]);
+        }
+        
+      }      
     });
+    
 
     return returnVal;
   }
