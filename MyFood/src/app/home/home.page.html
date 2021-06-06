@@ -6,4 +6,7 @@
   <ion-list *ngIf="rezepte.length>0">
     <app-list-rezept *ngFor="let eintrag of rezepte" [rezept]="eintrag"></app-list-rezept>
   </ion-list>
+  <ion-infinite-scroll >
+    <ion-infinite-scroll-content loadingSpinner="none"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

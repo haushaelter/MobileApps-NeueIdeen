@@ -6,4 +6,7 @@
     <app-list-rezept *ngFor="let eintrag of rezepte" [rezept]="eintrag"></app-list-rezept>
   </ion-list>
   <ng-template #elseBlock class="elseBlock">Du hast bisher keine Favoriten festgelegt</ng-template>
+  <ion-infinite-scroll >
+    <ion-infinite-scroll-content loadingSpinner="none"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
