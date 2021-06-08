@@ -344,7 +344,11 @@ export class FirebaseService {
     this.firestore.collection(this.collections.user).doc(userId).get().subscribe(res => {
       
       favoritenArr = res.data()["favoriten"];
-      favoritenArr.push(rezeptName);
+      if(favoritenArr.includes(rezeptName)){
+        return;
+      }else {
+        favoritenArr.push(rezeptName);
+      }
 
       this.firestore.collection(this.collections.user).doc(userId).update({
         favoriten: favoritenArr
