@@ -13,9 +13,8 @@ import { HelperService } from '../../services/helper.service';
   styleUrls: ['./list-rezept.component.scss'],
 })
 export class ListRezeptComponent implements OnInit {
-  readonly authentication = this.authService.getAktuellerUser();
-  //readonly userCollection:User = this.firebase.getUser(this.authentication.uid);
-
+  readonly currentUser = this.firebase.getUser(this.authService.getAktuellerUser().uid);
+ 
   data:Rezept;
 
 
@@ -71,5 +70,9 @@ export class ListRezeptComponent implements OnInit {
     ) {}
 
   ngOnInit() {}
+
+  setFavorit(){    
+    this.firebase.setFavorit(this.data.id, this.currentUser.id);
+  }
 
 }

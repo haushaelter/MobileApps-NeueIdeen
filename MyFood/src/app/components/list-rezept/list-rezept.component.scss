@@ -42,6 +42,10 @@
     color: #e0ac08;
 }
 
+.fav-icon:hover {
+    cursor: pointer;
+}
+
 @media(min-width:700px){
     .grid-row{
         height: 2.5rem;

@@ -341,8 +341,9 @@ export class FirebaseService {
   setFavorit(rezeptName: string, userId: string) {
     let favoritenArr: Array<string>;
 
-    this.firestore.collection(this.collections.user).doc(userId).snapshotChanges().subscribe(res => {
-      favoritenArr = res.payload["favoriten"];
+    this.firestore.collection(this.collections.user).doc(userId).get().subscribe(res => {
+      
+      favoritenArr = res.data()["favoriten"];
       favoritenArr.push(rezeptName);
 
       this.firestore.collection(this.collections.user).doc(userId).update({
