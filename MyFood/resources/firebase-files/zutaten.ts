@@ -121,7 +121,7 @@ let zutat25 = new Zutat().deserialize({
 });
 
 let zutat26= new Zutat().deserialize({
-    id: "Créne Fraiche",
+    id: "Créme Fraiche",
     standardeinheit: "g"
 });
 
