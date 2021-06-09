@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 import { Kochbuch } from '../models/kochbuecher/kochbuch';
 import { Rezept } from '../models/rezepte/rezept.model';
 import { User } from '../models/user/user.model';
@@ -34,17 +33,17 @@ export class FirebaseService {
    * @param arr 
    * @param neu 
    */
-  arraySnapshotBearbeiten(type: string , arr: Array<any>, neuesObject: any){
-    if(type == "added"){
+  arraySnapshotBearbeiten(type: string, arr: Array<any>, neuesObject: any) {
+    if (type == "added") {
       arr.push(neuesObject);
-    } else if(type == "modified") {
+    } else if (type == "modified") {
       for (let i = 0; i < arr.length; i++) {
         if (neuesObject.id == arr[i].id) {
           arr[i] = neuesObject;
           break;
         }
       }
-    } else if(type == "removed") {
+    } else if (type == "removed") {
       for (let i = 0; i < arr.length; i++) {
         if (neuesObject.id == arr[i].id) {
           arr.splice(i, 1);
@@ -112,14 +111,53 @@ export class FirebaseService {
 
   /**
    * Abfrage einer beliebigen Anzahl an Rezepten
-   * @param names Array<string>
+   * @param names Multidimensionales Array. Array-Aufbau beispielhaft erklärt:
+   *  [["Feld-Id, wie in Rezept-Model", "Wert1", "Wert2"],
+   *  ["Feld-Id, wie in Rezept-Model", "Wert1", "Wert2"]]
    * @returns 
    */
-  getRezepte(names: Array<string>): Array<Rezept> {
+  getRezepte(filter: string[][]): Array<Rezept> {
     let rezepte: Array<Rezept> = [];
+    let rezept: Rezept;
+    let filterBool: boolean;
 
-    names.forEach(item => {
-      rezepte.push(this.getRezept(item));
+    // Anfrage der kompletten Rezept-Collection. SnapshotChanges-Anfrage schickt sofort aktualisierungen der Datenbank
+    this.firestore.collection(this.collections.rezepte).snapshotChanges().subscribe(res => {
+      res.forEach(ele => {
+        // Nested Collections werden gezielt angefragt. Get-Anfrage damit Daten nur einmal erhalten werden
+        this.firestore.collection(`${this.collections.rezepte}/${ele.payload.doc.id}/${this.collections.rezeptinhalte}`).get().subscribe(resInhalte => {
+          this.firestore.collection(`${this.collections.rezepte}/${ele.payload.doc.id}/${this.collections.zutaten}`).get().subscribe(resZutaten => {
+
+            // Erstellen einzelner Rezepte
+            rezept = new Rezept().deserialize(ele.payload.doc.data());
+
+            rezept.inhalte = new Inhalte();
+            resInhalte.forEach(item => {
+              rezept.inhalte[item.id] = item.data();
+            })
+
+            rezept.zutaten = {};
+            resZutaten.forEach(item => {
+              rezept.zutaten[item.id] = new ZutatReferenz().deserialize(item.data());
+            });
+
+            // Filter anwenden und herausfinden, ob das Rezept zurückgegeben werden darf.
+            filterBool = false;
+            for(let i = 0; i < filter.length; i++){
+              for(let j = 1; j < filter[i].length; j++){
+                if(rezept[filter[i][0]] == filter[i][j]){
+                  filterBool = true;
+                }
+              }
+            }            
+
+            // Wert je nach Type dem Array hinzufügen, löschen oder überschreiben lassen
+            if(filterBool){
+              this.arraySnapshotBearbeiten(ele.type, rezepte, rezept);
+            }
+          });
+        });
+      });
     });
 
     return rezepte;
@@ -286,7 +324,7 @@ export class FirebaseService {
     let zutaten: Array<Zutat> = [];
 
     this.firestore.collection(this.collections.zutaten).snapshotChanges().subscribe(res => {
-      res.forEach(ele => {      
+      res.forEach(ele => {
         // Wert je nach Type dem Array hinzufügen, löschen oder überschreiben lassen
         this.arraySnapshotBearbeiten(ele.type, zutaten, new Zutat().deserialize(ele.payload.doc.data()));
       })
@@ -364,17 +402,18 @@ export class FirebaseService {
   getAlleFavoriten(userId: string): Array<Rezept> {
     let returnVal: Array<Rezept> = new Array<Rezept>();
     let temp: Array<Rezept>;
-    
+
     this.firestore.collection(this.collections.user).doc(userId).snapshotChanges().subscribe(res => {
       
       if (res.payload.data()["favoriten"] != undefined) {
         
-        temp = this.getRezepte(res.payload.data()["favoriten"]);
+        temp = this.getRezepte([["id"].concat(res.payload.data()["favoriten"])]);
         for(let item in temp){
           returnVal.push(temp[item]);
         }
         
-      }      
+      }
+      
     });
     
 
