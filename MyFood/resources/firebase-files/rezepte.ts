@@ -69,7 +69,7 @@ let rezept2  = new Rezept().deserialize({
             ]
         }),
         2: new Schritt().deserialize({
-            beschreibung: "Alles in einer Schüssel mit den Hähnchenflügeln mischen und mindestens eine Stunde ziehen lassen. Dann die Chicken Wings auf den Gril legen und untre gelegentlichem Wenden schön knusprig grillen; das dauert ungefähr 20 Minuten.",
+            beschreibung: "Alles in einer Schüssel mit den Hähnchenflügeln mischen und mindestens eine Stunde ziehen lassen. Dann die Chicken Wings auf den Grill legen und unter gelegentlichem Wenden schön knusprig grillen; das dauert ungefähr 20 Minuten.",
             zutaten: [
                 "Hähnchenflügel",
                 "Marinade"
