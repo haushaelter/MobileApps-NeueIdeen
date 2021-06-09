@@ -17,12 +17,12 @@ export class ListRezeptComponent implements OnInit {
  
   data:Rezept;
 
-
   _anzahlText = "keine Bewertungen";
   _sterne = Array<String>();
   _fav;
   _bearbeitet = false;
   _bewertung = 'bewertung';
+  
   @Input() 
   set rezept (rezept:Rezept){
     
@@ -70,7 +70,11 @@ export class ListRezeptComponent implements OnInit {
 
   ngOnInit() {}
 
-  setFavorit(){    
+  /**
+   * Favorisieren von Rezept. Verwendet Rezept und eingeloggten User
+   * @returns void
+   */
+  setFavorit():void{    
     if(this.data.id==undefined || this.currentUser.id==undefined){
       this.logging.zeigeToast("Es ist ein Fehler beim favorisieren aufgetreten.");
       this.logging.logging(`Rezeptid = ${this.data.id} und Userid = ${this.currentUser.id}`);
@@ -80,7 +84,11 @@ export class ListRezeptComponent implements OnInit {
     this.firebase.setFavorit(this.data.id, this.currentUser.id);
   }
 
-  rezeptAufrufen(){
+  /**
+   * OnClick Listener für Rezepte. Navigiert zum entsprechendem Rezept
+   * @returns void
+   */
+  rezeptAufrufen():void{
     if(this.data.id==undefined){
       this.logging.zeigeToast("Es ist ein Fehler beim Aufrufen des Rezeptes aufgetreten.")
       return;
