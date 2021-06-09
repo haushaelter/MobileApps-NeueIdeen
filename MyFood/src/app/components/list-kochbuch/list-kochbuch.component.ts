@@ -37,12 +37,13 @@ export class ListKochbuchComponent implements OnInit {
 
   ngOnInit() {}
 
-  buchAufrufen(){
+  /**
+   * Aufrufen von Buch. Navigiert zur Seite Kochbuch
+   */
+  buchAufrufen():void{
     if(this.data.id==undefined){
       this.logging.zeigeToast("Es ist ein Fehler beim Aufrufen aufgetreten.")
     }
-
-    let navExtra = 
     
     this.navCtrl.navigateForward(`/kochbuch?id=${this.data.id}`, {state: {buch: this.data}});
     
