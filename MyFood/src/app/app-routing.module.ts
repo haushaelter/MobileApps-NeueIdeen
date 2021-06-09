@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
-  {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
+  
   {
     path: '',
     redirectTo: 'login',
@@ -22,22 +20,30 @@ const routes: Routes = [
   {
     path: 'passwort-vergessen',
     loadChildren: () => import('./passwort-vergessen/passwort-vergessen.module').then( m => m.PasswortVergessenPageModule)
-  },
-  {
-    path: 'rezept',
-    loadChildren: () => import('./rezept/rezept.module').then( m => m.RezeptPageModule)
-  },
-  {
-    path: 'kochbuecher',
-    loadChildren: () => import('./kochbuecher/kochbuecher.module').then( m => m.KochbuecherPageModule)
+  },{
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'favoriten',
-    loadChildren: () => import('./favoriten/favoriten.module').then( m => m.FavoritenPageModule)
+    loadChildren: () => import('./favoriten/favoriten.module').then( m => m.FavoritenPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'kochbuecher',
+    loadChildren: () => import('./kochbuecher/kochbuecher.module').then( m => m.KochbuecherPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'rezept',
+    loadChildren: () => import('./rezept/rezept.module').then( m => m.RezeptPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'kochbuch',
-    loadChildren: () => import('./kochbuch/kochbuch.module').then( m => m.KochbuchPageModule)
+    loadChildren: () => import('./kochbuch/kochbuch.module').then( m => m.KochbuchPageModule),
+    canActivate: [AuthGuard]
   },
 
 ];
@@ -46,6 +52,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }

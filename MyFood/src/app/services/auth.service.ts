@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { FirebaseService } from './firebase.service';
 import { HelperService } from "./helper.service";
+
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,10 @@ export class AuthService {
     this.auth.onAuthStateChanged(user => {
       this.setAktuellerUser(user);
     });
+  }
+
+  isLoggedIn(){
+    return (this.aktuellerUser) ? true : false;
   }
 
   /**
