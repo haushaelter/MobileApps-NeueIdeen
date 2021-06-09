@@ -25,6 +25,10 @@ export class AuthService {
     });
   }
 
+  /**
+   * Prüft, ob ein User eingeloggt ist
+   * @returns true bei eingeloggtem User
+   */
   isLoggedIn(){
     return (this.aktuellerUser) ? true : false;
   }
