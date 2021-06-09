@@ -19,7 +19,7 @@ export class KochbuchPage implements OnInit {
     private firebase: FirebaseService
   ) { 
     this.buchdata = this.router.getCurrentNavigation().extras.state.buch;
-    this.rezeptdata = this.firebase.getRezepte(this.buchdata.rezepte);   
+    this.rezeptdata = this.firebase.getRezepte([["id"].concat(this.buchdata.rezepte)]);
   }
 
   ngOnInit() {
