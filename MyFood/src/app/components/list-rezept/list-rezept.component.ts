@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { Rezept } from 'src/app/models/rezepte/rezept.model';
 import { User } from 'src/app/models/User/user.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -61,18 +61,32 @@ export class ListRezeptComponent implements OnInit {
   }
 
   constructor(
-    private alertCtrl: AlertController, 
-    private toastCtrl: ToastController,
     private logging: HelperService,
     private listService: ListService,
     private authService: AuthService,
-    private firebase: FirebaseService
+    private firebase: FirebaseService,
+    private navCtrl: NavController
     ) {}
 
   ngOnInit() {}
 
   setFavorit(){    
+    if(this.data.id==undefined || this.currentUser.id==undefined){
+      this.logging.zeigeToast("Es ist ein Fehler beim favorisieren aufgetreten.");
+      this.logging.logging(`Rezeptid = ${this.data.id} und Userid = ${this.currentUser.id}`);
+      return;
+    }
+    this.logging.logging(`Favorit ${this.data.id} bei User ${this.currentUser.id} gesetzt`);
     this.firebase.setFavorit(this.data.id, this.currentUser.id);
+  }
+
+  rezeptAufrufen(){
+    if(this.data.id==undefined){
+      this.logging.zeigeToast("Es ist ein Fehler beim Aufrufen des Rezeptes aufgetreten.")
+      return;
+    }
+    this.navCtrl.navigateForward(`/rezept?id=${this.data.id}`);
+    
   }
 
 }
