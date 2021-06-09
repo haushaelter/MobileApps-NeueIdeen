@@ -1,16 +1,16 @@
 <ion-grid class="grid">
   <ion-row class="grid-row">
     <ion-col class="grid-col-info">
-      <ion-row>
+      <ion-row (click)="buchAufrufen()">
         <ion-col class="col-titel col-info">{{data.id}}</ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row (click)="buchAufrufen()">
         <ion-col class="col-verlag col-info">{{data.verlag}}</ion-col>
       </ion-row>
       <ion-row>
         <ion-icon *ngFor="let eintrag of _sterne" [name]="eintrag" class="icon col-sterne col-info"></ion-icon>
       </ion-row>
-      <ion-row>
+      <ion-row (click)="buchAufrufen()">
         <ion-col class="col-anzahl col-info">{{data.bewertung.anzahl}} Bewertungen</ion-col>
       </ion-row>
       <ion-row>
@@ -19,7 +19,7 @@
         </ion-col>
       </ion-row>
     </ion-col>
-    <ion-col class="grid-col-img">
+    <ion-col class="grid-col-img" (click)="buchAufrufen()">
       <ion-img class="img" src="../../../assets/icon/favicon.png" alt="Picture"></ion-img>
     </ion-col>
   </ion-row>

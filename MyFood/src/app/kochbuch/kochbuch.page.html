@@ -2,7 +2,7 @@
 
 <ion-content [fullscreen]="true">
   <app-searchbar></app-searchbar>
-  <ion-list *ngFor="let eintrag of rezepte">
+  <ion-list *ngFor="let eintrag of rezeptdata">
     <app-list-rezept [rezept]="eintrag"></app-list-rezept>
   </ion-list>
   

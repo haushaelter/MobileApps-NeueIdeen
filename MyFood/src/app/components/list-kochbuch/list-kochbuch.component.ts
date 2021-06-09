@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { Kochbuch } from 'src/app/models/kochbuecher/kochbuch';
 import { ListService } from 'src/app/services/list.service';
 import { HelperService } from '../../services/helper.service';
@@ -14,8 +15,6 @@ export class ListKochbuchComponent implements OnInit {
 
   @Input ()
   set buch(buch:Kochbuch){
-    console.log(buch);
-    
 
     if(buch === null){
       return;
@@ -32,9 +31,20 @@ export class ListKochbuchComponent implements OnInit {
   }
   constructor(
     private logging: HelperService,
-    private listService: ListService
+    private listService: ListService,
+    private navCtrl: NavController
   ) { }
 
   ngOnInit() {}
 
+  buchAufrufen(){
+    if(this.data.id==undefined){
+      this.logging.zeigeToast("Es ist ein Fehler beim Aufrufen aufgetreten.")
+    }
+
+    let navExtra = 
+    
+    this.navCtrl.navigateForward(`/kochbuch?id=${this.data.id}`, {state: {buch: this.data}});
+    
+  }
 }

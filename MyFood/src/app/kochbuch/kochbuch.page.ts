@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Kochbuch } from '../models/kochbuecher/kochbuch';
+import { Rezept } from '../models/rezepte/rezept.model';
+import { FirebaseService } from '../services/firebase.service';
 
 @Component({
   selector: 'app-kochbuch',
@@ -7,29 +11,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class KochbuchPage implements OnInit {
   seitentitel = "Mein Kochbuch";
-  rezept1 = {
-    "anzahl": 312, 
-    "bewertung": 3.5, 
-    "favorit": true
-  };
-  rezept2=  {
-    "titel": "Titel",
-    "bewertung": 4, 
-    "favorit": false
-  };
-  rezept3= {
-    "titel": "Rezept",
-    "anzahl": 511, 
-    "favorit": true
-  };
-  rezept4 ={
-    "titel": "Rezept 4",
-    "anzahl": 622, 
-    "bewertung": 5, 
-  };
-  rezepte = [this.rezept1, this.rezept2, this.rezept3, this.rezept4];
+  buchdata: Kochbuch;
+  rezeptdata: Array<Rezept>;
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private firebase: FirebaseService
+  ) { 
+    this.buchdata = this.router.getCurrentNavigation().extras.state.buch;
+    this.rezeptdata = this.firebase.getRezepte(this.buchdata.rezepte);   
+  }
 
   ngOnInit() {
   }
