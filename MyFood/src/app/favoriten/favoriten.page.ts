@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ComponentsModule } from '../components/components.module';
 import { Rezept } from '../models/rezepte/rezept.model';
+import { User } from '../models/user/user.model';
 import { AuthService } from '../services/auth.service';
 import { FirebaseService } from '../services/firebase.service';
 
@@ -12,12 +13,15 @@ import { FirebaseService } from '../services/firebase.service';
 export class FavoritenPage implements OnInit {
   readonly seitentitel = "Favoriten";
   private rezepte: Array<Rezept>;
-  private rezeptListe: Array<string>
+  private rezeptListe: Array<string>;
+  user: User;
+
 
   constructor(
     private firebase: FirebaseService,
     private auth: AuthService
   ) {
+    this.user = firebase.getUser(localStorage.getItem('user'));
     this.getFavoriten();
   }
 
@@ -26,7 +30,9 @@ export class FavoritenPage implements OnInit {
    */
   async getFavoriten(){
     if(this.firebase.getAlleFavoriten(this.auth.getAktuellerUser().uid)!=undefined){
-      this.rezepte = this.firebase.getAlleFavoriten(this.auth.getAktuellerUser().uid);
+      this.rezepte = this.firebase.getAlleFavoriten(localStorage.getItem('user'));
+      console.log(this.rezepte);
+      
     }
     
     this.rezeptListe = this.firebase.getAlleRezeptIds();

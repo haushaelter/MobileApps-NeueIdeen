@@ -22,6 +22,11 @@ export class AuthService {
   checkAuthState(){
     this.auth.onAuthStateChanged(user => {
       this.setAktuellerUser(user);
+      if(user){
+        localStorage.setItem('user', user.uid);
+      } else {
+        localStorage.removeItem('user');
+      }
     });
   }
 

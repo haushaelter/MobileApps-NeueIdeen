@@ -13,7 +13,7 @@ import { HelperService } from '../../services/helper.service';
   styleUrls: ['./list-rezept.component.scss'],
 })
 export class ListRezeptComponent implements OnInit {
-  readonly currentUser = this.firebase.getUser(this.authService.getAktuellerUser().uid);
+  readonly aktuelleUserId = localStorage.getItem('user');
  
   data:Rezept;
 
@@ -47,24 +47,29 @@ export class ListRezeptComponent implements OnInit {
     //   this._anzahlText = 'eigene Bewertung'
     // }
 
-    //Überprüfen auf Favorit 
-    if(rezept['favorit']){
-      this._fav = "star";
-    } else {
-      this._fav = "star-outline";
-    }
-
     //Bearbeitet
     if(typeof rezept['bearbeitet'] == "boolean"){
       this._bearbeitet=rezept['bearbeitet'];
     }
   }
 
+  @Input()
+  set user(user:User){
+    if(user.favoriten!=undefined){      
+      if(user.favoriten.includes(this.data.id)){
+        this._fav="star";
+        return;
+      }
+    }
+    this._fav="star-outline";
+    
+  }
+
   constructor(
     private logging: HelperService,
     private listService: ListService,
-    private authService: AuthService,
     private firebase: FirebaseService,
+    private auth: AuthService,
     private navCtrl: NavController
     ) {}
 
@@ -75,13 +80,13 @@ export class ListRezeptComponent implements OnInit {
    * @returns void
    */
   setFavorit():void{    
-    if(this.data.id==undefined || this.currentUser.id==undefined){
+    if(this.data.id==undefined || this.aktuelleUserId==undefined){
       this.logging.zeigeToast("Es ist ein Fehler beim favorisieren aufgetreten.");
-      this.logging.logging(`Rezeptid = ${this.data.id} und Userid = ${this.currentUser.id}`);
+      this.logging.logging(`Rezeptid = ${this.data.id} und Userid = ${this.aktuelleUserId}`);
       return;
     }
-    this.logging.logging(`Favorit ${this.data.id} bei User ${this.currentUser.id} gesetzt`);
-    this.firebase.setFavorit(this.data.id, this.currentUser.id);
+    this.logging.logging(`Favorit ${this.data.id} bei User ${this.aktuelleUserId} gesetzt`);
+    this.firebase.setFavorit(this.data.id, this.aktuelleUserId);
   }
 
   /**

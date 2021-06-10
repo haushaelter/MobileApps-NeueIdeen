@@ -3,7 +3,7 @@
 <ion-content [fullscreen]="true">
   <app-searchbar [rezeptListe]="rezeptListe"></app-searchbar>
   <ion-list *ngIf="rezepte!=undefined; else elseBlock">
-    <app-list-rezept *ngFor="let eintrag of rezepte" [rezept]="eintrag"></app-list-rezept>
+    <app-list-rezept *ngFor="let eintrag of rezepte" [rezept]="eintrag" [user]="user"></app-list-rezept>
   </ion-list>
   <ng-template #elseBlock class="elseBlock">Du hast bisher keine Favoriten festgelegt</ng-template>
   <ion-infinite-scroll >
