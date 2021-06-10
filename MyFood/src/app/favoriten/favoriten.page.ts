@@ -30,9 +30,7 @@ export class FavoritenPage implements OnInit {
    */
   async getFavoriten(){
     if(this.firebase.getAlleFavoriten(this.auth.getAktuellerUser().uid)!=undefined){
-      this.rezepte = this.firebase.getAlleFavoriten(localStorage.getItem('user'));
-      console.log(this.rezepte);
-      
+      this.rezepte = await this.firebase.getAlleFavoriten(this.auth.getAktuellerUser().uid);      
     }
     
     this.rezeptListe = this.firebase.getAlleRezeptIds();

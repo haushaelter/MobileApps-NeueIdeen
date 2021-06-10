@@ -7,6 +7,7 @@ import { Zutat } from '../models/zutaten/zutat.model';
 import { ZutatReferenz } from "../models/rezepte/zutat-referenz.model";
 import { Inhalte } from '../models/rezepte/inhalte.model';
 import { IndividuelleAngaben } from '../models/user/individuelle-angaben.model';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -395,27 +396,17 @@ export class FirebaseService {
   }
 
   /**
-   * Erhalte alle Favoriten eines User
+   * Gibt alle Rezepte in einem Array als Promise zurück
    * @param userId 
-   * @returns 
+   * @returns Promise
    */
-  getAlleFavoriten(userId: string): Array<Rezept> {
-    let returnVal: Array<Rezept> = new Array<Rezept>();
-    let temp: Array<Rezept>;
+  async getAlleFavoriten(userId: string): Promise<Array<Rezept>> {
+    let returnVal: Array<Rezept> = [];
 
-    this.firestore.collection(this.collections.user).doc(userId).snapshotChanges().subscribe(res => {
-      
-      if (res.payload.data()["favoriten"] != undefined) {
-        
-        temp = this.getRezepte([["id"].concat(res.payload.data()["favoriten"])]);
-        for(let item in temp){
-          returnVal.push(temp[item]);
-        }
-        
-      }
-      
-    });
-    
+    let favoritenPromise = await this.firestore.collection(this.collections.user).doc(userId).snapshotChanges().pipe(first()).toPromise();
+    let liste = ["id"].concat(favoritenPromise.payload.data()["favoriten"]);
+
+    returnVal = this.getRezepte([liste]);
 
     return returnVal;
   }
