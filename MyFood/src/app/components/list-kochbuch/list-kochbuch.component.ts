@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { Observable } from 'rxjs';
 import { Kochbuch } from 'src/app/models/kochbuecher/kochbuch';
+import { FileStorageService } from 'src/app/services/file-storage.service';
 import { ListService } from 'src/app/services/list.service';
 import { HelperService } from '../../services/helper.service';
 
@@ -11,6 +13,7 @@ import { HelperService } from '../../services/helper.service';
 })
 export class ListKochbuchComponent implements OnInit {
   private data:Kochbuch;
+  private bild: Observable<string | null>;
   _sterne = Array<String>();
 
   @Input ()
@@ -28,12 +31,15 @@ export class ListKochbuchComponent implements OnInit {
     this.data.bewertung.anzahl = this.listService.checkNumber(buch.bewertung.anzahl);
 
     this._sterne = this.listService.checkStars(buch.bewertung.bewertung);
+
+    this.bild = this.storage.getKochbuchFile(this.data.id);
   }
   constructor(
     private logging: HelperService,
     private listService: ListService,
-    private navCtrl: NavController
-  ) { }
+    private navCtrl: NavController,
+    private storage: FileStorageService
+  ) {}
 
   ngOnInit() {}
 

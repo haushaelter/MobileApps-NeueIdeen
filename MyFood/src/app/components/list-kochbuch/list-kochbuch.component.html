@@ -1,4 +1,4 @@
-<ion-grid class="grid">
+<!--<ion-grid class="grid">
   <ion-row class="grid-row">
     <ion-col class="grid-col-info">
       <ion-row (click)="buchAufrufen()">
@@ -23,4 +23,29 @@
       <ion-img class="img" src="../../../assets/icon/favicon.png" alt="Picture"></ion-img>
     </ion-col>
   </ion-row>
-</ion-grid>
+</ion-grid>-->
+
+<ion-card class="ion-card">
+
+  <ion-card-header>
+    <img [src]="bild | async" />
+  </ion-card-header>
+  
+  <ion-item>
+    <ion-col class="col-titel col-info">{{data.id}}</ion-col>
+  </ion-item>
+
+  <ion-card-content>
+    
+    <ion-item>
+      <ion-col class="col-verlag col-info">{{data.verlag}}</ion-col>
+      <ion-button fill="outline" slot="end">PDF</ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon *ngFor="let eintrag of _sterne" [name]="eintrag" class="icon col-sterne col-info"></ion-icon>
+      <ion-col class="col-anzahl col-info">{{data.bewertung.anzahl}} Bewertungen</ion-col>
+    </ion-item>
+
+  </ion-card-content>
+</ion-card>
