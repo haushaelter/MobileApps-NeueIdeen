@@ -24,25 +24,32 @@ let rezept1 = new Rezept().deserialize({
     }),
     zutaten: {
         Kartoffeln: new ZutatReferenz().deserialize({
-            Menge: 750
+            Menge: 750,
+            id: "Kartoffeln"
         }),
         Salz: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Salz"
         }),
         Pfeffer: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Pfeffer"
         }),
         Butter: new ZutatReferenz().deserialize({
-            Menge: 2
+            Menge: 2,
+            id: "Butter"
         }),
         Fleischkäse: new ZutatReferenz().deserialize({
-            Menge: 4
+            Menge: 4,
+            id: "Fleischkäse"
         }),
         "Ei M": new ZutatReferenz().deserialize({
-            Menge: 4
+            Menge: 4,
+            id: "Ei M"
         }),
         Gewürzgurken: new ZutatReferenz().deserialize({
-            Menge: 2
+            Menge: 2,
+            id: "Gewürzgurken"
         })
     }
 });
@@ -91,34 +98,44 @@ let rezept2  = new Rezept().deserialize({
     }),
     zutaten: {
         Hähnchenflügel: new ZutatReferenz().deserialize({
-            Menge: 1000
+            Menge: 1000,
+            id: "Hähnchenflügel"
         }),
         Salz: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Salz"
         }),
         Pfeffer: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Pfeffer"
         }),
         Butter: new ZutatReferenz().deserialize({
-            Menge: 3
+            Menge: 3,
+            id: "Butter"
         }),
         Tabasco: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Tabasco"
         }),
         Zitronensaft: new ZutatReferenz().deserialize({
-            Menge: 2
+            Menge: 2,
+            id: "Zitronensaft"
         }),
         Blauschimmelkäse: new ZutatReferenz().deserialize({
-            Menge: 100
+            Menge: 100,
+            id: "Blauschimmelkäse"
         }),
         "Créme Fraiche": new ZutatReferenz().deserialize({
-            Menge: 50
+            Menge: 50,
+            id: "Créme Fraiche"
         }),
         Mayonnaise: new ZutatReferenz().deserialize({
-            Menge: 50
+            Menge: 50,
+            id: "Mayonnaise"
         }),
         Naturjoghurt: new ZutatReferenz().deserialize({
-            Menge: 150
+            Menge: 150,
+            id: "Naturjoghurt"
         })
     }
 });
@@ -169,43 +186,56 @@ let rezept3 = new Rezept().deserialize({
     }),
     zutaten: {
         Rinderhack: new ZutatReferenz().deserialize({
-            Menge: 600
+            Menge: 600,
+            id: "Rinderhack"
         }),
         Salz: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Salz"
         }),
         Pfeffer: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Pfeffer"
         }),
         Haferflocken: new ZutatReferenz().deserialize({
-            Menge: 50
+            Menge: 50,
+            id: "Haferflocken"
         }),
         Ketchup: new ZutatReferenz().deserialize({
-            Menge: 2
+            Menge: 2,
+            id: "Ketchup"
         }),
         Milch: new ZutatReferenz().deserialize({
-            Menge: 20
+            Menge: 20,
+            id: "Milch"
         }),
         Senf: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Senf"
         }),
         "Ei M": new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Ei M"
         }),
         Oregano: new ZutatReferenz().deserialize({
-            Menge: 0.5
+            Menge: 0.5,
+            id: "Oregano"
         }),
         Öl: new ZutatReferenz().deserialize({
-            Menge: 2
+            Menge: 2,
+            id: "Öl"
         }),
         Zwiebel: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Zwiebel"
         }),
         Burgerbrötchen: new ZutatReferenz().deserialize({
-            Menge: 4
+            Menge: 4,
+            id: "Burgerbrötchen"
         }),
         Butter: new ZutatReferenz().deserialize({
-            Menge: 20
+            Menge: 20,
+            id: "Butter"
         }),
 
     }
@@ -243,28 +273,36 @@ let rezept4 = new Rezept().deserialize({
     }),
     zutaten: {
         Paprikaschoten: new ZutatReferenz().deserialize({
-            Menge: 500
+            Menge: 500,
+            id: "Paprikaschoten"
         }),
         Salz: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Salz"
         }),
         Pfeffer: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Pfeffer"
         }),
         Öl: new ZutatReferenz().deserialize({
-            Menge: 6
+            Menge: 6,
+            id: "Öl"
         }),
         Zwiebeln: new ZutatReferenz().deserialize({
-            Menge: 3
+            Menge: 3,
+            id: "Zwiebeln"
         }),
         "Tomaten (enthäutet)": new ZutatReferenz().deserialize({
-            Menge: 500
+            Menge: 500,
+            id: "Tomaten (enthäutet)"
         }),
         Edelsüßpaprika: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Edelsüßpaprika"
         }),
         Zucker: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Zucker"
         })
     }
 });
@@ -298,17 +336,21 @@ let rezept5 = new Rezept().deserialize({
     }),
     zutaten: {
         Kartoffeln: new ZutatReferenz().deserialize({
-            Menge: 750
+            Menge: 750,
+            id: "Kartoffeln"
         }),
         Salz: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Salz"
         }),
         Mehl: new ZutatReferenz().deserialize({
-            Menge: 70
+            Menge: 70,
+            id: "Mehl"
         }),
         Öl: new ZutatReferenz().deserialize({}),
         "Ei M": new ZutatReferenz().deserialize({
-            Menge: 2
+            Menge: 2,
+            id: "Öl"
         }),
     }
 });
@@ -346,31 +388,40 @@ let rezept6= new Rezept().deserialize({
     }),
     zutaten: {
         Kartoffeln: new ZutatReferenz().deserialize({
-            Menge: 600
+            Menge: 600,
+            id: "Kartoffeln"
         }),
         Salz: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Salz"
         }),
         Pfeffer: new ZutatReferenz().deserialize({
-            Menge: 1
+            Menge: 1,
+            id: "Pfeffer"
         }),
         Olivenöl: new ZutatReferenz().deserialize({
-            Menge: 4
+            Menge: 4,
+            id: "Olivenöl"
         }),
         Hähnchenteile: new ZutatReferenz().deserialize({
-            Menge: 1000
+            Menge: 1000,
+            id: "Hähnchenteile"
         }),
         "Tomaten (enthäutet)": new ZutatReferenz().deserialize({
-            Menge: 100
+            Menge: 100,
+            id: "Tomaten (enthäutet)"
         }),
         Hühnerbrühe: new ZutatReferenz().deserialize({
-            Menge: 100
+            Menge: 100,
+            id: "Hühnerbrühe"
         }),
         Weißwein: new ZutatReferenz().deserialize({
-            Menge: 100
+            Menge: 100,
+            id: "Weißwein"
         }),
         Zwiebeln: new ZutatReferenz().deserialize({
-            Menge: 8
+            Menge: 8,
+            id: "Zwiebeln"
         })
     }
 });
