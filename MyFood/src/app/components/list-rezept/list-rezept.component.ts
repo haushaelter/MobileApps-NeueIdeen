@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
+import { Observable } from 'rxjs';
 import { Rezept } from 'src/app/models/rezepte/rezept.model';
 import { User } from 'src/app/models/User/user.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { FileStorageService } from 'src/app/services/file-storage.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { ListService } from 'src/app/services/list.service';
 import { HelperService } from '../../services/helper.service';
@@ -22,6 +24,8 @@ export class ListRezeptComponent implements OnInit {
   _fav;
   _bearbeitet = false;
   _bewertung = 'bewertung';
+  bild: Observable<string | null>;
+    
   
   @Input() 
   set rezept (rezept:Rezept){
@@ -38,6 +42,8 @@ export class ListRezeptComponent implements OnInit {
     this._anzahlText = `${this.data.inhalte.bewertung.anzahl} Bewertungen`;
 
     this._sterne = this.listService.checkStars(rezept.inhalte.bewertung.bewertung);
+
+    this.bild = this.filestorage.getRezeptFile(this.data.id);
 
     
 
@@ -70,7 +76,8 @@ export class ListRezeptComponent implements OnInit {
     private listService: ListService,
     private firebase: FirebaseService,
     private auth: AuthService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private filestorage: FileStorageService
     ) {}
 
   ngOnInit() {}

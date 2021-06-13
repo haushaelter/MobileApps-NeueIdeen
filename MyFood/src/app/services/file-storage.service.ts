@@ -21,6 +21,7 @@ export class FileStorageService {
     Bild auslesen und in Variable speichern
     profileUrl: Observable<string | null>;
     this.profileUrl = this.filestorage.getRezeptFile(rezeptId);
+    <img [src]="profileUrl | async" />
     */
   }
 

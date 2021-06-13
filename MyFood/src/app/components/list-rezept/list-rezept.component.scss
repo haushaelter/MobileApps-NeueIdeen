@@ -1,9 +1,61 @@
-.grid{
+ion-grid{
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 2%;
+
+    // Box
+    -moz-box-shadow: 0 0 5px #ccc;
+    -webkit-box-shadow: 0 0 5px #ccc;
+    box-shadow: 0 0 5px #ccc;
+    border-radius: 10px;
+
+    position: relative;
+}
+
+ion-grid{
+    ion-row{
+        height: auto;
+    }
+
+    .image {
+        position: inherit;
+        text-align: center;
+    }
+
+    ion-img{
+        position: absolute;
+        z-index: auto;
+        left: 60%;
+        right: 2%;
+        top: 5%;
+        bottom: 5%;
+        border-radius: 100px;
+    }
+}
+
+.fav-icon{
+    color: #e0ac08;
+
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+.icon{
+    font-size:12px;
+}
+
+/*.grid{
     margin-left:5%;
     --ion-grid-width:90%;
+    //box-shadow: 10px 20px 30px rgba(0, 0, 0, 0.315);
+    -moz-box-shadow: 0 0 5px #ccc;
+    -webkit-box-shadow: 0 0 5px #ccc;
+    box-shadow: 0 0 5px #ccc;
+    border-radius: 10px;
 }
 .grid-row{
-    width: 90%;
+    width: 80%;
     height: 2rem;
     margin: 0;
     padding: 0;
@@ -24,6 +76,7 @@
     min-width: 150px;
     white-space: nowrap;
     margin-bottom: 2rem;
+    white-space:normal
 }
 
 .grid-col-pic{
@@ -44,10 +97,10 @@
 
 .fav-icon:hover {
     cursor: pointer;
-}
+}*/
 
 @media(min-width:700px){
-    .grid-row{
+    /*.grid-row{
         height: 2.5rem;
         font-size: 20px;
     }
@@ -68,11 +121,12 @@
     
     .icon{
         font-size:22px;
-    }
+    }*/
 }
 
 @media(min-width: 1200px){
     .grid{
-        margin-left:10%;
+        margin-left: 20%;
+        //margin-right: 20em;
     }
 }
