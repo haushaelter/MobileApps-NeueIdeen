@@ -1,4 +1,4 @@
-<app-header [titel]="_titel"></app-header>
+<app-header [titel]="this.data.id"></app-header>
 
 <ion-content>
   <ion-grid class="grid" *ngIf="data.id!==undefined && data.inhalte.bewertung!==undefined"> 
@@ -18,10 +18,11 @@
           </ion-col>
         </ion-row>
         <ion-row class="row-infos-inner">
-          &empty; {{data.inhalte.bewertung.bewertung}} / 5,0
+          <ion-icon *ngFor="let item of sterne; let i = index" [name]="item" id="'stern-icon-'+{{i}}" (click)="bewerten(i)"></ion-icon>
         </ion-row>
-        <ion-row class="row-infos-inner">
-          {{data.inhalte.bewertung.anzahl}} Bewertungen
+        <ion-row *ngIf="this.aktuellerUser.individuelleAngaben!=undefined" class="row-infos-inner">
+          <span *ngIf="this.aktuellerUser.individuelleAngaben[data.id]!=undefined; else elseBlock">{{aktualisiereBewertungstext()}} {{bewertungText}}</span>
+          <ng-template #elseBlock>{{bewertungText}}</ng-template>
         </ion-row>
         <ion-row class="row-infos-inner row-zutaten">
           Zutaten
