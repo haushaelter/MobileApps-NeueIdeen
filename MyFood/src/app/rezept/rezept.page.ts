@@ -1,12 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonInfiniteScroll } from '@ionic/angular';
+import { Observable } from 'rxjs';
 import { Rezept } from '../models/rezepte/rezept.model';
 import { Schritt } from '../models/rezepte/schritt.model';
 import { IndividuelleAngaben } from '../models/user/individuelle-angaben.model';
 import { RezeptReferenz } from '../models/user/rezept-referenz.model';
 import { User } from '../models/user/user.model';
 import { AuthService } from '../services/auth.service';
+import { FileStorageService } from '../services/file-storage.service';
 import { FirebaseService } from '../services/firebase.service';
 import { HelperService } from '../services/helper.service';
 import { ListService } from '../services/list.service';
@@ -27,6 +29,7 @@ export class RezeptPage implements OnInit {
   private sterne: Array<string>;
   private eigeneBewertung: boolean = false;
   private gesamtbewertung: boolean = true;
+  bild: Observable<string | null>;
 
   @Input() 
   set rezept (rezept:Rezept){
@@ -48,11 +51,13 @@ export class RezeptPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private firebase: FirebaseService,
     private listService: ListService,
-    private auth: AuthService
+    private auth: AuthService,
+    private filestorage: FileStorageService
   ) {
     this.id = this.id.replace("%20", " ");
     this.data = firebase.getRezept(this.id);
     this.aktuellerUser = firebase.getUser(this.aktuelleUserId);
+    this.bild = this.filestorage.getRezeptFile(this.id);
   }
 
   ngOnInit() {
