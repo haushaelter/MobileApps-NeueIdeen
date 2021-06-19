@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { Rezept } from 'src/app/models/rezepte/rezept.model';
 import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
@@ -8,15 +9,29 @@ import { HelperService } from 'src/app/services/helper.service';
   styleUrls: ['./searchbar.component.scss'],
 })
 export class SearchbarComponent implements OnInit {
-  private rezepteListe:Array<string>;
+  private liste:Array<string>;
+  private rezepte: Array<Rezept>
+  private filterListe: Array<Rezept>;
 
-  @Input()
   /**
-   * Input für Rezeptliste. Dadurch kann Button Zufall mit Filtern arbeiten
+   * Input für Liste von ids. Dadurch kann Button Zufall mit Filtern arbeiten
    */
-  set rezeptListe(rezeptListe){
-    this.rezepteListe = rezeptListe;
+  @Input()
+  set stringListe(rezeptListe){
+    this.liste = rezeptListe;
   }
+
+  /**
+   * Input für vollständige Rezepte
+   */
+  @Input()
+  set rezepteListe(rezepte){
+    this.rezepte = rezepte
+  }
+
+  //Output für neue angepasste Liste mit vollständigen Rezepten
+  @Output()
+  newRezeptListe = new EventEmitter<Array<Rezept>>();
 
   constructor(
     private navCtrl: NavController,
@@ -30,9 +45,9 @@ export class SearchbarComponent implements OnInit {
    * @returns 
    */
   zufall(): void{    
-    let i = Math.round((Math.random())*this.rezepteListe.length);
+    let i = Math.round((Math.random())*this.liste.length);
     
-    let id = this.rezepteListe[i];
+    let id = this.liste[i];
     if(id==undefined){
       this.logging.logging("Fehler aufgetreten. Keine zufällige ID gefunden");
       this.zufall();
@@ -40,6 +55,39 @@ export class SearchbarComponent implements OnInit {
     }
 
     this.navCtrl.navigateForward(`/rezept?id=${id}`);
+  }
+
+  /**
+   * Methode zum filtern/suchen
+   * @param event 
+   */
+  suche(event){
+    //Suchterm filtern
+    let suchTerm = event.srcElement.value.toLowerCase();
+
+    //filterListe zurücksetzen, für den Fall dass rückgängig gemacht wurde
+    this.filterListe = this.rezepte;
+
+    //Überprüfen, ob ein Suchterm eingegeben wurde
+    if(suchTerm.length!==0){
+      // id der Elemente in filterListe überprüfen und filterListe anpassen
+      this.filterListe = this.filterListe.filter(aktuellesRezept => {
+        if (aktuellesRezept.id.toLowerCase() && suchTerm) {
+          return (aktuellesRezept.id.toLowerCase().indexOf(suchTerm.toLowerCase()) > -1);
+        }
+      });
+    }
+    
+    //neue Liste an Parent zurückgeben
+    this.filterRezepte(this.filterListe);
+  }
+
+  /**
+   * Anpassen der Outputvariable
+   * @param liste 
+   */
+  filterRezepte(liste: Array<Rezept>){
+    this.newRezeptListe.emit(liste)
   }
 
 }

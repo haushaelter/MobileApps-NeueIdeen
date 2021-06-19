@@ -13,7 +13,8 @@ import { FirebaseService } from '../services/firebase.service';
 export class FavoritenPage implements OnInit {
   readonly seitentitel = "Favoriten";
   private rezepte: Array<Rezept>;
-  private rezeptListe: Array<string>;
+  filter: Array<Rezept>;
+  private liste: Array<string>;
   user: User;
 
 
@@ -33,10 +34,22 @@ export class FavoritenPage implements OnInit {
       this.rezepte = await this.firebase.getAlleFavoriten(this.auth.getAktuellerUser().uid);      
     }
     
-    this.rezeptListe = this.firebase.getAlleRezeptIds();
+    this.liste = this.firebase.getAlleRezeptIds();
     
+    this.filter = this.rezepte;
   }
 
   ngOnInit() {
+  }
+
+  
+  /**
+   * Anpassen der Liste filter, damit herausgefilterte Rezepte angezeigt werden
+   * @param rezeptListe 
+   */
+   filterRezepte(rezeptListe: Array<Rezept>){    
+     console.log(this.filter);
+     
+    this.filter = rezeptListe;    
   }
 }

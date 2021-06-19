@@ -10,10 +10,12 @@ import { FirebaseService } from '../services/firebase.service';
   templateUrl: './kochbuch.page.html',
   styleUrls: ['./kochbuch.page.scss'],
 })
-export class KochbuchPage implements OnInit {
+export class KochbuchPage {
   private id: string = this.activatedRoute.snapshot.queryParamMap.get("id");
   buchdata: Kochbuch;
-  rezeptdata: Array<Rezept>;
+  rezepte:Array<Rezept> = new Array();
+  filter: Array<Rezept>;
+  liste: Array<string>;
   user: User;
 
   constructor(
@@ -22,12 +24,18 @@ export class KochbuchPage implements OnInit {
     private activatedRoute: ActivatedRoute
   ) { 
     this.buchdata = this.router.getCurrentNavigation().extras.state.buch;
-    this.rezeptdata = this.firebase.getRezepte([["id"].concat(this.buchdata.rezepte)]);
+    this.rezepte = this.firebase.getRezepte([["id"].concat(this.buchdata.rezepte)]);
     this.user = firebase.getUser(localStorage.getItem('user'));
     this.id = this.id.replace("%20", " ");
+    this.filter = this.rezepte;
   }
 
-  ngOnInit() {
+  /**
+   * Anpassen der Liste filter, damit herausgefilterte Rezepte angezeigt werden
+   * @param rezeptListe 
+   */
+  filterRezepte(rezeptListe: Array<Rezept>){    
+    this.filter = rezeptListe;    
   }
 
 }
