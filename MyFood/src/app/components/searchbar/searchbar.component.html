@@ -4,7 +4,7 @@
   <ion-button class="searchbar-btn btn-medium" (click)="zufall()">Zufall</ion-button>
   <ion-item>
     <ion-label>Filter</ion-label> 
-    <ion-select multiple="true" cancelText="Abbrechen" okText="Suchen" (ionChange)="change($event)">
+    <ion-select multiple="true" cancelText="Abbrechen" okText="Suchen" (ionChange)="filter($event)">
       <ion-select-option *ngFor="let filterOption of filterOptions" [value]="filterOption">{{filterOption}}</ion-select-option>
     </ion-select>
   </ion-item>

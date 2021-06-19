@@ -60,14 +60,21 @@ export class SearchbarComponent implements OnInit {
    * @returns 
    */
   zufall(): void{    
-    let i = Math.round((Math.random())*this.stringListe.length);
+    let liste:Array<Rezept> = new Array();
+    this.suchListe.forEach(rezept => {
+      if(this.filterListe.includes(rezept)){
+        liste.push(rezept);
+      }
+    });
     
-    let id = this.stringListe[i];
-    if(id==undefined){
+    let i = Math.round((Math.random())*liste.length)-1;
+    
+    if(liste[i].id==undefined){
       this.logging.logging("Fehler aufgetreten. Keine zufällige ID gefunden");
       this.zufall();
       return;
     }
+    let id = liste[i].id;
 
     this.navCtrl.navigateForward(`/rezept?id=${id}`);
   }
@@ -111,24 +118,28 @@ export class SearchbarComponent implements OnInit {
     this.newRezeptListe.emit(liste)
   }
 
-  change(event){    
+  /**
+   * Filtern von Rezepten mit ausgewählten Kriterien
+   * @param event 
+   */
+  filter(event){    
     let options:Array<string> = event.detail.value;
     this.logging.logging(`Filter ${options} gesetzt`)
     this.filterListe = this.rezepte;
 
     if(options.includes("vegetarisch")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
-        this.logging.logging("noch nicht vorhanden");
+        this.logging.logging("vegetarisch noch nicht vorhanden");
       });
     }
     if(options.includes("vegan")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
-        this.logging.logging("noch nicht vorhanden");
+        this.logging.logging("vegan noch nicht vorhanden");
       });
     }
     if(options.includes("mit Fleisch")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
-        this.logging.logging("noch nicht vorhanden");
+        this.logging.logging("mit Fleisch noch nicht vorhanden");
       });
     }
     if(options.includes("über 100 Bewertungen")){
