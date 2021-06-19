@@ -144,26 +144,22 @@ export class SearchbarComponent implements OnInit {
     }
     if(options.includes("über 100 Bewertungen")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
-        return (aktuellesRezept.inhalte.bewertung.anzahl>100);
+        return (aktuellesRezept.inhalte?.bewertung?.anzahl>100);
       });
     }
     if(options.includes("durchschnittliche Bewertung von mindestens 4 Sternen")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
-        return (aktuellesRezept.inhalte.bewertung.bewertung >= 4);
+        return (aktuellesRezept.inhalte?.bewertung?.bewertung >= 4);
       });
     }
     if(options.includes("mit eigener Bewertung")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
-        if(this.user!=undefined){
-          return (this.user.eigeneRezepte.includes(aktuellesRezept.id));
-        }
+        return (this.user?.individuelleAngaben[aktuellesRezept.id]?.bewertung ?? false);
       });
     }
     if(options.includes("Favorit")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
-        if(this.user!=undefined){
-          return (this.user.favoriten.includes(aktuellesRezept.id));
-        }
+        return (this.user?.favoriten?.includes(aktuellesRezept.id) ?? false);
       });
     }
 
