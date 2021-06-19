@@ -21,7 +21,7 @@ export class ListRezeptComponent implements OnInit {
 
   _anzahlText = "keine Bewertungen";
   _sterne = Array<String>();
-  _fav;
+  _fav:string = "star-outline";
   _bearbeitet = false;
   _bewertung = 'bewertung';
   bild: Observable<string | null>;
@@ -45,14 +45,6 @@ export class ListRezeptComponent implements OnInit {
 
     this.bild = this.filestorage.getRezeptFile(this.data.id);
 
-    
-
-    // //Überprüfen, ob eine eigene Bewertung gemacht wurde
-    // if(rezept['eigeneBewertung']!=false && rezept['eigeneBewertung'] !=undefined){
-    //   this._bewertung= 'eigeneBewertung';
-    //   this._anzahlText = 'eigene Bewertung'
-    // }
-
     //Bearbeitet
     if(typeof rezept['bearbeitet'] == "boolean"){
       this._bearbeitet=rezept['bearbeitet'];
@@ -61,13 +53,15 @@ export class ListRezeptComponent implements OnInit {
 
   @Input()
   set user(user:User){
-    if(user.favoriten!=undefined){      
-      if(user.favoriten.includes(this.data.id)){
-        this._fav="star";
-        return;
-      }
+    if(user.favoriten?.includes(this.data.id)){
+      this._fav="star";
     }
-    this._fav="star-outline";
+    if(user.individuelleAngaben[this.data.id]?.bewertung ?? false){
+      this._anzahlText = "eigene Bewertung"
+      this.data.inhalte.bewertung.bewertung = user.individuelleAngaben[this.data.id].bewertung;
+      this.data.inhalte.bewertung.bewertung = this.listService.checkNumber(this.data.inhalte.bewertung.bewertung);
+      this._sterne = this.listService.checkStars(this.data.inhalte.bewertung.bewertung);
+    }
     
   }
 
