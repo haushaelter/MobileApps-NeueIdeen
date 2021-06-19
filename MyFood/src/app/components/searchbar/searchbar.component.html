@@ -1,7 +1,11 @@
 <div class="searchbar-div">
   <ion-searchbar class="searchbar-bar" placeholder="Suche" (ionInput)="suche($event)"></ion-searchbar>
-  <ion-button class="searchbar-btn btn-small"><ion-icon name="chevron-down-outline"></ion-icon></ion-button>
   <ion-button class="searchbar-btn btn-small" (click)="zufall()">Z</ion-button>
-  <ion-button class="searchbar-btn btn-medium"><ion-icon name="chevron-down-outline"></ion-icon> Filter</ion-button>
   <ion-button class="searchbar-btn btn-medium" (click)="zufall()">Zufall</ion-button>
+  <ion-item>
+    <ion-label>Filter</ion-label> 
+    <ion-select multiple="true" cancelText="Abbrechen" okText="Suchen" (ionChange)="change($event)">
+      <ion-select-option *ngFor="let filterOption of filterOptions" [value]="filterOption">{{filterOption}}</ion-select-option>
+    </ion-select>
+  </ion-item>
 </div>

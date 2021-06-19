@@ -1,7 +1,7 @@
 <app-header [titel]="seitentitel"></app-header>
 
 <ion-content [fullscreen]="true">
-  <app-searchbar [stringListe]="liste" [rezepteListe]="rezepte" (newRezeptListe)="filterRezepte($event)"></app-searchbar>
+  <app-searchbar [stringListe]="liste" [rezepteListe]="rezepte" [user]="user" (newRezeptListe)="filterRezepte($event)"></app-searchbar>
   <!--Wenn die Variable "rezepte" Daten aus der Datenbank enthält, werden die Rezepte angezeigt-->
   <ion-list *ngIf="filter.length>0 && user!=undefined">
     <app-list-rezept *ngFor="let eintrag of filter" [rezept]="eintrag" [user]="user"></app-list-rezept>

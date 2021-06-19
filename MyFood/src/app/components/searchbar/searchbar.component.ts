@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Rezept } from 'src/app/models/rezepte/rezept.model';
+import { User } from 'src/app/models/user/user.model';
 import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
@@ -9,25 +10,39 @@ import { HelperService } from 'src/app/services/helper.service';
   styleUrls: ['./searchbar.component.scss'],
 })
 export class SearchbarComponent implements OnInit {
-  private liste:Array<string>;
   private rezepte: Array<Rezept>
+  private suchListe: Array<Rezept>;
   private filterListe: Array<Rezept>;
+
+  private filterOptions = [
+    "vegetarisch",
+    "vegan",
+    "mit Fleisch",
+    "über 100 Bewertungen",
+    "durchschnittliche Bewertung von mindestens 4 Sternen",
+    "mit eigener Bewertung",
+    "Favorit"
+  ]
 
   /**
    * Input für Liste von ids. Dadurch kann Button Zufall mit Filtern arbeiten
    */
   @Input()
-  set stringListe(rezeptListe){
-    this.liste = rezeptListe;
-  }
+  private stringListe:Array<string>;
 
   /**
    * Input für vollständige Rezepte
    */
   @Input()
   set rezepteListe(rezepte){
-    this.rezepte = rezepte
+    this.rezepte = rezepte;
+    this.suchListe = this.rezepte;
+    this.filterListe = this.rezepte;
   }
+
+  @Input()
+  private user: User;
+  
 
   //Output für neue angepasste Liste mit vollständigen Rezepten
   @Output()
@@ -45,9 +60,9 @@ export class SearchbarComponent implements OnInit {
    * @returns 
    */
   zufall(): void{    
-    let i = Math.round((Math.random())*this.liste.length);
+    let i = Math.round((Math.random())*this.stringListe.length);
     
-    let id = this.liste[i];
+    let id = this.stringListe[i];
     if(id==undefined){
       this.logging.logging("Fehler aufgetreten. Keine zufällige ID gefunden");
       this.zufall();
@@ -66,12 +81,12 @@ export class SearchbarComponent implements OnInit {
     let suchTerm = event.srcElement.value.toLowerCase();
 
     //filterListe zurücksetzen, für den Fall dass rückgängig gemacht wurde
-    this.filterListe = this.rezepte;
+    this.suchListe = this.rezepte;
 
     //Überprüfen, ob ein Suchterm eingegeben wurde
     if(suchTerm.length!==0){
       // id der Elemente in filterListe überprüfen und filterListe anpassen
-      this.filterListe = this.filterListe.filter(aktuellesRezept => {
+      this.suchListe = this.suchListe.filter(aktuellesRezept => {
         if (aktuellesRezept.id.toLowerCase() && suchTerm) {
           return (aktuellesRezept.id.toLowerCase().indexOf(suchTerm.toLowerCase()) > -1);
         }
@@ -79,15 +94,69 @@ export class SearchbarComponent implements OnInit {
     }
     
     //neue Liste an Parent zurückgeben
-    this.filterRezepte(this.filterListe);
+    this.filterRezepte();
   }
 
   /**
    * Anpassen der Outputvariable
    * @param liste 
    */
-  filterRezepte(liste: Array<Rezept>){
+  filterRezepte(){
+    let liste:Array<Rezept> = new Array();
+    this.suchListe.forEach(rezept => {
+      if(this.filterListe.includes(rezept)){
+        liste.push(rezept);
+      }
+    });    
     this.newRezeptListe.emit(liste)
+  }
+
+  change(event){    
+    let options:Array<string> = event.detail.value;
+    this.logging.logging(`Filter ${options} gesetzt`)
+    this.filterListe = this.rezepte;
+
+    if(options.includes("vegetarisch")){
+      this.filterListe = this.filterListe.filter(aktuellesRezept =>{
+        this.logging.logging("noch nicht vorhanden");
+      });
+    }
+    if(options.includes("vegan")){
+      this.filterListe = this.filterListe.filter(aktuellesRezept =>{
+        this.logging.logging("noch nicht vorhanden");
+      });
+    }
+    if(options.includes("mit Fleisch")){
+      this.filterListe = this.filterListe.filter(aktuellesRezept =>{
+        this.logging.logging("noch nicht vorhanden");
+      });
+    }
+    if(options.includes("über 100 Bewertungen")){
+      this.filterListe = this.filterListe.filter(aktuellesRezept =>{
+        return (aktuellesRezept.inhalte.bewertung.anzahl>100);
+      });
+    }
+    if(options.includes("durchschnittliche Bewertung von mindestens 4 Sternen")){
+      this.filterListe = this.filterListe.filter(aktuellesRezept =>{
+        return (aktuellesRezept.inhalte.bewertung.bewertung >= 4);
+      });
+    }
+    if(options.includes("mit eigener Bewertung")){
+      this.filterListe = this.filterListe.filter(aktuellesRezept =>{
+        if(this.user!=undefined){
+          return (this.user.eigeneRezepte.includes(aktuellesRezept.id));
+        }
+      });
+    }
+    if(options.includes("Favorit")){
+      this.filterListe = this.filterListe.filter(aktuellesRezept =>{
+        if(this.user!=undefined){
+          return (this.user.favoriten.includes(aktuellesRezept.id));
+        }
+      });
+    }
+
+    this.filterRezepte()
   }
 
 }
