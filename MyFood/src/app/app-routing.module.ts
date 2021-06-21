@@ -45,6 +45,12 @@ const routes: Routes = [
     loadChildren: () => import('./kochbuch/kochbuch.module').then( m => m.KochbuchPageModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'neues-rezept',
+    loadChildren: () => import('./neues-rezept/neues-rezept.module').then( m => m.NeuesRezeptPageModule),
+    canActivate: [AuthGuard]
+  },
+
 
 ];
 
