@@ -412,6 +412,29 @@ export class FirebaseService {
   }
 
   /**
+   * Entfernt ein Favorit aus dem Array
+   * @param rezeptName 
+   * @param userId 
+   */
+  removeFavorit(rezeptName: string, userId: string){
+    let favoritenArr: Array<string>;
+    
+    this.firestore.collection(this.collections.user).doc(userId).get().subscribe(res => {
+      
+      favoritenArr = res.data()["favoriten"];
+      if(!favoritenArr.includes(rezeptName)){
+        return;
+      } else {
+        favoritenArr.splice(favoritenArr.indexOf(rezeptName), 1);
+      }
+
+      this.firestore.collection(this.collections.user).doc(userId).update({
+        favoriten: favoritenArr
+      });
+    });
+  }
+
+  /**
    * Gibt alle Rezepte in einem Array als Promise zurück
    * @param userId 
    * @returns Promise
