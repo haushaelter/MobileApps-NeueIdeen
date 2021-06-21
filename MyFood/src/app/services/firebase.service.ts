@@ -209,6 +209,20 @@ export class FirebaseService {
       id: rezept.id
     });
 
+    this.firestore.collection(this.collections.user).doc(rezept.ersteller).get().subscribe(res => {
+      
+      let eigeneArr = res.data()["eigeneRezepte"];
+      if(eigeneArr.includes(rezept.id)){
+        return;
+      } else {
+        eigeneArr.push(rezept.id);
+      }
+
+      this.firestore.collection(this.collections.user).doc(rezept.ersteller).update({
+        eigeneRezepte: eigeneArr
+      });
+    });
+
     // Nested Documents setzen
     for (let item in rezept.inhalte) {
       this.firestore.doc(`${this.collections.rezepte}/${rezept.id}/${this.collections.rezeptinhalte}/${item}`).set(
