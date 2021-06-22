@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl} from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { Rezept } from '../models/rezepte/rezept.model';
+import { Zutat } from '../models/zutaten/zutat.model';
 import { FileStorageService } from '../services/file-storage.service';
 import { FirebaseService } from '../services/firebase.service';
 import { HelperService } from '../services/helper.service';
@@ -18,6 +19,7 @@ export class NeuesRezeptPage implements OnInit {
   private basisForm: FormGroup;
   private userId: string = localStorage.getItem('user');
   private vorhandeneRezepte:Array<string> = this.firebase.getAlleRezeptIds();
+  private alleZutaten: Array<Zutat> = this.firebase.getAlleZutaten();
 
 
   constructor(
@@ -139,11 +141,6 @@ export class NeuesRezeptPage implements OnInit {
       }
       delete rezeptJson.zutaten[i];
     }
-
-    console.log(this.vorhandeneRezepte.includes(rezeptJson.inhalte.basis.titel));
-    
-    
-    console.log(rezeptJson.id);
     
     let rezept = new Rezept().deserialize(rezeptJson);
     
