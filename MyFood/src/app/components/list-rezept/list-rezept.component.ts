@@ -17,14 +17,14 @@ import { HelperService } from '../../services/helper.service';
 export class ListRezeptComponent implements OnInit {
   readonly aktuelleUserId = localStorage.getItem('user');
  
-  data:Rezept;
+  private data:Rezept;
 
-  _anzahlText = "keine Bewertungen";
-  _sterne = Array<String>();
-  _fav:string = "star-outline";
-  _bearbeitet = false;
-  _bewertung = 'bewertung';
-  bild: Observable<string | null>;
+  private _anzahlText = "keine Bewertungen";
+  private _sterne = Array<String>();
+  private _fav:string = "star-outline";
+  private _bearbeitet = false;
+  private _bewertung = 'bewertung';
+  private bild: Observable<string | null>;
     
   
   @Input() 
@@ -86,8 +86,15 @@ export class ListRezeptComponent implements OnInit {
       this.logging.logging(`Rezeptid = ${this.data.id} und Userid = ${this.aktuelleUserId}`);
       return;
     }
-    this.logging.logging(`Favorit ${this.data.id} bei User ${this.aktuelleUserId} gesetzt`);
-    this.firebase.setFavorit(this.data.id, this.aktuelleUserId);
+    if(this._fav=="star-outline"){
+      this.firebase.setFavorit(this.data.id, this.aktuelleUserId);
+      this._fav = "star";
+      this.logging.logging(`Favorit ${this.data.id} bei User ${this.aktuelleUserId} gesetzt`);
+    } else {
+      this.firebase.removeFavorit(this.data.id, this.aktuelleUserId);
+      this._fav = "star-outline";
+      this.logging.logging(`Favorit ${this.data.id} bei User ${this.aktuelleUserId} entfernt`);
+    }
   }
 
   /**

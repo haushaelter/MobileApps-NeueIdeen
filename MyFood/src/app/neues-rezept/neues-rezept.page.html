@@ -1,0 +1,63 @@
+<app-header [titel]="seitentitel"></app-header>
+<ion-content [fullscreen]="true">
+  <form [formGroup]="rezeptForm" (ngSubmit)="speichern()">
+    <!-- Name und Beschreibung -->
+    <ion-item [formGroup]="basisForm">
+      <ion-label>Name</ion-label>
+      <ion-input type="text" placeholder="Gib deinem Rezept einen Namen..." formControlName="titel"(change)="setId()"></ion-input>
+    </ion-item>
+    <ion-item [formGroup]="basisForm">
+      <ion-label>Beschreibung</ion-label>
+      <ion-input type="text" placeholder="Beschreib dein Rezept in einem Satz" formControlName="beschreibung"></ion-input>
+    </ion-item>
+    <div *ngIf="rezeptForm.value.id!=''">
+      <input type="file" title="{{rezeptForm.value.id}}" accept="image/png, image/jpeg, image/jpg" (change)="filestorage.setRezeptFile($event)">
+    </div>
+    <!-- Zutaten als Liste -->
+    <div>
+      <ion-label>Zutaten</ion-label><br>
+      <div *ngIf="rezeptForm.get('zutaten')!=null; else elseZutaten">
+        <ion-grid *ngFor="let zutat of rezeptForm.get('zutaten')['controls']; let i = index" id="zutaten-grid" formArrayName="zutaten">
+          <ion-row [formGroupName]="i">
+            <ion-col><ion-input formControlName="menge" type="number" placeholder="Menge"></ion-input></ion-col>
+            <ion-col>
+              <input formControlName="id" type="text" placeholder="Name" list="zutaten">
+              <datalist id="zutaten">
+                <option *ngFor="let zutat of alleZutaten" [value]="zutat.id"></option>
+              </datalist>
+            </ion-col>
+            <ion-col (click)="entferneZutat(i)"><ion-icon name="close"></ion-icon></ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <ng-template #elseZutaten>Keine Zutaten</ng-template>
+      <br><ion-button (click)="zutatHinzufuegen()"><ion-icon slot="icon-only" name="add"></ion-icon></ion-button>
+    </div>
+    <!-- Schritte als Liste -->
+    <div [formGroup]="inhaltForm">
+      <ion-label>Schritte</ion-label><br>
+      <ion-grid *ngFor="let schritt of inhaltForm.get('schritte')['controls']; index as i" id="schritte-grid" formArrayName="schritte"> 
+        <ion-row>
+          <ion-col>Schritt {{i+1}}</ion-col>
+          <ion-col (click)="entferneSchritt(i)"><ion-icon name="close"></ion-icon></ion-col>
+        </ion-row>
+        <ion-row [formGroupName]="i">
+          <ion-col>
+            <ion-label>Benötigte Zutaten:</ion-label>
+            <ion-label controlName="zutaten" placeholder="Zutaten"></ion-label>
+            <ion-select multiple="true" cancelText="Abbrechen" okText="Auswählen">
+              <ion-select-option *ngFor="let zutatOption of this.rezeptForm['controls']['zutaten']['controls']" [value]="zutatOption['controls']['id'].value">{{zutatOption['controls']['id'].value}}</ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+        <ion-row [formGroupName]="i">
+          <ion-col><ion-textarea formControlName="beschreibung" placeholder="Beschreibung"></ion-textarea></ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-button (click)="schrittHinzufuegen()"><ion-icon slot="icon-only" name="add"></ion-icon></ion-button>
+    </div>
+    <!-- Speichernbutton -->
+    <ion-button type="submit" color="danger" expand="block">Speichern</ion-button>
+</form>
+</ion-content>
+

@@ -6,6 +6,9 @@
   <ion-list *ngIf="filter.length>0 && user!=undefined">
     <app-list-rezept *ngFor="let eintrag of filter" [rezept]="eintrag" [user]="user"></app-list-rezept>
   </ion-list>
+  <ion-fab slot="fixed" class="add-btn">
+    <ion-fab-button  routerLink="/neues-rezept" routerDirection="forward"><ion-icon name="add"></ion-icon></ion-fab-button>
+  </ion-fab>
   <ion-infinite-scroll >
     <ion-infinite-scroll-content loadingSpinner="none"></ion-infinite-scroll-content>
   </ion-infinite-scroll>

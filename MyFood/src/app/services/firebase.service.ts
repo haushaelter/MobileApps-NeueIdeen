@@ -209,6 +209,20 @@ export class FirebaseService {
       id: rezept.id
     });
 
+    this.firestore.collection(this.collections.user).doc(rezept.ersteller).get().subscribe(res => {
+      
+      let eigeneArr = res.data()["eigeneRezepte"];
+      if(eigeneArr.includes(rezept.id)){
+        return;
+      } else {
+        eigeneArr.push(rezept.id);
+      }
+
+      this.firestore.collection(this.collections.user).doc(rezept.ersteller).update({
+        eigeneRezepte: eigeneArr
+      });
+    });
+
     // Nested Documents setzen
     for (let item in rezept.inhalte) {
       this.firestore.doc(`${this.collections.rezepte}/${rezept.id}/${this.collections.rezeptinhalte}/${item}`).set(
@@ -408,6 +422,29 @@ export class FirebaseService {
         return;
       }else {
         favoritenArr.push(rezeptName);
+      }
+
+      this.firestore.collection(this.collections.user).doc(userId).update({
+        favoriten: favoritenArr
+      });
+    });
+  }
+
+  /**
+   * Entfernt ein Favorit aus dem Array
+   * @param rezeptName 
+   * @param userId 
+   */
+  removeFavorit(rezeptName: string, userId: string){
+    let favoritenArr: Array<string>;
+    
+    this.firestore.collection(this.collections.user).doc(userId).get().subscribe(res => {
+      
+      favoritenArr = res.data()["favoriten"];
+      if(!favoritenArr.includes(rezeptName)){
+        return;
+      } else {
+        favoritenArr.splice(favoritenArr.indexOf(rezeptName), 1);
       }
 
       this.firestore.collection(this.collections.user).doc(userId).update({
