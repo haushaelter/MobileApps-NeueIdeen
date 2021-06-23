@@ -1,68 +1,114 @@
 .grid{
+    height: auto;
     width: 90%;
     font-size: 18px;
-}
 
-.row-infos-inner{
-    height: 1.5rem;
-    margin-bottom: 1rem;
-}
+    .row-titel{
+        margin: 1.5rem;
+        
+        ion-col{
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
 
-.grid-row-infos{
-    height: auto;
-}
+    .grid-row-infos{
+        min-height: 20rem;
 
-.row-titel{
-    margin: 1.5rem;
-}
+        .row-infos-inner{
+            height: 1.5rem;
+            margin-bottom: 1rem;
 
-.col-titel{
-    font-size: 30px;
-    font-weight: bold;
-    text-align: center;
-}
+            .fav-icon{
+                color: #e0ac08;
+                font-size:18px;
+                padding: 0;
+            }
 
-.icon{
-    font-size:18px;
-    padding: 0;
-}
+            .row-zutaten{
+                margin-top: auto;
+                margin-bottom: 0;
+                
+                
+            }
+        }
 
-.fav-icon{
-    color: #e0ac08;
-}
+        ion-img{
+            height: auto;
+            width: auto;
+        }
+    }
 
-.row-zutaten{
-    margin-bottom: 0;
-}
+    .row-ueberschrift{
+        width: 100%;
+        font-weight: bold;
+        margin-top: 1rem;
+    }
 
-.grid-col-pic{
-    height: 9rem;
-}
+    .zutaten{
+        --ion-grid-columns: 10;
+    
+        .zutatenMenge{
+            text-align: end;
+        }
+    }
 
-.row-schritt{
-    width: 100%;
-    font-weight: bold;
-    margin-top: 1rem;
+    .unterstrich{   
+        position: relative;
+        z-index : 1;
+
+        &:before {
+            content : "";
+            position: absolute;
+            left    : 10%;
+            bottom  : 0;
+            height  : 1px;
+            width   : 50%;  /* or 100px */
+            border-bottom:1px solid rgb(128, 128, 128);
+          }
+    }
 }
 
 @media(min-width:700px){
-    .grid-row{
-        height: 2.5rem;
-        font-size: 20px;
-    }
-    
-    .grid-col-pic{
-        height: 4.5rem;
-        width: 4.5rem;
-    }
-    
-    .icon{
-        font-size:22px;
+    .grid{
+        width: 80%;
+        margin-left: 10%;
+        min-height: 15rem;
+        font-size: 2rem;
+
+        .fav-icon{
+            font-size:22px;
+        }
+
+        ion-img{
+            height: 4.5rem;
+            width: 4.5rem;
+        }
+
+        .zutaten{
+            --ion-grid-columns: 15;
+        
+            .zutatenMenge{
+                text-align: end;
+            }
+        }
     }
 }
 
 @media(min-width: 1200px){
     .grid{
-        margin-left:10%;
+        width: 50%;
+        margin-left: 25%;
+        height: 2.5rem;
+        font-size: 20px;
+
+        .zutaten{
+            --ion-grid-columns: 20;
+        
+            .zutatenMenge{
+                text-align: end;
+            }
+        }
     }
 }

@@ -337,6 +337,25 @@ export class FirebaseService {
   }
 
   /**
+   * Alle Zutaten anfragen
+   * @returns 
+   */
+   getAlleZutatenAlsObject(): Object {
+    let zutaten = {};
+    let zutat: Zutat;
+    let zutatJson;
+
+    this.firestore.collection(this.collections.zutaten).snapshotChanges().subscribe(res => {
+      res.forEach(ele => {
+        zutat = new Zutat().deserialize(ele.payload.doc.data());
+        zutaten[zutat.id] = zutat;
+      })
+    });
+
+    return zutaten;
+  }
+
+  /**
    * Erhalte beliebig viele Zutaten
    * @param names 
    * @returns 

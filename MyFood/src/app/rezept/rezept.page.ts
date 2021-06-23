@@ -1,3 +1,4 @@
+import { createOfflineCompileUrlResolver } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonInfiniteScroll } from '@ionic/angular';
@@ -7,6 +8,7 @@ import { Schritt } from '../models/rezepte/schritt.model';
 import { IndividuelleAngaben } from '../models/user/individuelle-angaben.model';
 import { RezeptReferenz } from '../models/user/rezept-referenz.model';
 import { User } from '../models/user/user.model';
+import { Zutat } from '../models/zutaten/zutat.model';
 import { AuthService } from '../services/auth.service';
 import { FileStorageService } from '../services/file-storage.service';
 import { FirebaseService } from '../services/firebase.service';
@@ -29,7 +31,11 @@ export class RezeptPage implements OnInit {
   private sterne: Array<string>;
   private eigeneBewertung: boolean = false;
   private gesamtbewertung: boolean = true;
-  bild: Observable<string | null>;
+  private bild: Observable<string | null>;
+  private zutatenRef:  Observable<any | null>;
+  zutatenEinheit = [];
+
+  zutatenObj;
 
   @Input() 
   set rezept (rezept:Rezept){
@@ -58,6 +64,7 @@ export class RezeptPage implements OnInit {
     this.data = firebase.getRezept(this.id);
     this.aktuellerUser = firebase.getUser(this.aktuelleUserId);
     this.bild = this.filestorage.getRezeptFile(this.id);
+    this.zutatenObj = this.firebase.getAlleZutatenAlsObject();
   }
 
   ngOnInit() {

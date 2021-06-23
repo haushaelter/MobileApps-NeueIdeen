@@ -1,14 +1,14 @@
 <app-header [titel]="this.data.id"></app-header>
 
 <ion-content>
-  <ion-grid class="grid" *ngIf="data.id!==undefined && data.inhalte.bewertung!==undefined"> 
+  <ion-grid class="grid" *ngIf="data.id!==undefined && data.inhalte.bewertung!==undefined">
     {{readData()}}
     <ion-row class="row-titel">
-      <ion-col class="col-titel">{{data.id}}</ion-col>
+      <ion-col>{{data.id}}</ion-col>
     </ion-row>
 
     <ion-row class="grid-row-infos">
-      <ion-col> 
+      <ion-col class="row-col-inner">
         <ion-row class="row-infos-inner">
           <ion-col>
             <ion-icon [name]="_favorit" class="icon fav-icon"></ion-icon>
@@ -17,31 +17,40 @@
             <ion-icon *ngIf="_bearbeitet" name="brush-outline"></ion-icon>
           </ion-col>
         </ion-row>
+
         <ion-row class="row-infos-inner">
-          <ion-icon *ngFor="let item of sterne; let i = index" [name]="item" id="'stern-icon-'+{{i}}" (click)="bewerten(i)"></ion-icon>
+          <ion-icon *ngFor="let item of sterne; let i = index" [name]="item" id="'stern-icon-'+{{i}}"
+            (click)="bewerten(i)"></ion-icon>
         </ion-row>
+
         <ion-row *ngIf="this.aktuellerUser.individuelleAngaben!=undefined" class="row-infos-inner">
-          <span *ngIf="this.aktuellerUser.individuelleAngaben[data.id]!=undefined; else elseBlock">{{aktualisiereBewertungstext()}} {{bewertungText}}</span>
+          <span *ngIf="this.aktuellerUser.individuelleAngaben[data.id]!=undefined; else elseBlock">
+            {{aktualisiereBewertungstext()}} {{bewertungText}}
+          </span>
           <ng-template #elseBlock>{{bewertungText}}</ng-template>
         </ion-row>
-        <ion-row class="row-infos-inner row-zutaten">
+
+        <ion-row class="row-infos-inner row-zutaten row-ueberschrift">
           Zutaten
         </ion-row>
       </ion-col>
-      <ion-col>
-        <ion-img alt="Picture" class="grid-col-pic" [src]="bild | async"></ion-img>
+
+      <ion-col class="grid-col-pic">
+        <ion-img alt="Picture" [src]="bild | async"></ion-img>
       </ion-col>
     </ion-row>
 
-    <ion-row *ngFor="let eintrag of data.zutaten | keyvalue">
-      <ion-col>{{eintrag.key}}</ion-col>
+    <ion-row *ngFor="let eintrag of data.zutaten | keyvalue" class="zutaten unterstrich">
+      <ion-col class="zutatenMenge" size="3">{{eintrag.value["Menge"]}} {{ zutatenObj[eintrag.key]["standardeinheit"] }}</ion-col>
+      <ion-col size="7">{{eintrag.key}}</ion-col>
     </ion-row>
-    
-    <ion-row *ngFor="let eintrag of data.inhalte | keyvalue">
+
+    <ion-row *ngFor="let eintrag of data.inhalte | keyvalue" class="unterstrich">
       <div *ngIf="eintrag.key!=='basis' && eintrag.key!=='bewertung'">
-        <ion-row class="row-schritt">
+        <ion-row class="row-ueberschrift">
           <ion-col>Schritt {{eintrag.key}}</ion-col>
         </ion-row>
+        
         <ion-row class="row-doing">
           <ion-col>{{eintrag.value.beschreibung}}</ion-col>
         </ion-row>
@@ -49,7 +58,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-infinite-scroll >
+  <ion-infinite-scroll>
     <ion-infinite-scroll-content loadingSpinner="none"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

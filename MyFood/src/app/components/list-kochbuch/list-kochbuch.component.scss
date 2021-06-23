@@ -1,49 +1,4 @@
-.grid{
-    margin-left:5%;
-    --ion-grid-width:90%;
-}
-.grid-row{
-    width: 90%;
-    height: 10rem;
-    margin: 0;
-    padding: 0;
-    align-items: center;
-}
 
-.col-info{
-    text-align: start;
-}
-
-.col-titel{
-    font-size: large;
-    font-weight: bold;
-}
-
-.grid-col-info{
-    flex: 0 0 60px;
-    padding:0;
-    margin-right:10px;
-    margin-bottom: 2rem;
-}
-
-.grid-col-img{
-    padding:0;
-    height: 10rem;
-    width: auto;
-    margin: 0;
-    padding: 0;
-    align-items: center;
-}
-
-.img{
-    min-width: 5rem;
-    height: 10rem;
-}
-
-.icon{
-    font-size:15px;
-    color: #e0ac08;
-}
 
 @media(min-width:700px){
     .grid-row{
