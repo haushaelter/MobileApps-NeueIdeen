@@ -4,21 +4,28 @@ import { AlertController, ToastController } from '@ionic/angular';
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Autor: Anika Haushälter
+ */
 export class HelperService {
+    
+    /**
+     * @ignore
+     */
+    constructor(private alertCtrl: AlertController, private toastCtrl: ToastController) { }
 
-  constructor(private alertCtrl: AlertController, private toastCtrl: ToastController) { }
     /**
      * Methode zum Schreiben von logs
-     * @param nachricht 
+     * @param nachricht {string} nachricht, welche geschrieben werden soll
      */
-    logging(nachricht: string) {
+    logging(nachricht: string):void {
 
         console.log(`${(new Date()).toLocaleTimeString()} ${nachricht}`);
     }
 
     /**
-     * Toast ausgeben
-     * @param nachricht 
+     * Methode zum Anzeigen von Toasts. Die Nachricht wird auch geloggt
+     * @param nachricht {string} nachricht, die angezeigt werden soll
      */
     async zeigeToast(nachricht: string) {
         try {
@@ -36,9 +43,10 @@ export class HelperService {
     }
 
     /**
-     * Dialog anzeigen
-     * @param titel 
-     * @param nachricht 
+     * Methode zum Anzeigen von Dialogen. Die Nachricht wird auch geloggt
+     * @param titel {string} titel, der den Titel des Dialoges abbildet
+     * @param nachricht {string}  nachricht, die eine Nachricht darstellt
+     * @param buttons Buttons, die angezeigt werden soll. Sie müssen den Anzeigenamen und die Funktion dahinter enthalten
      */
     async zeigeDialog(titel: string, nachricht: string, buttons) {
         try {
