@@ -1,0 +1,167 @@
+ion-item{
+    --background: none;
+}
+
+.form{
+    height: auto;
+    width: 90%;
+    margin: 0 5%;
+    font-size: 18px;
+    padding: 0;
+
+
+    .input-div{
+        text-align: start;
+        width: 100%;
+        margin-top: 5%;
+
+        ion-label{
+            text-align: start;
+            width: 100%;
+        }
+        
+        ion-input{
+            text-align: start;
+            width: 100%;
+            margin-top: 1%;
+        }
+
+    }
+    
+    .background{
+        background-color: rgba(255,255,255,0.5);
+    }
+
+    .row-ueberschrift{
+        width: 100%;
+        font-weight: bold;
+        margin-top: 1rem;
+        margin-left: 0;
+        padding: 0;
+    }
+    
+    .unterstrich{   
+        position: relative;
+        z-index : 1;
+    
+        &:before {
+            content : "";
+            position: absolute;
+            left    : 10%;
+            bottom  : 0;
+            height  : 1px;
+            width   : 50%;  /* or 100px */
+            border-bottom:1px solid rgb(128, 128, 128);
+          }
+    }
+
+    .zutaten{
+        --ion-grid-columns: 12;
+        font-weight: normal;
+
+        .zutatenName-col{
+            margin-left: 5px;
+        }
+
+        .zutatenName{
+            border: 0;
+            display: inline-block;
+            height: 100%;
+            background-color: transparent;
+            width: 100%;
+
+            &::placeholder{
+                color: gray;
+            }
+            
+            &:focus{
+                outline: none;
+                &::-webkit-calendar-picker-indicator {
+                    display: none;
+                }
+            }
+
+            &::-webkit-calendar-picker-indicator {
+                display: none !important;
+            }
+        }
+        
+        .zutatenMenge{
+            text-align: end;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+    }
+
+    .schritte{
+        --ion-grid-columns: 10;
+        height: auto;
+
+        .schritteZutatenLabel, .schritteZutaten{
+            width: 100%;
+            height: 100%;
+            margin-top: 1rem;
+            margin-left: 0;
+            padding: 0;
+        }
+
+        .schritteZutatenCol{
+            height: auto;
+
+            .schritteZutaten{
+                vertical-align: center;
+                margin: auto;
+                
+                label{
+                    white-space: pre-line;
+                }
+
+            }
+        }
+
+        .beschreibungCol{
+            margin-top: 0.5rem;
+            padding: 0;
+
+            ion-textarea{
+                width: 100%;
+                height: 100%;
+                --padding-top: 0;
+                --padding-bottom: 0;
+            }
+            
+        }
+
+    }
+
+    .entfernen-icon{
+        ion-icon{
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .hinzufuegen-div{
+        text-align: center;
+        height: auto;
+        margin-top: 1%;
+
+        .hinzufuegen{
+            --border-radius: 50% !important;
+            height: 50px;
+            width: 50px;
+            
+            ion-icon{
+                font-weight: bolder;
+            }
+        }
+    }
+
+    
+
+    .speichern-btn{
+        width: 100%;
+    }
+}
