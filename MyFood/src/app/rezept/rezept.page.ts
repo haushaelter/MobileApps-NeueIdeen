@@ -70,6 +70,17 @@ export class RezeptPage implements OnInit {
   ngOnInit() {
   }
 
+  test(zutaten){
+    let returnString: string = "";
+    for(let i = 0; i<zutaten.length; i++){
+      returnString = returnString + zutaten[i];
+      if(zutaten[i+1]!=undefined){
+        returnString = returnString + ", ";
+      }
+    }
+    return returnString;    
+  }
+
   readData(){    
     this.data.id = this.listService.checkString("Titel", this.data.id);    
 

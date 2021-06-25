@@ -14,8 +14,10 @@
     }
 
     .grid-row-infos{
-        min-height: 20rem;
-
+        .row-col-inner{
+            padding: 0;
+        }
+        
         .row-infos-inner{
             height: 1.5rem;
             margin-bottom: 1rem;
@@ -28,9 +30,7 @@
 
             .row-zutaten{
                 margin-top: auto;
-                margin-bottom: 0;
-                
-                
+                margin-bottom: 0;    
             }
         }
 
@@ -52,6 +52,11 @@
         .zutatenMenge{
             text-align: end;
         }
+    }
+
+    .row-zutaten-doing{
+        white-space: pre-line;
+        font-style: italic;
     }
 
     .unterstrich{   
