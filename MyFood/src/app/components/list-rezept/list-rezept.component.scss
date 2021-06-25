@@ -1,4 +1,5 @@
 ion-grid{
+    background-color: var(--ion-color-light);
     margin-left: 5%;
     margin-right: 5%;
     margin-bottom: 2%;
@@ -10,9 +11,7 @@ ion-grid{
     border-radius: 10px;
 
     position: relative;
-}
 
-ion-grid{
     ion-row{
         height: auto;
     }
@@ -51,8 +50,16 @@ ion-grid{
     font-size:12px;
 }
 
+@media(min-width:700px){
+    .grid{
+        margin-left: 20%;
+        font-size: xx-large;
+    }
+}
+
 @media(min-width: 1200px){
     .grid{
         margin-left: 20%;
+        font-size: large;
     }
 }
