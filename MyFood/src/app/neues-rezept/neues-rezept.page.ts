@@ -88,7 +88,7 @@ export class NeuesRezeptPage implements OnInit {
   }
 
   zutatHinzufuegen(): void{
-    if((this.rezeptForm.get('zutaten') as FormArray).value[0].id !=""){
+    if((this.rezeptForm.get('zutaten') as FormArray).value[0]?.id !=""){
       (this.rezeptForm.get('zutaten') as FormArray).push(this.erstelleZutat());
     } else {
       this.logging.zeigeToast("Du hast bereits ein leeres Feld");
@@ -111,6 +111,8 @@ export class NeuesRezeptPage implements OnInit {
   entferneSchritt(index){
     if((this.inhaltForm.get('schritte') as FormArray).length !=1){
       (this.inhaltForm.get('schritte') as FormArray).removeAt(index)
+    } else {
+      this.logging.zeigeToast("Bitte gib mindestens einen Schritt an");
     }
   }
 
