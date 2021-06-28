@@ -18,8 +18,6 @@ export class HomePage {
   constructor(
     private firebase: FirebaseService
   ) { 
-    //Anzeigen von footer
-    document.getElementById("footer").style.display = "block";
     //Aufrufen aller Rezepte
     this.rezepte = firebase.getAlleRezepte();
     this.user = firebase.getUser(localStorage.getItem('user'));

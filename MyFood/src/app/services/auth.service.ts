@@ -80,6 +80,8 @@ export class AuthService {
   login(email, passwort) {
     this.auth.signInWithEmailAndPassword(email, passwort).then((res) => {
       this.logging.logging("Nutzer eingeloggt.");
+      //Anzeigen von footer
+      document.getElementById("footer").style.display = "block";
       this.router.navigateByUrl("/home");
     }).catch(e => {
       switch (e.code) {
