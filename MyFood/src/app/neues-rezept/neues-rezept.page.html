@@ -21,15 +21,19 @@
     <div class="row-ueberschrift">
       <ion-label>Zutaten</ion-label><br>
 
-      <ion-grid *ngFor="let zutat of rezeptForm.get('zutaten')['controls']; let i = index" id="zutaten-grid" formArrayName="zutaten" class="unterstrich zutaten">
+      <ion-grid *ngFor="let zutat of rezeptForm.get('zutaten')['controls']; let i = index" formArrayName="zutaten" class="unterstrich zutaten">
         <ion-row [formGroupName]="i">
-
+          
           <ion-col class="zutatenMenge background" size="3"><ion-input formControlName="menge" type="number" placeholder="Menge"></ion-input></ion-col>
+
+          <ion-col class="zutatenEinheit" size="1">
+            <ion-label>{{ standardeinheitAnzeigen(zutat.value.id) }}</ion-label>
+          </ion-col>
 
           <ion-col size="7" class="zutatenName-col background">
             <input formControlName="id" type="text" placeholder="Name" list="zutaten" class="zutatenName ">
             <datalist id="zutaten" class="zutatenList">
-              <option *ngFor="let zutat of alleZutaten" [value]="zutat.id"></option>
+              <option *ngFor="let zutatRef of alleZutaten" [value]="zutatRef.id"></option>
             </datalist>
           </ion-col>
 
