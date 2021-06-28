@@ -10,7 +10,7 @@ export class FileStorageService {
     private firebase: AngularFireStorage,
   ) { }
 
-  getRezeptFile(rezeptId: string){
+  getRezeptFile(rezeptId: string) {
     const path = "rezepte";
     const fileName = rezeptId;
 
@@ -25,11 +25,11 @@ export class FileStorageService {
     */
   }
 
-  setRezeptFile(event){
+  setRezeptFile(event) {
     const file = event.target.files[0];
     const filePath = event.target.title;
     const path = "rezepte";
-    
+
     // Bild speichern
     this.firebase.ref(`${path}/${filePath}`).put(file);
 
@@ -39,7 +39,15 @@ export class FileStorageService {
     */
   }
 
-  getKochbuchFile(rezeptId: string){
+  removeRezeptFile(rezeptId: string) {
+    const path = "rezepte";
+    const fileName = rezeptId;
+
+    // Rückgabe des Bild als Observable
+    return this.firebase.ref(`${path}/${fileName}`).delete().toPromise();
+  }
+
+  getKochbuchFile(rezeptId: string) {
     const path = "kochbuecher";
     const fileName = rezeptId;
 
@@ -53,11 +61,11 @@ export class FileStorageService {
     */
   }
 
-  setKochbuchFile(event){
+  setKochbuchFile(event) {
     const file = event.target.files[0];
     const filePath = event.target.title;
     const path = "kochbuecher";
-    
+
     // Bild speichern
     this.firebase.ref(`${path}/${filePath}`).put(file);
 
