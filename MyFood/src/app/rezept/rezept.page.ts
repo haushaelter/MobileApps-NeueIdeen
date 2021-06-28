@@ -106,6 +106,15 @@ export class RezeptPage implements OnInit {
     }
     
     this.sterne = this.listService.checkStars(this.data.inhalte.bewertung.bewertung);
+
+    if(this.aktuellerUser.favoriten!=undefined){      
+      if(this.aktuellerUser.favoriten.includes(this.data.id)){
+        this._fav="star";
+        return;
+      }
+    }
+
+    this._fav = "star-outline";
   }
 
   bewerten(id:number){    
