@@ -26,7 +26,7 @@ export class RezeptPage implements OnInit {
   private data: Rezept;
   private aktuellerUser: User;
   private schritte: Array<Schritt> = new Array;
-  private _fav = "star-outline";
+  private _fav:string = "star-outline";
   private bewertungText:string;
   private sterne: Array<string>;
   private eigeneBewertung: boolean = false;
@@ -58,7 +58,8 @@ export class RezeptPage implements OnInit {
     private firebase: FirebaseService,
     private listService: ListService,
     private auth: AuthService,
-    private filestorage: FileStorageService
+    private filestorage: FileStorageService,
+    private logging: HelperService
   ) {
     this.id = this.id.replace("%20", " ");
     this.data = firebase.getRezept(this.id);
@@ -127,6 +128,27 @@ export class RezeptPage implements OnInit {
   aktualisiereBewertungstext(){
     this.eigeneBewertung = true;
     this.gesamtbewertung = false;
+  }
+
+  /**
+   * Favorisieren von Rezept. Verwendet Rezept und eingeloggten User
+   * @returns void
+   */
+   setFavorit():void{    
+    if(this.data.id==undefined || this.aktuelleUserId==undefined){
+      this.logging.zeigeToast("Es ist ein Fehler beim favorisieren aufgetreten.");
+      this.logging.logging(`Rezeptid = ${this.data.id} und Userid = ${this.aktuelleUserId}`);
+      return;
+    }
+    if(this._fav=="star-outline"){
+      this.firebase.setFavorit(this.data.id, this.aktuelleUserId);
+      this._fav = "star";
+      this.logging.logging(`Favorit ${this.data.id} bei User ${this.aktuelleUserId} gesetzt`);
+    } else {
+      this.firebase.removeFavorit(this.data.id, this.aktuelleUserId);
+      this._fav = "star-outline";
+      this.logging.logging(`Favorit ${this.data.id} bei User ${this.aktuelleUserId} entfernt`);
+    }
   }
   
 }
