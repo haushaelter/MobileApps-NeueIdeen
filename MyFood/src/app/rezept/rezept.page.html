@@ -71,7 +71,9 @@
   <ion-infinite-scroll>
     <ion-infinite-scroll-content loadingSpinner="none"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
-  <ion-fab slot="fixed" class="delete-btn">
+
+  <ion-fab *ngIf="data.ersteller == aktuelleUserId" slot="fixed" class="delete-btn">
     <ion-fab-button><ion-icon name="trash" (click)="rezeptLoeschen()"></ion-icon></ion-fab-button>
   </ion-fab>
+
 </ion-content>
