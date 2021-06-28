@@ -253,19 +253,23 @@ export class FirebaseService {
     }).catch(e => {
       this.logger.logging(`${id}-Bild konnte nicht gelöscht werden: ${e}`);
     });
-
+    
     //Inhalte löschen
-    this.firestore.doc(`${this.collections.rezepte}/${id}`).delete().then(() => {
-      this.logger.logging(`${id}-Inhalte gelöscht.`);
-    }).catch(e => {
-      this.logger.logging(`${id}-Inhalte konnte nicht gelöscht werden: ${e}`);
+    this.firestore.collection(`${this.collections.rezepte}/${id}/inhalte`).ref.get().then((inhalte)=>{
+      
+      inhalte.forEach(inhalt => {
+        inhalt.ref.delete();
+      });
+      
     });
-
+    
     //Zutaten löschen
-    this.firestore.doc(`${this.collections.rezepte}/${id}`).delete().then(() => {
-      this.logger.logging(`${id}-Zutaten gelöscht.`);
-    }).catch(e => {
-      this.logger.logging(`${id}-Zutaten konnte nicht gelöscht werden: ${e}`);
+    this.firestore.collection(`${this.collections.rezepte}/${id}/zutaten`).ref.get().then((zutaten)=>{
+      
+      zutaten.forEach(zutat => {
+        zutat.ref.delete();
+      });
+      
     });
 
     //Parent löschen
