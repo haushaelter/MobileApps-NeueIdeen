@@ -247,34 +247,33 @@ export class FirebaseService {
    * @param id 
    */
   deleteRezept(id: string): void {
-    this.fileStorage.removeRezeptFile(id).then(() => {
-      
-      this.logger.logging(`${id}-Inhalte gelöscht.`);
-      this.firestore.doc(`${this.collections.rezepte}/${id}`).delete().then(() => {
-        
-        this.logger.logging(`${id}-Inhalte gelöscht.`);
-        this.firestore.doc(`${this.collections.rezepte}/${id}`).delete().then(() => {
-          
-          this.logger.logging(`${id}-Zutaten gelöscht.`);
-          this.firestore.doc(`${this.collections.rezepte}/${id}`).delete().then(() => {
-            
-            this.logger.logging(`${id}-Parent gelöscht.`);
-          }).catch(e => {
-            this.logger.logging(`${id}-Parent konnte nicht gelöscht werden: ${e}`);
-          });
-
-        }).catch(e => {
-          this.logger.logging(`${id}-Zutaten konnte nicht gelöscht werden: ${e}`);
-        });
-
-      }).catch(e => {
-        this.logger.logging(`${id}-Inhalte konnte nicht gelöscht werden: ${e}`);
-      });
-      
+    //Bild löschen
+    this.fileStorage.removeRezeptFile(id).then(() => {      
+      this.logger.logging(`${id}-Bild gelöscht.`);
     }).catch(e => {
       this.logger.logging(`${id}-Bild konnte nicht gelöscht werden: ${e}`);
-    })
+    });
 
+    //Inhalte löschen
+    this.firestore.doc(`${this.collections.rezepte}/${id}`).delete().then(() => {
+      this.logger.logging(`${id}-Inhalte gelöscht.`);
+    }).catch(e => {
+      this.logger.logging(`${id}-Inhalte konnte nicht gelöscht werden: ${e}`);
+    });
+
+    //Zutaten löschen
+    this.firestore.doc(`${this.collections.rezepte}/${id}`).delete().then(() => {
+      this.logger.logging(`${id}-Zutaten gelöscht.`);
+    }).catch(e => {
+      this.logger.logging(`${id}-Zutaten konnte nicht gelöscht werden: ${e}`);
+    });
+
+    //Parent löschen
+    this.firestore.doc(`${this.collections.rezepte}/${id}`).delete().then(() => {
+      this.logger.logging(`${id}-Parent gelöscht.`);
+    }).catch(e => {
+      this.logger.logging(`${id}-Parent konnte nicht gelöscht werden: ${e}`);
+    });
   }
 
   /**
