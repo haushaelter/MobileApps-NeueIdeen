@@ -41,6 +41,14 @@ export class NeuesRezeptPage implements OnInit {
     
   }
 
+  standardeinheitAnzeigen(item){
+    try{
+      return this.alleZutaten.filter(filterZutat => filterZutat.id === item)[0].standardeinheit;
+    } catch(e) {
+      return "";
+    };
+  }
+
   erstelleZutat(): FormGroup{
     return this.formBuilder.group({
       id: '',
