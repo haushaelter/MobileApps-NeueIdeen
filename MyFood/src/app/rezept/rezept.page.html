@@ -11,7 +11,7 @@
       <ion-col class="row-col-inner">
         <ion-row class="row-infos-inner">
           <ion-col class="row-col-inner">
-            <ion-icon [name]="_fav" class="icon fav-icon"></ion-icon>
+            <ion-icon *ngIf="_fav!==undefined" class="icon fav-icon" [name]="_fav" (click)="setFavorit()"></ion-icon>
           </ion-col>
           <ion-col class="row-col-inner">
             <ion-icon *ngIf="_bearbeitet" name="brush-outline"></ion-icon>
