@@ -58,7 +58,7 @@
         </ion-row>
 
         <ion-row class="row-zutaten-doing">
-          <ion-col>{{test(eintrag.value.zutaten)}}</ion-col>
+          <ion-col>{{zutatenString(eintrag.value.zutaten)}}</ion-col>
         </ion-row>
         
         <ion-row class="row-doing">
@@ -71,4 +71,7 @@
   <ion-infinite-scroll>
     <ion-infinite-scroll-content loadingSpinner="none"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
+  <ion-fab slot="fixed" class="delete-btn">
+    <ion-fab-button><ion-icon name="trash" (click)="rezeptLoeschen()"></ion-icon></ion-fab-button>
+  </ion-fab>
 </ion-content>

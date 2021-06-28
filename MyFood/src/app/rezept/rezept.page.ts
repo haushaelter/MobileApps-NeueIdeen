@@ -1,7 +1,7 @@
 import { createOfflineCompileUrlResolver } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Rezept } from '../models/rezepte/rezept.model';
 import { Schritt } from '../models/rezepte/schritt.model';
@@ -58,7 +58,9 @@ export class RezeptPage implements OnInit {
     private firebase: FirebaseService,
     private listService: ListService,
     private auth: AuthService,
-    private filestorage: FileStorageService
+    private filestorage: FileStorageService,
+    private navCtrl: NavController,
+    private logging: HelperService
   ) {
     this.id = this.id.replace("%20", " ");
     this.data = firebase.getRezept(this.id);
@@ -70,17 +72,7 @@ export class RezeptPage implements OnInit {
   ngOnInit() {
   }
 
-  test(zutaten){
-    let returnString: string = "";
-    for(let i = 0; i<zutaten.length; i++){
-      returnString = returnString + zutaten[i];
-      if(zutaten[i+1]!=undefined){
-        returnString = returnString + ", ";
-      }
-    }
-    return returnString;    
-  }
-
+  
   readData(){    
     this.data.id = this.listService.checkString("Titel", this.data.id);    
 
@@ -128,5 +120,45 @@ export class RezeptPage implements OnInit {
     this.eigeneBewertung = true;
     this.gesamtbewertung = false;
   }
-  
+
+  zutatenString(zutaten){
+    let returnString: string = "";
+    for(let i = 0; i<zutaten.length; i++){
+      returnString = returnString + zutaten[i];
+      if(zutaten[i+1]!=undefined){
+        returnString = returnString + ", ";
+      }
+    }
+    return returnString;    
+  }
+
+  rezeptLoeschen(){
+    if(this.data.ersteller != this.aktuelleUserId){
+      this.logging.zeigeToast("Nur der Ersteller des Rezeptes kann löschen");
+    } else {
+      let okButton = {
+        text: "Löschen",
+        handler: () => {
+          this.firebase.deleteRezept(this.data.id);
+          this.navCtrl.navigateForward(`/home`);
+          this.logging.zeigeToast(`Rezept ${this.data.id} wurde gelöscht`);
+        }
+      }
+
+      let abbrechenButton = {
+        text: "Abbrechen",
+        role: "Cancel",
+        handler: () =>{
+          this.logging.zeigeToast("Vorgang abgebrochen");
+        }
+      }
+
+      this.logging.zeigeDialog(
+        "Löschen", 
+        `Willst du wirklich das Rezept ${this.data.id} löschen? Gelöschte Rezepte können nicht wieder hergestellt werden!`, 
+        [okButton, abbrechenButton]
+      );
+    }
+  }
+
 }
