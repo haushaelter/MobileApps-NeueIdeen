@@ -1,0 +1,17 @@
+ion-list{
+    background-color: transparent;
+}
+
+
+@media(min-width: 1200px){
+    ion-list{
+        display: inline-flex;
+        width: 80vw;
+        margin-left: 10vw;
+        margin-right: 10vw;
+        
+        app-list-kochbuch{
+            padding: 20px;
+        }
+    }
+}
