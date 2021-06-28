@@ -124,9 +124,14 @@ export class NeuesRezeptPage implements OnInit {
     }
   }
 
-  speichern(){
+  /**
+   * Methode zum Speichern eines Rezeptes
+   * @returns void
+   */
+  speichern():void{
     let rezeptJson = this.rezeptForm.value;
-    
+  
+    //Überprüfen auf Vollständigkeit
     if(rezeptJson.inhalte.basis.titel == ''){
       this.logging.zeigeToast("Bitte gib einen Titel für dein Rezept an");
       return;
@@ -139,28 +144,77 @@ export class NeuesRezeptPage implements OnInit {
       this.logging.zeigeToast("Bitte gib mindestens einen Schritt an");
       return;
     }
+
+    //Verarbeiten der Schritte
     for(let i = 0; i<rezeptJson.inhalte.schritte.length; i++){
       rezeptJson.inhalte[i+1] = (rezeptJson.inhalte.schritte[i]);      
       rezeptJson.inhalte[i+1].zutaten = rezeptJson.inhalte[i+1].zutaten.split(', ');      
     }
     delete rezeptJson.inhalte["schritte"];
     
+    //Verarbeiten der Zutaten
     for(let i = 0; i<rezeptJson.zutaten.length; i++){
+      /**
+       * Zutaten kommen an als:
+       * 0: {
+       *  id: "meineId",
+       *  menge: 0
+       * }
+       * und werden verwandelt in 
+       * meineId: {
+       *  menge: 0
+       * }
+       */
       rezeptJson.zutaten[rezeptJson.zutaten[i].id] = {
         menge: rezeptJson.zutaten[i].menge
       }
+      
+      //Überprüfen der Datenbank, ob die Zutaten vorhanden sind und speichern falls nicht
+      this.checkZutatVorhanden(rezeptJson.zutaten[i]);
+
+      //Entfernen der Nummer aus der JSON
       delete rezeptJson.zutaten[i];
     }
     
+    //Speichern in Datenbank
     let rezept = new Rezept().deserialize(rezeptJson);
     
     this.firebase.setRezept(rezept);
 
+    //forms leeren
     this.rezeptForm.reset();
     this.inhaltForm.reset();
     this.basisForm.reset();
 
+    //navigieren zu neuem Rezept
     this.navCtrl.navigateForward(`/rezept?id=${rezeptJson.id}`);
     
+  }
+
+  /**
+   * Überprüft, ob die Zutat in der Datenbank vorhanden ist. Falls nicht, wird sie gespeichert
+   * @param zutat 
+   */
+  checkZutatVorhanden(zutat: JSON): void {
+    let contains: boolean = false;
+
+    //Überprüfen, ob die Zutat in der Datenbank vorhanden ist
+    this.alleZutaten.forEach(item => {
+      console.log(zutat["id"]);
+      console.log(item.id);
+      if(zutat["id"] == item.id){
+        contains = true;
+      }
+    });
+
+    //Falls die Zutat nicht gefunden wurde, wird sie gespeichert
+    if(!contains){
+      let newZutat = new Zutat();
+      newZutat.deserialize({
+        id: zutat["id"],
+        standardeinheit: "g"
+      })
+      this.firebase.setZutat(newZutat);
+    }
   }
 }

@@ -438,7 +438,7 @@ export class FirebaseService {
    * @param zutat 
    */
   setZutat(zutat: Zutat): void {
-    this.firestore.collection(this.collections.zutaten).doc(zutat.id).set(zutat);
+    this.firestore.collection(this.collections.zutaten).doc(zutat.id).set(JSON.parse(JSON.stringify(zutat)));
   }
 
   /**
