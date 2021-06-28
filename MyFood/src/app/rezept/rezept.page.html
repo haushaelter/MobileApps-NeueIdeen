@@ -47,7 +47,7 @@
     </ion-row>
 
     <ion-row *ngFor="let eintrag of data.zutaten | keyvalue" class="zutaten unterstrich">
-      <ion-col *ngIf="zutatenObj[eintrag.key]!=undefined" class="zutatenMenge" size="3">{{eintrag.value["Menge"]}}{{test(eintrag)}} {{ zutatenObj[eintrag.key]["standardeinheit"] }}</ion-col>
+      <ion-col *ngIf="zutatenObj[eintrag.key]!=undefined" class="zutatenMenge" size="3">{{eintrag.value["Menge"]}} {{ zutatenObj[eintrag.key]["standardeinheit"] }}</ion-col>
       <ion-col size="7">{{eintrag.key}}</ion-col>
     </ion-row>
 
