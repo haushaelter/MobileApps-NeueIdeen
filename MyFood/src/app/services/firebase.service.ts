@@ -248,28 +248,28 @@ export class FirebaseService {
    */
   deleteRezept(id: string): void {
     //Bild löschen
-    this.fileStorage.removeRezeptFile(id).then(() => {      
+    this.fileStorage.removeRezeptFile(id).then(() => {
       this.logger.logging(`${id}-Bild gelöscht.`);
     }).catch(e => {
       this.logger.logging(`${id}-Bild konnte nicht gelöscht werden: ${e}`);
     });
-    
+
     //Inhalte löschen
-    this.firestore.collection(`${this.collections.rezepte}/${id}/inhalte`).ref.get().then((inhalte)=>{
-      
+    this.firestore.collection(`${this.collections.rezepte}/${id}/inhalte`).ref.get().then((inhalte) => {
+
       inhalte.forEach(inhalt => {
         inhalt.ref.delete();
       });
-      
+
     });
-    
+
     //Zutaten löschen
-    this.firestore.collection(`${this.collections.rezepte}/${id}/zutaten`).ref.get().then((zutaten)=>{
-      
+    this.firestore.collection(`${this.collections.rezepte}/${id}/zutaten`).ref.get().then((zutaten) => {
+
       zutaten.forEach(zutat => {
         zutat.ref.delete();
       });
-      
+
     });
 
     //Parent löschen
