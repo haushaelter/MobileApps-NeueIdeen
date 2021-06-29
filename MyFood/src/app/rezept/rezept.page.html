@@ -83,8 +83,8 @@
   </div>
 
   <ion-fab *ngIf="data.ersteller == aktuelleUserId" slot="fixed" class="delete-btn">
-    <ion-fab-button>
-      <ion-icon name="trash" (click)="rezeptLoeschen()"></ion-icon>
+    <ion-fab-button color="danger" (click)="rezeptLoeschen()">
+      <ion-icon name="trash" ></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
