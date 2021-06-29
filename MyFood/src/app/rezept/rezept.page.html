@@ -79,7 +79,7 @@
         <ion-icon name="clipboard-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab>
-    <ion-textarea class="notiz-input" autoGrow="true" placeholder="Gib hier deine persönliche Notizen ein" (ionChange)="notizenBearbeiten($event)" (ionBlur)="notizenSpeichern($event)" [(ngModel)]="aktuellerUser.individuelleAngaben[id].notizen"></ion-textarea>
+    <ion-textarea class="notiz-input" autoGrow="true" maxlength="200" placeholder="Gib hier deine persönliche Notizen ein" (ionChange)="notizenBearbeiten($event)" (ionBlur)="notizenSpeichern($event)" [(ngModel)]="aktuellerUser.individuelleAngaben[id].notizen"></ion-textarea>
   </div>
 
   <ion-fab *ngIf="data.ersteller == aktuelleUserId" slot="fixed" class="delete-btn">

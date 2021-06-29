@@ -79,20 +79,21 @@
     position: fixed;
     top: 70px;
     right: 2%;
-    background-color: rgba(255,255,255,0.9);
     z-index: 1000;
     visibility: hidden;
-    border-radius: 20px;
 
     .notiz-input{
         visibility:inherit;
-        width: 75%;
+        width: 95%;
         max-height: 200px;
         margin-top: 2%;
         margin-bottom: 2%;
-        margin-left: 5%;
+        margin-left: 2%;
+        padding-right: 15%;
         vertical-align: baseline;
         white-space: pre-line;
+        background-color: rgba(255,255,255,0.9);
+        border-radius: 20px;
     }
 
     ion-button{
@@ -109,11 +110,16 @@
     
     &:hover {
         width: 90%;
-        height: 40%;
+        height: auto;
         visibility: visible;
     }
 }
 
+.bearbeiten-btn{
+    position: fixed;
+    bottom: 10px;
+    right: 77px;
+}
 
 .delete-btn{
     position: fixed;
