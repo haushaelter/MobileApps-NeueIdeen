@@ -368,6 +368,18 @@ export class FirebaseService {
   }
 
   /**
+   * Speichert eine Notiz, die ein User erstellt. Wenn das Rezept nicht in der Collection Individuelle Angaben ist, wird es hinzugefügt
+   * @param rezeptName {string} RezeptID, für das die Notiz ist
+   * @param userId {string} ID des Users, der eine Notiz speichert
+   * @param notiz {string} String, der als Notiz gespeichert werden soll
+   */
+  setNotiz(rezeptName: string, userId: string, notiz: string) {
+    this.firestore.doc(`${this.collections.user}/${userId}/${this.collections.nutzerangaben}/${rezeptName}`).set({
+      notizen: notiz
+    }, {merge: true})
+  }
+
+  /**
    * Alle Zutaten anfragen
    * @returns 
    */

@@ -28,7 +28,7 @@
             {{aktualisiereBewertungstext()}} {{bewertungText}}
           </span>
           <ng-template #elseBlock>{{bewertungText}}</ng-template>
-        </ion-row> 
+        </ion-row>
       </ion-col>
 
       <ion-col class="grid-col-pic">
@@ -47,7 +47,8 @@
     </ion-row>
 
     <ion-row *ngFor="let eintrag of data.zutaten | keyvalue" class="zutaten unterstrich">
-      <ion-col *ngIf="zutatenObj[eintrag.key]!=undefined" class="zutatenMenge" size="3">{{eintrag.value["Menge"]}} {{ zutatenObj[eintrag.key]["standardeinheit"] }}</ion-col>
+      <ion-col *ngIf="zutatenObj[eintrag.key]!=undefined" class="zutatenMenge" size="3">{{eintrag.value["Menge"]}} {{
+        zutatenObj[eintrag.key]["standardeinheit"] }}</ion-col>
       <ion-col size="7">{{eintrag.key}}</ion-col>
     </ion-row>
 
@@ -60,7 +61,7 @@
         <ion-row class="row-zutaten-doing">
           <ion-col>{{zutatenString(eintrag.value.zutaten)}}</ion-col>
         </ion-row>
-        
+
         <ion-row class="row-doing">
           <ion-col>{{eintrag.value.beschreibung}}</ion-col>
         </ion-row>
@@ -72,8 +73,19 @@
     <ion-infinite-scroll-content loadingSpinner="none"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
+  <div *ngIf="aktuellerUser.individuelleAngaben!=undefined" class="notiz">
+    <ion-fab slot="fixed" class="notiz-btn">
+      <ion-fab-button>
+        <ion-icon name="clipboard-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <ion-textarea class="notiz-input" autoGrow="true" placeholder="Gib hier deine persönliche Notizen ein" (ionChange)="notizenBearbeiten($event)" (ionBlur)="notizenSpeichern($event)" [(ngModel)]="aktuellerUser.individuelleAngaben[id].notizen"></ion-textarea>
+  </div>
+
   <ion-fab *ngIf="data.ersteller == aktuelleUserId" slot="fixed" class="delete-btn">
-    <ion-fab-button><ion-icon name="trash" (click)="rezeptLoeschen()"></ion-icon></ion-fab-button>
+    <ion-fab-button>
+      <ion-icon name="trash" (click)="rezeptLoeschen()"></ion-icon>
+    </ion-fab-button>
   </ion-fab>
 
 </ion-content>

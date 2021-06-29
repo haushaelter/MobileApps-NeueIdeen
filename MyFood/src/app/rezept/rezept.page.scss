@@ -75,11 +75,51 @@
     }
 }
 
+.notiz{
+    position: fixed;
+    top: 70px;
+    right: 2%;
+    background-color: rgba(255,255,255,0.9);
+    z-index: 1000;
+    visibility: hidden;
+    border-radius: 20px;
+
+    .notiz-input{
+        visibility:inherit;
+        width: 75%;
+        max-height: 200px;
+        margin-top: 2%;
+        margin-bottom: 2%;
+        margin-left: 5%;
+        vertical-align: baseline;
+        white-space: pre-line;
+    }
+
+    ion-button{
+        margin-left: 5%;
+    }
+
+    .notiz-btn{
+        position: fixed;
+        top: 70px;
+        right: 10px;
+        visibility: visible;
+    
+    }
+    
+    &:hover {
+        width: 90%;
+        height: 40%;
+        visibility: visible;
+    }
+}
+
+
 .delete-btn{
     position: fixed;
     bottom: 10px;
     right: 10px;
-  }
+}
 
 @media(min-width:700px){
     .grid{

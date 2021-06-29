@@ -190,5 +190,13 @@ export class RezeptPage implements OnInit {
       this.logging.logging(`Favorit ${this.data.id} bei User ${this.aktuelleUserId} entfernt`);
     }
   }
+
+  /**
+   * Speichert die Notizen, die der User eingegeben hat
+   * @param event 
+   */
+  notizenSpeichern(event){
+    this.firebase.setNotiz(this.data.id, this.aktuelleUserId, event.detail.srcElement.defaultValue);
+  }
   
 }
