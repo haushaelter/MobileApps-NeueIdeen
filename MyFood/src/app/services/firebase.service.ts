@@ -11,6 +11,7 @@ import { first } from 'rxjs/operators';
 import { RezeptReferenz } from '../models/user/rezept-referenz.model';
 import { HelperService } from './helper.service';
 import { FileStorageService } from './file-storage.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,8 @@ export class FirebaseService {
   constructor(
     private firestore: AngularFirestore,
     private logger: HelperService,
-    private fileStorage: FileStorageService
+    private fileStorage: FileStorageService,
+    private auth: AuthService
   ) { }
 
   /**
@@ -247,6 +249,7 @@ export class FirebaseService {
    * @param id 
    */
   deleteRezept(id: string): void {
+    console.log("Löschen")
     //Bild löschen
     this.fileStorage.removeRezeptFile(id).then(() => {
       this.logger.logging(`${id}-Bild gelöscht.`);
@@ -278,6 +281,15 @@ export class FirebaseService {
     }).catch(e => {
       this.logger.logging(`${id}-Parent konnte nicht gelöscht werden: ${e}`);
     });
+
+    // Rezept aus "eigeneRezepte"-Array in dem User löschen
+    this.firestore.doc(`${this.collections.user}/${this.auth.getAktuellerUser().uid}`).get().toPromise().then((res) => {
+      let rezepte = res.data()["eigeneRezepte"].filter(data => data != id);
+      this.firestore.doc(`${this.collections.user}/${this.auth.getAktuellerUser().uid}`).update({
+        eigeneRezepte: rezepte
+      });
+    })
+    
   }
 
   /**
@@ -507,7 +519,7 @@ export class FirebaseService {
   async getAlleFavoriten(userId: string): Promise<Array<Rezept>> {
     let returnVal: Array<Rezept> = [];
 
-    let favoritenPromise = await this.firestore.collection(this.collections.user).doc(userId).snapshotChanges().pipe(first()).toPromise();
+    let favoritenPromise = await this.firestore.doc(`${this.collections.user}/${userId}`).snapshotChanges().pipe(first()).toPromise();
     let liste = ["id"].concat(favoritenPromise.payload.data()["favoriten"]);
 
     returnVal = this.getRezepte([liste]);
