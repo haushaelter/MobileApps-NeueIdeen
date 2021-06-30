@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Rezept } from '../models/rezepte/rezept.model';
 import { Zutat } from '../models/zutaten/zutat.model';
@@ -12,17 +13,26 @@ import { HelperService } from '../services/helper.service';
   templateUrl: './neues-rezept.page.html',
   styleUrls: ['./neues-rezept.page.scss'],
 })
+
+/**
+ * Autor: Anika Haushälter
+ */
 export class NeuesRezeptPage implements OnInit {
   readonly seitentitel = "Neues Rezept";
+
+  //Variablen für die Forms
   private rezeptForm: FormGroup;
   private inhaltForm: FormGroup;
   private basisForm: FormGroup;
+
+  //Variablen aus der Datenbank und dem local storage
   private userId: string = localStorage.getItem('user');
   private vorhandeneRezepte:Array<string> = this.firebase.getAlleRezeptIds();
   private alleZutaten: Array<Zutat> = this.firebase.getAlleZutaten();
 
-
   constructor(
+    private route: ActivatedRoute, 
+    private router: Router,
     private formBuilder: FormBuilder,
     private firebase: FirebaseService,
     private filestorage: FileStorageService,
@@ -41,7 +51,7 @@ export class NeuesRezeptPage implements OnInit {
     
   }
 
-  standardeinheitAnzeigen(item){
+  standardeinheitAnzeigen(item):string{
     try{
       return this.alleZutaten.filter(filterZutat => filterZutat.id === item)[0].standardeinheit;
     } catch(e) {
@@ -49,6 +59,10 @@ export class NeuesRezeptPage implements OnInit {
     };
   }
 
+  /**
+   * Erstellt eine neue Zutat für die FormGroup
+   * @returns {FormGroup} Neue Zutat
+   */
   erstelleZutat(): FormGroup{
     return this.formBuilder.group({
       id: '',
@@ -56,6 +70,10 @@ export class NeuesRezeptPage implements OnInit {
     });
   }
 
+  /**
+   * Erstellt eine neue FormGroup für den Inhalt
+   * @returns {FormGroup}  Neuer Inhalt
+   */
   erstelleInhalt(): FormGroup{
     this.basisForm = this.formBuilder.group({
       titel: '',
@@ -71,6 +89,9 @@ export class NeuesRezeptPage implements OnInit {
     });
   }
 
+  /**
+   * Überprüft die Datenbank, ob die gewünschte ID vorhanden ist. Andernfalls wird um die nächste freie Zahl ergänzt, beginnend bei 1
+   */
   setId(){
     if(this.vorhandeneRezepte.includes(this.basisForm.value.titel)){
       let i = 1;
@@ -88,6 +109,10 @@ export class NeuesRezeptPage implements OnInit {
     
   }
 
+  /**
+   * Erstellt einen neuen Schritt für die Form
+   * @returns {FormGroup} Neuer Schritt
+   */
   erstelleSchritt(): FormGroup{
     return this.formBuilder.group({
       beschreibung: '',
@@ -95,6 +120,10 @@ export class NeuesRezeptPage implements OnInit {
     });
   }
 
+  /**
+   * Überprüft, ob das letzte Feld der Zutaten leer ist. Andernfalls wird eine neue FormGroup erstellt
+   * Die Methode zum Erstellen der FormGroup ist erstelleZutat()
+   */
   zutatHinzufuegen(): void{
     if((this.rezeptForm.get('zutaten') as FormArray).value[0]?.id !=""){
       (this.rezeptForm.get('zutaten') as FormArray).push(this.erstelleZutat());
@@ -104,10 +133,18 @@ export class NeuesRezeptPage implements OnInit {
     
   }
 
+  /**
+   * Enfernt eine gewünschte Zutat aus dem FormArray
+   * @param index {number} Index der zu löschenden Zutat im FormArray
+   */
   entferneZutat(index: number){
     (this.rezeptForm.get('zutaten') as FormArray).removeAt(index);
   }
   
+  /**
+   * Überprüft, ob ein leerer Schritt im FormArray vorhanden ist. Andernfalls wird eine neue FormGroup erstellt.
+   * Die Methode zum Erstellen der FormGroup ist erstelleSchritt()
+   */
   schrittHinzufuegen(){
     if((this.inhaltForm.get('schritte') as FormArray).value[0].beschreibung != ""){
       (this.inhaltForm.get('schritte') as FormArray).push(this.erstelleSchritt());
@@ -116,6 +153,10 @@ export class NeuesRezeptPage implements OnInit {
     }
   }
 
+  /**
+   * Enfernt einen gewünschten Schritt aus dem FormArray
+   * @param index {number} Index des zu löschenden Schrittes im FormArray
+   */
   entferneSchritt(index){
     if((this.inhaltForm.get('schritte') as FormArray).length !=1){
       (this.inhaltForm.get('schritte') as FormArray).removeAt(index)
