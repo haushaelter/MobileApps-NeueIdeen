@@ -10,14 +10,30 @@ import { FirebaseService } from '../services/firebase.service';
   templateUrl: './kochbuch.page.html',
   styleUrls: ['./kochbuch.page.scss'],
 })
+/**
+ * Autor: Anika Haushälter
+ */
 export class KochbuchPage {
+  //Variablen zum Kochbuch
   private id: string = this.activatedRoute.snapshot.queryParamMap.get("id");
   buchdata: Kochbuch;
+
+  //Variablen zu den Rezepten im Kochbuch
   rezepte:Array<Rezept> = new Array();
-  filter: Array<Rezept>;
   liste: Array<string>;
+
+  //User aus der Datenbank
   user: User;
 
+  //Variable, die gefilterte Liste enthält
+  filter: Array<Rezept>;
+
+  /**
+   * @ignore
+   * @param router 
+   * @param firebase 
+   * @param activatedRoute 
+   */
   constructor(
     private router: Router,
     private firebase: FirebaseService,
@@ -31,6 +47,7 @@ export class KochbuchPage {
   }
 
   /**
+   * Autor: Anika Haushälter
    * Anpassen der Liste filter, damit herausgefilterte Rezepte angezeigt werden
    * @param rezeptListe 
    */

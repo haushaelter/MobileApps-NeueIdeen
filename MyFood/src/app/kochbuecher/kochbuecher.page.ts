@@ -8,10 +8,17 @@ import { FirebaseService } from '../services/firebase.service';
   templateUrl: './kochbuecher.page.html',
   styleUrls: ['./kochbuecher.page.scss'],
 })
+/**
+ * AUtor: Anika Haushälter
+ */
 export class KochbuecherPage implements OnInit {
   readonly seitentitel = "Kochbücher";
   private kochbuecher:Array<Kochbuch>;
   
+  /**
+   * @ignore
+   * @param firebase 
+   */
   constructor(
     private firebase: FirebaseService
   ) { 

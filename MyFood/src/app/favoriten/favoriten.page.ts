@@ -10,14 +10,25 @@ import { FirebaseService } from '../services/firebase.service';
   templateUrl: './favoriten.page.html',
   styleUrls: ['./favoriten.page.scss'],
 })
+/**
+ * Autor: Anika Haushälter
+ */
 export class FavoritenPage implements OnInit {
   readonly seitentitel = "Favoriten";
-  private rezepte: Array<Rezept>;
-  filter: Array<Rezept>;
-  private liste: Array<string>;
+
+  //Inhalte aus der Datenbank
+  private rezepte:Array<Rezept> = new Array();
   user: User;
+  private liste: Array<string>;
 
+  //Variable, die gefilterte Liste enthält
+  filter: Array<Rezept>;
 
+  /**
+   * @ignore
+   * @param firebase 
+   * @param auth 
+   */
   constructor(
     private firebase: FirebaseService,
     private auth: AuthService
@@ -27,6 +38,7 @@ export class FavoritenPage implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
    * Zugreifen auf Favoriten des eingeloggten Users in der Datenbank
    */
   async getFavoriten(){
@@ -44,12 +56,11 @@ export class FavoritenPage implements OnInit {
 
   
   /**
+   * Autor: Anika Haushälter
    * Anpassen der Liste filter, damit herausgefilterte Rezepte angezeigt werden
    * @param rezeptListe 
    */
-   filterRezepte(rezeptListe: Array<Rezept>){    
-     console.log(this.filter);
-     
+   filterRezepte(rezeptListe: Array<Rezept>){
     this.filter = rezeptListe;    
   }
 }

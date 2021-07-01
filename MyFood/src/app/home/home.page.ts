@@ -14,10 +14,14 @@ import { FirebaseService } from '../services/firebase.service';
  */
 export class HomePage {
   readonly seitentitel = "Suche";
+
+  //Inhalte aus der Datenbank
   rezepte:Array<Rezept> = new Array();
-  filter: Array<Rezept>;
-  liste: Array<string>;
   user: User;
+  liste: Array<string>;
+
+  //Variable, die gefilterte Liste enthält
+  filter: Array<Rezept>;
 
   /**
    * @ignore
