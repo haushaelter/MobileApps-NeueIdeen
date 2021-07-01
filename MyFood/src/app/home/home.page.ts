@@ -8,6 +8,10 @@ import { FirebaseService } from '../services/firebase.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
+
+/**
+ * Autor: Anika Haushälter
+ */
 export class HomePage {
   readonly seitentitel = "Suche";
   rezepte:Array<Rezept> = new Array();
@@ -15,6 +19,10 @@ export class HomePage {
   liste: Array<string>;
   user: User;
 
+  /**
+   * @ignore
+   * @param firebase {FirebaseService} dependeny injection des FirebaseService
+   */
   constructor(
     private firebase: FirebaseService
   ) { 
@@ -26,6 +34,7 @@ export class HomePage {
   }
 
   /**
+   * Autor: Anika Haushälter
    * Anpassen der Liste filter, damit herausgefilterte Rezepte angezeigt werden
    * @param rezeptListe 
    */

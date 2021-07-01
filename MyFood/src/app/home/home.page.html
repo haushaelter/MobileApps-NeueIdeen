@@ -1,15 +1,21 @@
+<!-- Header -->
 <app-header [titel]="seitentitel"></app-header>
 
+<!-- Content -->
 <ion-content [fullscreen]="true">
+  <!-- Searchbar -->
   <app-searchbar [stringListe]="liste" [rezepteListe]="rezepte" [user]="user" (newRezeptListe)="filterRezepte($event)"></app-searchbar>
-  <!--Wenn die Variable "rezepte" Daten aus der Datenbank enthält, werden die Rezepte angezeigt-->
+  <!-- Wenn die Variable "rezepte" Daten aus der Datenbank enthält, werden die Rezepte angezeigt -->
   <ion-list *ngIf="filter.length>0 && user!=undefined">
     <app-list-rezept *ngFor="let eintrag of filter" [rezept]="eintrag" [user]="user"></app-list-rezept>
   </ion-list>
+  <!-- Button Add für eine neues Rezept -->
   <ion-fab slot="fixed" class="add-btn">
     <ion-fab-button  routerLink="/neues-rezept" routerDirection="forward"><ion-icon name="add"></ion-icon></ion-fab-button>
   </ion-fab>
+  <!-- Content scrollbar machen -->
   <ion-infinite-scroll >
     <ion-infinite-scroll-content loadingSpinner="none"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
+  
 </ion-content>
