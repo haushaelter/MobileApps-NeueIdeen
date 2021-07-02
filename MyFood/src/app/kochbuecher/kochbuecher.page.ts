@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentsModule } from '../components/components.module';
 import { Kochbuch } from '../models/kochbuecher/kochbuch';
 import { FirebaseService } from '../services/firebase.service';
@@ -9,23 +9,20 @@ import { FirebaseService } from '../services/firebase.service';
   styleUrls: ['./kochbuecher.page.scss'],
 })
 /**
- * AUtor: Anika Haushälter
+ * Autor: Anika Haushälter
  */
-export class KochbuecherPage implements OnInit {
+export class KochbuecherPage {
   readonly seitentitel = "Kochbücher";
   private kochbuecher:Array<Kochbuch>;
   
   /**
    * @ignore
-   * @param firebase 
+   * @param firebase
    */
   constructor(
     private firebase: FirebaseService
   ) { 
     this.kochbuecher = this.firebase.getAlleKochbuecher();
-  }
-
-  ngOnInit() {
   }
 
 }

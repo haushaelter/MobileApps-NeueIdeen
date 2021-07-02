@@ -44,6 +44,7 @@ export class AuthService {
    * @param passwort 
    */
   registrieren(email, passwort) {
+    console.log(passwort);
     this.auth.createUserWithEmailAndPassword(email, passwort).then((res) => {
       this.logging.logging("Registrierung durchgeführt.");
       this.login(email, passwort);
@@ -78,6 +79,7 @@ export class AuthService {
    * @param passwort 
    */
   login(email, passwort) {
+    console.log(passwort);
     this.auth.signInWithEmailAndPassword(email, passwort).then((res) => {
       this.logging.logging("Nutzer eingeloggt.");
       //Anzeigen von footer
