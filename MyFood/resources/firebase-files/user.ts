@@ -2,6 +2,7 @@ import { User } from "../../src/app/models/user/user.model";
 import { RezeptReferenz } from "../../src/app/models/user/rezept-referenz.model";
 import { IndividuelleAngaben } from "../../src/app/models/user/individuelle-angaben.model";
 
+// Beispieldaten für Datenbank
 let user1 = new User().deserialize({
     id: "Olf7J48ZKgWCCjW3wfICFSFkerh1",
     eigeneRezepte: [

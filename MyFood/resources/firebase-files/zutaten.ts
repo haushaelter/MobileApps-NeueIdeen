@@ -1,5 +1,6 @@
 import { Zutat } from "../../src/app/models/zutaten/zutat.model";
 
+// Beispieldaten für Datenbank
 let zutat1 = new Zutat().deserialize({
     id: "Salz",
     standardeinheit: "Prise",

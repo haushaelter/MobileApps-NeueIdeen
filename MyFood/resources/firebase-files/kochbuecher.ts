@@ -1,5 +1,6 @@
 import { Kochbuch } from "../../src/app/models/kochbuecher/kochbuch";
 
+// Beispieldaten für Datenbank
 let kochbuch1 = new Kochbuch().deserialize({
     id: "Nur für echte Kerle",
     bewertung: {

@@ -3,6 +3,7 @@ import { Inhalte } from "../../src/app/models/rezepte/inhalte.model";
 import { Schritt } from "../../src/app/models/rezepte/schritt.model";
 import { ZutatReferenz } from "../../src/app/models/rezepte/zutat-referenz.model";
 
+// Beispieldaten für Datenbank
 let rezept1 = new Rezept().deserialize({
     id: "Fleischkäse mit Spiegelei",
     ersteller: "Olf7J48ZKgWCCjW3wfICFSFkerh1",
