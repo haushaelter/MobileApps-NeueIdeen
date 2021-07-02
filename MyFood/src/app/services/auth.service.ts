@@ -19,10 +19,10 @@ export class AuthService {
     this.checkAuthState();
   }
 
-  checkAuthState(){
+  checkAuthState() {
     this.auth.onAuthStateChanged(user => {
       this.setAktuellerUser(user);
-      if(user){
+      if (user) {
         localStorage.setItem('user', user.uid);
       } else {
         localStorage.removeItem('user');
@@ -34,7 +34,7 @@ export class AuthService {
    * Prüft, ob ein User eingeloggt ist
    * @returns true bei eingeloggtem User
    */
-  isLoggedIn(){
+  isLoggedIn() {
     return (this.aktuellerUser) ? true : false;
   }
 
@@ -112,8 +112,35 @@ export class AuthService {
    * Passwort zurücksetzen, ohne Prüfung, ob alle Felder korrekt ausgefüllt wurden
    * @param email 
    */
-  passwortVergessen(email) {
-    this.auth.sendPasswordResetEmail(email).then((r) => {
+  passwortVergessen(email, altesPasswort, neuesPasswort) {
+    this.auth.signInWithEmailAndPassword(email, altesPasswort).then(() => {
+      this.auth.user.subscribe(user => {
+        user.updatePassword(neuesPasswort);
+      });
+    }).catch(e => {
+      switch (e.code) {
+        case "auth/invalid-email":
+          this.logging.zeigeToast("Invalide E-Mail.");
+          break;
+        case "auth/user-disabled":
+          this.logging.zeigeToast("Nutzer deaktiviert");
+          break;
+        case "auth/too-many-requests":
+          this.logging.zeigeToast("Zu viele Anfragen, bitte versuchen Sie es später erneut.");
+          break;
+        case "auth/wrong-password":
+          this.logging.zeigeToast("Falsches Passwort.");
+          break;
+        case "auth/user-not-found":
+          this.logging.zeigeToast("User wurde nicht gefunden");
+          break;
+        default:
+          this.logging.zeigeToast("Es ist ein Fehler aufgetreten.");
+          this.logging.logging("Anmeldefehler. Fehlercode noch nicht als Case hinzugefügt.");
+      }
+      this.logging.logging("Fehler-Code: " + e.code + "; E-Mail: " + email);
+    });
+    /*this.auth.sendPasswordResetEmail(email).then((r) => {
       this.logging.logging("Mail versendet.");
       this.router.navigateByUrl("/login");
     }).catch(e => {
@@ -131,10 +158,10 @@ export class AuthService {
           this.logging.logging(e);
       }
       this.logging.logging("Fehler-Code: " + e.code + "; E-Mail: " + email);
-    });
+    });*/
   }
 
-  logout () {
+  logout() {
     this.auth.signOut().then(() => {
       this.router.navigateByUrl("/login");
     }).catch(e => {
@@ -146,7 +173,7 @@ export class AuthService {
     this.aktuellerUser = user;
   }
 
-  getAktuellerUser(){
+  getAktuellerUser() {
     return this.aktuellerUser;
   }
 }

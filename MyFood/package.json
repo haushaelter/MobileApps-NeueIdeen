@@ -25,6 +25,7 @@
     "@ionic-native/firebase": "^5.33.0",
     "@ionic-native/image-picker": "^5.22.0-beta-1",
     "@ionic/angular": "^5.5.2",
+    "crypto-js": "^4.0.0",
     "firebase": "^8.6.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { AesService } from '../services/aes.service';
 import { AuthService } from '../services/auth.service';
 import { HelperService } from '../services/helper.service';
 
@@ -16,8 +17,9 @@ export class LoginPage implements OnInit {
   constructor(
     private authService: AuthService,
     private logging: HelperService,
-    private navCtrl: NavController
-  ) { }
+    private navCtrl: NavController,
+    private aes: AesService
+  ) {}
 
   ngOnInit() {
     document.getElementById("footer").style.display = "none";
@@ -25,7 +27,7 @@ export class LoginPage implements OnInit {
 
   login(){
     if(this.user.email && this.user.passwort) {
-      this.authService.login(this.user.email, this.user.passwort);
+      this.authService.login(this.user.email, this.aes.encrypt(this.user.passwort));
     } else if(this.user.email){
       this.logging.zeigeToast("Bitte Passwort eingeben");
     } else {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AesService } from '../services/aes.service';
 import { AuthService } from '../services/auth.service';
 import { HelperService } from '../services/helper.service';
 
@@ -14,7 +15,8 @@ export class RegistrierungPage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private logging: HelperService
+    private logging: HelperService,
+    private aes: AesService
   ) { }
 
   ngOnInit() {
@@ -24,7 +26,7 @@ export class RegistrierungPage implements OnInit {
   registrieren() {
     if (this.user.email && this.user.passwort) {
       if (this.user.passwort === this.user.passwortWiederholung) {
-        this.authService.registrieren(this.user.email, this.user.passwort);
+        this.authService.registrieren(this.user.email, this.aes.encrypt(this.user.passwort));
       } else {
         this.logging.zeigeToast("Passwörter stimmen nicht überein");
       }

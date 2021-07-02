@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AesService } from '../services/aes.service';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -8,18 +9,18 @@ import { AuthService } from '../services/auth.service';
 })
 export class PasswortVergessenPage implements OnInit {
 
-  email:any;
+  user: any = {};
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private aes: AesService
   ) { }
 
   ngOnInit() {
   }
 
   passwortVergessen () {
-    if(this.email)
-      this.authService.passwortVergessen(this.email);
+    
   }
 
 }
