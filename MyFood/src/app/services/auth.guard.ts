@@ -12,15 +12,14 @@ export class AuthGuard implements CanActivate {
   constructor(
     private auth : AuthService,
     private router: Router
-  ) {
-
-  }
+  ) {}
 
   /**
    * Wenn auf eine nicht-freigegebene Route zugegriffen wird, wird auf die Route Login zurück navigiert
    * @param route 
    * @param state 
    * @returns 
+   * Autor: Anika Haushälter
    */
   canActivate(
     route: ActivatedRouteSnapshot,

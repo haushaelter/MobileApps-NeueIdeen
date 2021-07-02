@@ -25,6 +25,10 @@ export class LoginPage implements OnInit {
     document.getElementById("footer").style.display = "none";
   }
 
+  /**
+   * Prüft alle Input-Felder und führt Login durch oder gibt eine passende Fehlermeldung als Toast aus
+   * Autor: Adrian Przybilla
+   */
   login(){
     if(this.user.email && this.user.passwort) {
       this.authService.login(this.user.email, this.aes.encrypt(this.user.passwort));

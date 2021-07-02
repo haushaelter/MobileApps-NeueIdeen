@@ -10,6 +10,12 @@ export class FileStorageService {
     private firebase: AngularFireStorage,
   ) { }
 
+  /**
+   * Liest Bild aus Firebase Storage aus. Ordner: rezepte
+   * @param rezeptId 
+   * @returns Referenz eines Bild aus dem Firebase Storage als URL
+   * Autor: Adrian Przybilla
+   */
   getRezeptFile(rezeptId: string) {
     const path = "rezepte";
     const fileName = rezeptId;
@@ -25,6 +31,11 @@ export class FileStorageService {
     */
   }
 
+  /**
+   * Setzt Bild in Firebase Storage. Ordern: rezepte
+   * @param event 
+   * Autor: Adrian Przybilla
+   */
   setRezeptFile(event) {
     const file = event.target.files[0];
     const filePath = event.target.title;
@@ -39,6 +50,12 @@ export class FileStorageService {
     */
   }
 
+  /**
+   * Löschen eines Bild in Firebase Storage
+   * @param rezeptId 
+   * @returns Promise zur Bestätigung des Löschvorgang
+   * Autor: Adrian Przybilla
+   */
   removeRezeptFile(rezeptId: string) {
     const path = "rezepte";
     const fileName = rezeptId;
@@ -46,7 +63,13 @@ export class FileStorageService {
     // Rückgabe des Bild als Observable
     return this.firebase.ref(`${path}/${fileName}`).delete().toPromise();
   }
-
+  
+  /**
+   * Liest Bild aus Firebase Storage aus. Ordner: kochbuecher
+   * @param rezeptId 
+   * @returns Referenz eines Bild aus dem Firebase Storage als URL
+   * Autor: Adrian Przybilla
+   */
   getKochbuchFile(rezeptId: string) {
     const path = "kochbuecher";
     const fileName = rezeptId;
@@ -61,6 +84,11 @@ export class FileStorageService {
     */
   }
 
+  /**
+   * Setzt Bild in Firebase Storage. Ordner: kochbuecher
+   * @param event Trigger-Event
+   * Autor: Adrian Przybilla
+   */
   setKochbuchFile(event) {
     const file = event.target.files[0];
     const filePath = event.target.title;

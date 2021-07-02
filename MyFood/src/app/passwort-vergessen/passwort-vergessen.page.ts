@@ -19,6 +19,10 @@ export class PasswortVergessenPage implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * Methode zum Anfragen eines neuen Passwort. Aktuell nicht mehr implementiert, auf Grund von Problemen mit der Verschlüsselung der Passwörter
+   * Autor: Adrian Przybilla
+   */
   passwortVergessen () {
     
   }

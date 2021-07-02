@@ -19,6 +19,10 @@ export class AuthService {
     this.checkAuthState();
   }
 
+  /**
+   * Überprüft den Status des aktuellen Users.
+   * Autor: Anika Haushälter & Adrian Przybilla
+   */
   checkAuthState() {
     this.auth.onAuthStateChanged(user => {
       this.setAktuellerUser(user);
@@ -33,6 +37,7 @@ export class AuthService {
   /**
    * Prüft, ob ein User eingeloggt ist
    * @returns true bei eingeloggtem User
+   * Autor: Adrian Przybilla
    */
   isLoggedIn() {
     return (this.aktuellerUser) ? true : false;
@@ -44,7 +49,6 @@ export class AuthService {
    * @param passwort 
    */
   registrieren(email, passwort) {
-    console.log(passwort);
     this.auth.createUserWithEmailAndPassword(email, passwort).then((res) => {
       this.logging.logging("Registrierung durchgeführt.");
       this.login(email, passwort);
@@ -77,9 +81,9 @@ export class AuthService {
    * Login, ohne Prüfung, ob alle Felder korrekt ausgefüllt wurden
    * @param email 
    * @param passwort 
+   * Autor: Adrian Przybilla
    */
   login(email, passwort) {
-    console.log(passwort);
     this.auth.signInWithEmailAndPassword(email, passwort).then((res) => {
       this.logging.logging("Nutzer eingeloggt.");
       //Anzeigen von footer
@@ -113,6 +117,7 @@ export class AuthService {
   /**
    * Passwort zurücksetzen, ohne Prüfung, ob alle Felder korrekt ausgefüllt wurden
    * @param email 
+   * Autor: Adrian Przybilla
    */
   passwortVergessen(email, altesPasswort, neuesPasswort) {
     this.auth.signInWithEmailAndPassword(email, altesPasswort).then(() => {
@@ -142,27 +147,12 @@ export class AuthService {
       }
       this.logging.logging("Fehler-Code: " + e.code + "; E-Mail: " + email);
     });
-    /*this.auth.sendPasswordResetEmail(email).then((r) => {
-      this.logging.logging("Mail versendet.");
-      this.router.navigateByUrl("/login");
-    }).catch(e => {
-      switch (e.code) {
-        case "auth/invalid-email":
-          this.logging.zeigeToast("Invalide E-Mail.");
-          this.logging.logging("Invalide E-Mail. Eingabe: " + email);
-          break;
-        case "auth/user-not-found":
-          this.logging.zeigeToast("Unbekannte E-Mail.");
-          this.logging.logging("Unbekannte E-Mail. Eingabe: " + email);
-          break;
-        default:
-          this.logging.zeigeToast("Unbekannter Fehler.");
-          this.logging.logging(e);
-      }
-      this.logging.logging("Fehler-Code: " + e.code + "; E-Mail: " + email);
-    });*/
   }
 
+  /**
+   * Ausloggen des aktuell angemeldeten User
+   * Autor: Adrian Przybilla
+   */
   logout() {
     this.auth.signOut().then(() => {
       this.router.navigateByUrl("/login");
@@ -171,10 +161,20 @@ export class AuthService {
     });
   }
 
+  /**
+   * Set-Methode für aktuellerUser
+   * @param user 
+   * Autor: Adrian Przybilla
+   */
   private setAktuellerUser(user: object): void {
     this.aktuellerUser = user;
   }
 
+  /**
+   * Get-Methode für aktuellerUser
+   * @returns aktuellerUser als Object
+   * Autor: Adrian Przybilla
+   */
   getAktuellerUser() {
     return this.aktuellerUser;
   }

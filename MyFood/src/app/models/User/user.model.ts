@@ -1,7 +1,10 @@
 import { Deserialize } from "../deserialize";
 import { IndividuelleAngaben } from "./individuelle-angaben.model";
-import { RezeptReferenz } from "./rezept-referenz.model";
 
+/**
+ * Model für die Erstellung von Zutaten in einem User in der Firestore-Datenbank, wie sie in der Datenbank liegen und auf der Website verwendet werden sollen.
+ * Autor: Adrian Przybilla
+ */
 export class User implements Deserialize {
 
     id: string;

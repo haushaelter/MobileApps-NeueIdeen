@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ComponentsModule } from '../components/components.module';
 import { Kochbuch } from '../models/kochbuecher/kochbuch';
 import { FirebaseService } from '../services/firebase.service';
 

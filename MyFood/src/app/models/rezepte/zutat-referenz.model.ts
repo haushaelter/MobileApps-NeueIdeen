@@ -1,6 +1,10 @@
 import { Deserialize } from "../deserialize";
-import { Schritt } from "./schritt.model"
 
+/**
+ * Model für die Erstellung von Zutaten in einem Rezept, wie sie in der Datenbank liegen und auf der Website verwendet werden sollen.
+ * Jedes Rezept kann beliebig viele Einträge dieses Models beinhalten.
+ * Autor: Adrian Przybilla
+ */
 export class ZutatReferenz implements Deserialize {
     menge: number;
     id: string;
