@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { IonSelect, NavController } from '@ionic/angular';
 import { Rezept } from '../models/rezepte/rezept.model';
 import { Zutat } from '../models/zutaten/zutat.model';
 import { FileStorageService } from '../services/file-storage.service';
@@ -19,6 +19,9 @@ import { HelperService } from '../services/helper.service';
  */
 export class NeuesRezeptPage implements OnInit {
   readonly seitentitel = "Neues Rezept";
+
+  //Variable für Rezept, das ggfs für Überarbeitungen übergeben wurde
+  private data: Rezept;
 
   //Variablen für die Forms
   private rezeptForm: FormGroup;
@@ -48,7 +51,22 @@ export class NeuesRezeptPage implements OnInit {
       inhalte: this.inhaltForm,
       zutaten: this.formBuilder.array([this.erstelleZutat()])
     })
-    
+
+    this.route.queryParams.subscribe(params => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.data = this.router.getCurrentNavigation().extras.state.rezept;
+      }
+    });
+
+    if(this.data != undefined){
+      this.befuelleForm();
+    }
+  }
+
+  ngAfterViewInit(){
+    for(let schritt in this.inhaltForm?.value.schritte){
+      this.zutatSelectOptions(Number(schritt));
+    }
   }
 
   standardeinheitAnzeigen(item):string{
@@ -61,29 +79,43 @@ export class NeuesRezeptPage implements OnInit {
 
   /**
    * Erstellt eine neue Zutat für die FormGroup
+   * @param id {string} Id der Zutat. Standardmäßig leer
+   * @param menge {menge} Menge der Zutat. Standardmäßig null
    * @returns {FormGroup} Neue Zutat
    */
-  erstelleZutat(): FormGroup{
+  /**
+   * 
+   * @returns 
+   */
+  erstelleZutat(id: string = "", menge: number = null): FormGroup{
     return this.formBuilder.group({
-      id: '',
-      menge: null
+      id: id,
+      menge: menge
     });
   }
 
   /**
    * Erstellt eine neue FormGroup für den Inhalt
+   * @param titel {string} Titel des Rezeptes. Standardmäßig leer
+   * @param beschreibung {string} Beschreibung des Rezeptes. Standardmäßig leer
+   * @param bewertungsAnzahl {number} Anzahl der Bewertungen. Standardmäßig null
+   * @param bewertung {number} Durchschnittliche Bewertung. Standardmäßig null
    * @returns {FormGroup}  Neuer Inhalt
    */
-  erstelleInhalt(): FormGroup{
+  erstelleInhalt(
+    titel: string = "", 
+    beschreibung: string = "", 
+    bewertungsAnzahl:number = 0, 
+    bewertung: number = 0): FormGroup{
     this.basisForm = this.formBuilder.group({
-      titel: '',
-      beschreibung: ''
+      titel: titel,
+      beschreibung: beschreibung
     });
     return this.formBuilder.group({
       basis: this.basisForm,
       bewertung: {
-        anzahl: 0,
-        bewertung: 0
+        anzahl: bewertungsAnzahl,
+        bewertung: bewertung
       },
       schritte: this.formBuilder.array([this.erstelleSchritt()])
     });
@@ -111,12 +143,14 @@ export class NeuesRezeptPage implements OnInit {
 
   /**
    * Erstellt einen neuen Schritt für die Form
+   * @param beschreibung {string} Beschreibung des Schrittes
+   * @param zutaten {string} Zutaten, die für den Schritt notwendig sind. Format: Zutat1, Zutat2, ...
    * @returns {FormGroup} Neuer Schritt
    */
-  erstelleSchritt(): FormGroup{
+  erstelleSchritt(beschreibung: string = "", zutaten: string = ""): FormGroup{
     return this.formBuilder.group({
-      beschreibung: '',
-      zutaten: ''
+      beschreibung: beschreibung,
+      zutaten: zutaten
     });
   }
 
@@ -124,9 +158,9 @@ export class NeuesRezeptPage implements OnInit {
    * Überprüft, ob das letzte Feld der Zutaten leer ist. Andernfalls wird eine neue FormGroup erstellt
    * Die Methode zum Erstellen der FormGroup ist erstelleZutat()
    */
-  zutatHinzufuegen(): void{
+  zutatHinzufuegen(id: string = "", menge: number = null): void{
     if((this.rezeptForm.get('zutaten') as FormArray).value[0]?.id !=""){
-      (this.rezeptForm.get('zutaten') as FormArray).push(this.erstelleZutat());
+      (this.rezeptForm.get('zutaten') as FormArray).push(this.erstelleZutat(id, menge));
     } else {
       this.logging.zeigeToast("Du hast bereits ein leeres Feld");
     }
@@ -145,9 +179,9 @@ export class NeuesRezeptPage implements OnInit {
    * Überprüft, ob ein leerer Schritt im FormArray vorhanden ist. Andernfalls wird eine neue FormGroup erstellt.
    * Die Methode zum Erstellen der FormGroup ist erstelleSchritt()
    */
-  schrittHinzufuegen(){
-    if((this.inhaltForm.get('schritte') as FormArray).value[0].beschreibung != ""){
-      (this.inhaltForm.get('schritte') as FormArray).push(this.erstelleSchritt());
+  schrittHinzufuegen(beschreibung: string = "", zutaten: string = ""){
+    if((this.inhaltForm.get('schritte') as FormArray)?.value[0]?.beschreibung != ""){
+      (this.inhaltForm.get('schritte') as FormArray).push(this.erstelleSchritt(beschreibung, zutaten));
     } else {
       this.logging.zeigeToast("Du hast bereits ein leeres Feld");
     }
@@ -156,13 +190,67 @@ export class NeuesRezeptPage implements OnInit {
   /**
    * Enfernt einen gewünschten Schritt aus dem FormArray
    * @param index {number} Index des zu löschenden Schrittes im FormArray
+   * @param allowed {boolean} Standardwert false. Für den Fall, dass der erste Schritt gelöscht werden muss, kann der Wert true übergeben werden
    */
-  entferneSchritt(index){
-    if((this.inhaltForm.get('schritte') as FormArray).length !=1){
+  entferneSchritt(index, allowed: boolean = false){
+    if(allowed || (this.inhaltForm.get('schritte') as FormArray).length !=1){
       (this.inhaltForm.get('schritte') as FormArray).removeAt(index)
     } else {
       this.logging.zeigeToast("Bitte gib mindestens einen Schritt an");
     }
+  }
+
+
+  /**
+   * Befüllt die Forms. Wenn kein Rezept übergeben wurde, bleibt alles leer
+   */
+  befuelleForm(){
+    this.inhaltForm = this.erstelleInhalt(
+      this.data.inhalte.basis.titel, 
+      this.data.inhalte.basis.beschreibung, 
+      this.data.inhalte.bewertung.anzahl,
+      this.data.inhalte.bewertung.bewertung
+    );
+
+    this.rezeptForm = this.formBuilder.group({
+      id: this.data.id,
+      ersteller: this.data.ersteller,
+      inhalte: this.inhaltForm,
+      zutaten: this.formBuilder.array([this.erstelleZutat()])
+    });
+
+    // Zutaten in die Form fügen. Die bereits vorhandene, leere Zutat wird gelöscht
+    this.entferneZutat(0);
+    for(let zutat in this.data.zutaten){
+      this.zutatHinzufuegen(zutat, this.data.zutaten[zutat]['Menge']);
+    }
+
+    // Schritte in die Form fügen. Der bereits vorhandene, leere Schritt wird gelöscht
+    this.entferneSchritt(0, true)
+    for(let schritt in this.data.inhalte){
+      if(schritt != "basis" && schritt != "bewertung"){
+        this.schrittHinzufuegen(this.data.inhalte[schritt]["beschreibung"], this.data.inhalte[schritt]["zutaten"].toString());
+      }
+      
+    }
+  }
+
+  /**
+   * Setzt die ion-select-options auf selected. Es werden alle gesetzt, die als Zutat im entsprechenden Schritt angegeben sind
+   * @param schritt {number} index des Schrittes
+   */
+  zutatSelectOptions(schritt: number){
+    // abspeichern der Zutaten des Schrittes
+    let zutaten = this.inhaltForm?.value?.schritte[schritt]?.zutaten;
+
+    // Speichern des HTML-Elements ion-select
+    let select = (document?.getElementById(`select${schritt}`)) as HTMLIonSelectElement;
+
+    // wenn sowohl Zutaten als auch das HTML-Element gefunden wurden, wird der Wert als Array zugewiesen
+    if(select?.value != undefined && zutaten != ""){
+      select.value = zutaten.split(",");
+    }
+
   }
 
   /**
@@ -241,8 +329,6 @@ export class NeuesRezeptPage implements OnInit {
 
     //Überprüfen, ob die Zutat in der Datenbank vorhanden ist
     this.alleZutaten.forEach(item => {
-      console.log(zutat["id"]);
-      console.log(item.id);
       if(zutat["id"] == item.id){
         contains = true;
       }

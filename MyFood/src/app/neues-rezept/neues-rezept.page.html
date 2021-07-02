@@ -60,14 +60,26 @@
             <ion-label class="schritteZutatenLabel">Benötigte Zutaten:</ion-label>
           </ion-col>
         </ion-row>
-        <ion-row>
+        <ion-row [formGroupName]="i">
           <ion-col size="10" class="schritteZutatenCol background">
-            <ion-select multiple="true" cancelText="Abbrechen" okText="Auswählen" placeholder="Keine Zutaten ausgewählt" controllName="zutaten" class="schritteZutaten">
-              <ion-select-option *ngFor="let zutatOption of this.rezeptForm['controls']['zutaten']['controls']" [value]="zutatOption['controls']['id'].value">{{zutatOption['controls']['id'].value}}</ion-select-option>
+            <ion-select 
+            id='{{"select"+i}}'
+            value="Ei M,Haferflocken,Ketchup"
+            multiple="true" 
+            cancelText="Abbrechen" 
+            okText="Auswählen" 
+            placeholder="Keine Zutaten ausgewählt" 
+            controllName="zutaten" 
+            class="schritteZutaten">
+              <ion-select-option 
+              *ngFor="let zutatOption of this.rezeptForm['controls']['zutaten']['controls']" 
+              [value]="zutatOption['controls']['id'].value"
+              >{{zutatOption['controls']['id'].value}}</ion-select-option>
             </ion-select>
           </ion-col>
         </ion-row>
-
+        <!-- schritt.value.zutaten.includes(zutatOption['controls']['id'].value) -->
+        <!-- [(ngModel)]="schritt.value.zutaten" [compareWith]="test(i+1)" -->
         <ion-row [formGroupName]="i">
           <ion-col class="beschreibungCol background"><ion-textarea formControlName="beschreibung" placeholder="Beschreibung"></ion-textarea></ion-col>
         </ion-row>
