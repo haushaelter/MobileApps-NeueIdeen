@@ -1,6 +1,6 @@
 import { createOfflineCompileUrlResolver } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { IonInfiniteScroll, NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Rezept } from '../models/rezepte/rezept.model';
@@ -55,6 +55,7 @@ export class RezeptPage implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private firebase: FirebaseService,
     private listService: ListService,
     private auth: AuthService,
@@ -197,6 +198,16 @@ export class RezeptPage implements OnInit {
    */
   notizenSpeichern(event){
     this.firebase.setNotiz(this.data.id, this.aktuelleUserId, event.detail.srcElement.defaultValue);
+  }
+
+  rezeptBearbeiten(): void{
+    let navigationExtras: NavigationExtras = {
+      state: {
+        rezept: this.data
+      }
+    };
+    this.router.navigate(['neues-rezept'], navigationExtras);
+    //this.navCtrl.navigateForward(`/neues-rezept`, {state: {rezept: this.data}});
   }
   
 }
