@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonSelect, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { Rezept } from '../models/rezepte/rezept.model';
 import { Zutat } from '../models/zutaten/zutat.model';
 import { FileStorageService } from '../services/file-storage.service';
@@ -15,7 +15,7 @@ import { HelperService } from '../services/helper.service';
 })
 
 /**
- * Autor: Anika Haushälter
+ * Autor: Anika Haushälter und Adrian Przybilla
  */
 export class NeuesRezeptPage implements OnInit {
   readonly seitentitel = "Neues Rezept";
@@ -33,6 +33,16 @@ export class NeuesRezeptPage implements OnInit {
   private vorhandeneRezepte:Array<string> = this.firebase.getAlleRezeptIds();
   private alleZutaten: Array<Zutat> = this.firebase.getAlleZutaten();
 
+  /**
+   * @ignore
+   * @param route 
+   * @param router 
+   * @param formBuilder 
+   * @param firebase 
+   * @param filestorage 
+   * @param navCtrl 
+   * @param logging 
+   */
   constructor(
     private route: ActivatedRoute, 
     private router: Router,
@@ -43,33 +53,52 @@ export class NeuesRezeptPage implements OnInit {
     private logging: HelperService
   ) { }
 
+  /**
+   * Autor: Anika Haushälter
+   * 
+   * Wird ausgeführt, sobald die Seite betreten wurde
+   */
   ngOnInit() {
-    this.inhaltForm = this.erstelleInhalt();
-    this.rezeptForm = this.formBuilder.group({
-      id: '',
-      ersteller: this.userId,
-      inhalte: this.inhaltForm,
-      zutaten: this.formBuilder.array([this.erstelleZutat()])
-    })
-
+    //Überprüft, ob ein Rezept übergeben wurde
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.data = this.router.getCurrentNavigation().extras.state.rezept;
       }
     });
 
+    // Wenn ein Rezept mitgegeben wurde, werden die Inhalte in die Form gefüllt. Andernfalls wird eine leere Form erstellt
     if(this.data != undefined){
       this.befuelleForm();
+    } else {
+      this.inhaltForm = this.erstelleInhalt();
+      this.rezeptForm = this.formBuilder.group({
+        id: '',
+        ersteller: this.userId,
+        inhalte: this.inhaltForm,
+        zutaten: this.formBuilder.array([this.erstelleZutat()])
+      })
     }
   }
 
+  /**
+   * Autor: Anika Haushälter
+   * 
+   * Wird ausgeführt, nachdem die Seite fertig geladen wurde
+   */
   ngAfterViewInit(){
-    for(let schritt in this.inhaltForm?.value.schritte){
+    // wenn bereits Schritte in der Form enthalten sind, werden die für den Schritt notwendigen Zutaten im ion-select ausgewählt
+    for(let schritt in this.inhaltForm?.value?.schritte){
       this.zutatSelectOptions(Number(schritt));
     }
   }
 
-  standardeinheitAnzeigen(item):string{
+  /**
+   * Autor: Adrian Przybilla
+   * 
+   * @param item 
+   * @returns 
+   */
+  private standardeinheitAnzeigen(item):string{
     try{
       return this.alleZutaten.filter(filterZutat => filterZutat.id === item)[0].standardeinheit;
     } catch(e) {
@@ -78,16 +107,14 @@ export class NeuesRezeptPage implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Erstellt eine neue Zutat für die FormGroup
    * @param id {string} Id der Zutat. Standardmäßig leer
    * @param menge {menge} Menge der Zutat. Standardmäßig null
    * @returns {FormGroup} Neue Zutat
    */
-  /**
-   * 
-   * @returns 
-   */
-  erstelleZutat(id: string = "", menge: number = null): FormGroup{
+  private erstelleZutat(id: string = "", menge: number = null): FormGroup{
     return this.formBuilder.group({
       id: id,
       menge: menge
@@ -95,6 +122,8 @@ export class NeuesRezeptPage implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Erstellt eine neue FormGroup für den Inhalt
    * @param titel {string} Titel des Rezeptes. Standardmäßig leer
    * @param beschreibung {string} Beschreibung des Rezeptes. Standardmäßig leer
@@ -102,7 +131,7 @@ export class NeuesRezeptPage implements OnInit {
    * @param bewertung {number} Durchschnittliche Bewertung. Standardmäßig null
    * @returns {FormGroup}  Neuer Inhalt
    */
-  erstelleInhalt(
+  private erstelleInhalt(
     titel: string = "", 
     beschreibung: string = "", 
     bewertungsAnzahl:number = 0, 
@@ -122,9 +151,11 @@ export class NeuesRezeptPage implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Überprüft die Datenbank, ob die gewünschte ID vorhanden ist. Andernfalls wird um die nächste freie Zahl ergänzt, beginnend bei 1
    */
-  setId(){
+  private setId(){
     if(this.vorhandeneRezepte.includes(this.basisForm.value.titel)){
       let i = 1;
       while(this.vorhandeneRezepte.includes(`${this.basisForm.value.titel}${i}`)){
@@ -142,12 +173,14 @@ export class NeuesRezeptPage implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Erstellt einen neuen Schritt für die Form
    * @param beschreibung {string} Beschreibung des Schrittes
    * @param zutaten {string} Zutaten, die für den Schritt notwendig sind. Format: Zutat1, Zutat2, ...
    * @returns {FormGroup} Neuer Schritt
    */
-  erstelleSchritt(beschreibung: string = "", zutaten: string = ""): FormGroup{
+  private erstelleSchritt(beschreibung: string = "", zutaten: string = ""): FormGroup{
     return this.formBuilder.group({
       beschreibung: beschreibung,
       zutaten: zutaten
@@ -155,10 +188,12 @@ export class NeuesRezeptPage implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Überprüft, ob das letzte Feld der Zutaten leer ist. Andernfalls wird eine neue FormGroup erstellt
    * Die Methode zum Erstellen der FormGroup ist erstelleZutat()
    */
-  zutatHinzufuegen(id: string = "", menge: number = null): void{
+  private zutatHinzufuegen(id: string = "", menge: number = null): void{
     if((this.rezeptForm.get('zutaten') as FormArray).value[0]?.id !=""){
       (this.rezeptForm.get('zutaten') as FormArray).push(this.erstelleZutat(id, menge));
     } else {
@@ -168,18 +203,22 @@ export class NeuesRezeptPage implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Enfernt eine gewünschte Zutat aus dem FormArray
    * @param index {number} Index der zu löschenden Zutat im FormArray
    */
-  entferneZutat(index: number){
+  private entferneZutat(index: number){
     (this.rezeptForm.get('zutaten') as FormArray).removeAt(index);
   }
   
   /**
+   * Autor: Anika Haushälter
+   * 
    * Überprüft, ob ein leerer Schritt im FormArray vorhanden ist. Andernfalls wird eine neue FormGroup erstellt.
    * Die Methode zum Erstellen der FormGroup ist erstelleSchritt()
    */
-  schrittHinzufuegen(beschreibung: string = "", zutaten: string = ""){
+  private schrittHinzufuegen(beschreibung: string = "", zutaten: string = ""){
     if((this.inhaltForm.get('schritte') as FormArray)?.value[0]?.beschreibung != ""){
       (this.inhaltForm.get('schritte') as FormArray).push(this.erstelleSchritt(beschreibung, zutaten));
     } else {
@@ -188,11 +227,13 @@ export class NeuesRezeptPage implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Enfernt einen gewünschten Schritt aus dem FormArray
    * @param index {number} Index des zu löschenden Schrittes im FormArray
    * @param allowed {boolean} Standardwert false. Für den Fall, dass der erste Schritt gelöscht werden muss, kann der Wert true übergeben werden
    */
-  entferneSchritt(index, allowed: boolean = false){
+  private entferneSchritt(index, allowed: boolean = false){
     if(allowed || (this.inhaltForm.get('schritte') as FormArray).length !=1){
       (this.inhaltForm.get('schritte') as FormArray).removeAt(index)
     } else {
@@ -202,9 +243,11 @@ export class NeuesRezeptPage implements OnInit {
 
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Befüllt die Forms. Wenn kein Rezept übergeben wurde, bleibt alles leer
    */
-  befuelleForm(){
+  private befuelleForm(){
     this.inhaltForm = this.erstelleInhalt(
       this.data.inhalte.basis.titel, 
       this.data.inhalte.basis.beschreibung, 
@@ -236,10 +279,12 @@ export class NeuesRezeptPage implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Setzt die ion-select-options auf selected. Es werden alle gesetzt, die als Zutat im entsprechenden Schritt angegeben sind
    * @param schritt {number} index des Schrittes
    */
-  zutatSelectOptions(schritt: number){
+  private zutatSelectOptions(schritt: number){
     // abspeichern der Zutaten des Schrittes
     let zutaten = this.inhaltForm?.value?.schritte[schritt]?.zutaten;
 
@@ -254,10 +299,12 @@ export class NeuesRezeptPage implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Methode zum Speichern eines Rezeptes
    * @returns void
    */
-  speichern():void{
+  private speichern():void{
     let rezeptJson = this.rezeptForm.value;
   
     //Überprüfen auf Vollständigkeit
@@ -321,10 +368,11 @@ export class NeuesRezeptPage implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
    * Überprüft, ob die Zutat in der Datenbank vorhanden ist. Falls nicht, wird sie gespeichert
    * @param zutat 
    */
-  checkZutatVorhanden(zutat: JSON): void {
+  private checkZutatVorhanden(zutat: JSON): void {
     let contains: boolean = false;
 
     //Überprüfen, ob die Zutat in der Datenbank vorhanden ist

@@ -1,15 +1,10 @@
-import { createOfflineCompileUrlResolver } from '@angular/compiler';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { IonInfiniteScroll, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Rezept } from '../models/rezepte/rezept.model';
 import { Schritt } from '../models/rezepte/schritt.model';
-import { IndividuelleAngaben } from '../models/user/individuelle-angaben.model';
-import { RezeptReferenz } from '../models/user/rezept-referenz.model';
 import { User } from '../models/user/user.model';
-import { Zutat } from '../models/zutaten/zutat.model';
-import { AuthService } from '../services/auth.service';
 import { FileStorageService } from '../services/file-storage.service';
 import { FirebaseService } from '../services/firebase.service';
 import { HelperService } from '../services/helper.service';
@@ -20,22 +15,35 @@ import { ListService } from '../services/list.service';
   templateUrl: './rezept.page.html',
   styleUrls: ['./rezept.page.scss'],
 })
-export class RezeptPage implements OnInit {
+/**
+ * Autor: Anika Haushälter und Adrian Przybilla
+ */
+export class RezeptPage {
+  // User
   readonly aktuelleUserId = localStorage.getItem('user');
+  private aktuellerUser: User;
+
+  // Rezeptdaten
   private id: string = this.activatedRoute.snapshot.queryParamMap.get("id");
   private data: Rezept;
-  private aktuellerUser: User;
+
+  // Variablen für Darstellung
   private schritte: Array<Schritt> = new Array;
-  private _fav:string = "star-outline";
   private bewertungText:string;
+  // Sternicon
   private sterne: Array<string>;
+  private _fav:string = "star-outline";
+
+  // boolean für eigene oder Gesamtbewertung
   private eigeneBewertung: boolean = false;
   private gesamtbewertung: boolean = true;
-  private bild: Observable<string | null>;
-  private zutatenRef:  Observable<any | null>;
-  zutatenEinheit = [];
 
-  zutatenObj;
+  // Bild
+  private bild: Observable<string | null>;
+
+  // Zutaten
+  private zutatenEinheit = [];
+  private zutatenObj;
 
   @Input() 
   set rezept (rezept:Rezept){
@@ -53,12 +61,26 @@ export class RezeptPage implements OnInit {
     this._fav="star-outline";
   }
 
+  /**
+   * Autor: Anika Haushälter
+   * 
+   * Constructor
+   * 
+   * Es wird die ID der URL geholt und Datenbankabfragen getätigt
+   * 
+   * @param activatedRoute {ActivatedRoute} Dependency Injection
+   * @param router {Router} Dependency Injection
+   * @param firebase {FirebaseService} Dependency Injection
+   * @param listService {ListService} Dependency Injection
+   * @param filestorage {FileStorageService} Dependency Injection
+   * @param navCtrl {NavController} Dependency Injection
+   * @param logging {HelperService} Dependency Injection
+   */
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private firebase: FirebaseService,
     private listService: ListService,
-    private auth: AuthService,
     private filestorage: FileStorageService,
     private navCtrl: NavController,
     private logging: HelperService
@@ -69,12 +91,11 @@ export class RezeptPage implements OnInit {
     this.bild = this.filestorage.getRezeptFile(this.id);
     this.zutatenObj = this.firebase.getAlleZutatenAlsObject();
   }
-
-  ngOnInit() {
-  }
-
-  
-  readData(){    
+  /**
+   * 
+   * @returns {void}
+   */
+  private readData(): void{    
     this.data.id = this.listService.checkString("Titel", this.data.id);    
 
     this.data.inhalte.bewertung.anzahl = this.listService.checkNumber(this.data.inhalte.bewertung.anzahl);
@@ -114,11 +135,16 @@ export class RezeptPage implements OnInit {
         return;
       }
     }
-
     this._fav = "star-outline";
   }
 
-  bewerten(id:number){    
+  /**
+   * Autor: Anika Haushälter
+   * 
+   * Setzt eine Bewertung mit der Übergebenen id+1, dem aktuellen User und dem Rezept
+   * @param id {number} id des Sterns
+   */
+  private bewerten(id:number){    
     this.firebase.setBewertung((id+1), this.aktuellerUser, this.data.id);
     this.aktuellerUser = this.firebase.getUser(this.aktuelleUserId);
     this.data.inhalte.bewertung.bewertung = id+1;
@@ -126,12 +152,24 @@ export class RezeptPage implements OnInit {
     this.gesamtbewertung = false;
   }
 
-  aktualisiereBewertungstext(){
+  /**
+   * Autor: Anika Haushälter
+   * 
+   * setzt booleans so, dass eine eigene Bewertung vorgenommen wurde
+   */
+  private aktualisiereBewertungstext(){
     this.eigeneBewertung = true;
     this.gesamtbewertung = false;
   }
 
-  zutatenString(zutaten){
+  /**
+   * Autor: Adrian Przybilla
+   * 
+   * 
+   * @param zutaten 
+   * @returns 
+   */
+  private zutatenString(zutaten){
     let returnString: string = "";
     for(let i = 0; i<zutaten.length; i++){
       returnString = returnString + zutaten[i];
@@ -142,7 +180,12 @@ export class RezeptPage implements OnInit {
     return returnString;    
   }
 
-  rezeptLoeschen(){
+  /**
+   * Autor: Anika Haushälter
+   * 
+   * Löscht nach einer Sicherheitsabfrage das Rezept. Der Button ist normalerweise nur für den Ersteller sichtbar, dennoch wird der Ersteller nochmals geprüft
+   */
+  private rezeptLoeschen(){
     if(this.data.ersteller != this.aktuelleUserId){
       this.logging.zeigeToast("Nur der Ersteller des Rezeptes kann löschen");
     } else {
@@ -172,12 +215,14 @@ export class RezeptPage implements OnInit {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Favorisieren von Rezept. Verwendet Rezept und eingeloggten User
    * @returns void
    */
-   setFavorit():void{    
+   private setFavorit():void{    
     if(this.data.id==undefined || this.aktuelleUserId==undefined){
-      this.logging.zeigeToast("Es ist ein Fehler beim favorisieren aufgetreten.");
+      this.logging.zeigeToast("Es ist ein Fehler beim Favorisieren aufgetreten.");
       this.logging.logging(`Rezeptid = ${this.data.id} und Userid = ${this.aktuelleUserId}`);
       return;
     }
@@ -193,21 +238,27 @@ export class RezeptPage implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Speichert die Notizen, die der User eingegeben hat
    * @param event 
    */
-  notizenSpeichern(event){
+  private notizenSpeichern(event){
     this.firebase.setNotiz(this.data.id, this.aktuelleUserId, event.detail.srcElement.defaultValue);
   }
 
-  rezeptBearbeiten(): void{
+  /**
+   * Autor: Anika Haushälter
+   * 
+   * Ruft die Seite "neues-rezept" auf und übergibt das aktuelle Rezept, damit es überarbeitet werden kann
+   */
+  private rezeptBearbeiten(): void{
     let navigationExtras: NavigationExtras = {
       state: {
         rezept: this.data
       }
     };
     this.router.navigate(['neues-rezept'], navigationExtras);
-    //this.navCtrl.navigateForward(`/neues-rezept`, {state: {rezept: this.data}});
   }
   
 }

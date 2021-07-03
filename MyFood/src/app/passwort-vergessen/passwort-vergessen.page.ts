@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AesService } from '../services/aes.service';
 import { AuthService } from '../services/auth.service';
 
@@ -7,7 +7,10 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './passwort-vergessen.page.html',
   styleUrls: ['./passwort-vergessen.page.scss'],
 })
-export class PasswortVergessenPage implements OnInit {
+/**
+ * Autor: Adrian Przybilla
+ */
+export class PasswortVergessenPage{
 
   user: any = {};
 
@@ -16,14 +19,12 @@ export class PasswortVergessenPage implements OnInit {
     private aes: AesService
   ) { }
 
-  ngOnInit() {
-  }
-
   /**
-   * Methode zum Anfragen eines neuen Passwort. Aktuell nicht mehr implementiert, auf Grund von Problemen mit der Verschlüsselung der Passwörter
    * Autor: Adrian Przybilla
+   * 
+   * Methode zum Anfragen eines neuen Passwort. Aktuell nicht mehr implementiert, auf Grund von Problemen mit der Verschlüsselung der Passwörter
    */
-  passwortVergessen () {
+  private passwortVergessen () {
     
   }
 

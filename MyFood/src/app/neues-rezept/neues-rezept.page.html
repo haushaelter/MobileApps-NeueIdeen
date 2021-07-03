@@ -23,34 +23,36 @@
 
       <ion-grid *ngFor="let zutat of rezeptForm.get('zutaten')['controls']; let i = index" formArrayName="zutaten" class="unterstrich zutaten">
         <ion-row [formGroupName]="i">
-          
+          <!-- Menge der Zutat -->
           <ion-col class="zutatenMenge background" size="3"><ion-input formControlName="menge" type="number" placeholder="Menge"></ion-input></ion-col>
-
+          <!-- Einheit der Zutat -->
           <ion-col class="zutatenEinheit" size="1">
             <ion-label>{{ standardeinheitAnzeigen(zutat.value.id) }}</ion-label>
           </ion-col>
-
+          <!-- Name der Zutat. Bietet Vorschläge aus der Datenbank -->
           <ion-col size="7" class="zutatenName-col background">
             <input formControlName="id" type="text" placeholder="Name" list="zutaten" class="zutatenName ">
             <datalist id="zutaten" class="zutatenList">
               <option *ngFor="let zutatRef of alleZutaten" [value]="zutatRef.id"></option>
             </datalist>
           </ion-col>
-
+          <!-- Button (x) zum entfernen einer Zutat -->
           <ion-col (click)="entferneZutat(i)" size="1.5" class="entfernen-icon"><ion-icon name="close" class="icon"></ion-icon></ion-col>
 
         </ion-row>
       </ion-grid>
-
+      <!-- Button, um eine weitere Zutat hinzuzufügen -->
       <div size="12" class="hinzufuegen-div">
         <ion-button (click)="zutatHinzufuegen()" class="hinzufuegen"><ion-icon slot="icon-only" name="add" class="icon"></ion-icon></ion-button>
       </div>
+
     </div>
     
     <!-- Schritte als Liste -->
     <div [formGroup]="inhaltForm">
       <ion-grid *ngFor="let schritt of inhaltForm.get('schritte')['controls']; index as i" id="schritte-grid" formArrayName="schritte" class="unterstrich schritte"> 
         <ion-row class="row-ueberschrift">
+          <!-- Überschrift mit Beschriftung "Schritt 1", wobei hochgezählt wird -->
           <ion-col size="7"><ion-label>Schritt {{i+1}}</ion-label></ion-col>
           <ion-col size="3" (click)="entferneSchritt(i)" class="entfernen-icon"><ion-icon name="close"></ion-icon></ion-col>
         </ion-row>
@@ -62,15 +64,17 @@
         </ion-row>
         <ion-row [formGroupName]="i">
           <ion-col size="10" class="schritteZutatenCol background">
+            <!-- Popup mit Checkboxen, um die Zutaten für den Schritt auszuwählen -->
             <ion-select 
             id='{{"select"+i}}'
-            value="Ei M,Haferflocken,Ketchup"
+            value=""
             multiple="true" 
             cancelText="Abbrechen" 
             okText="Auswählen" 
             placeholder="Keine Zutaten ausgewählt" 
             controllName="zutaten" 
             class="schritteZutaten">
+            <!-- Checkboxen, für jede Zutat die oben hinzugefügt wurde -->
               <ion-select-option 
               *ngFor="let zutatOption of this.rezeptForm['controls']['zutaten']['controls']" 
               [value]="zutatOption['controls']['id'].value"
@@ -78,14 +82,13 @@
             </ion-select>
           </ion-col>
         </ion-row>
-        <!-- schritt.value.zutaten.includes(zutatOption['controls']['id'].value) -->
-        <!-- [(ngModel)]="schritt.value.zutaten" [compareWith]="test(i+1)" -->
+        <!-- Textarea für die Beschreibung des Schrittes -->
         <ion-row [formGroupName]="i">
           <ion-col class="beschreibungCol background"><ion-textarea formControlName="beschreibung" placeholder="Beschreibung"></ion-textarea></ion-col>
         </ion-row>
 
       </ion-grid>
-
+      <!-- Button, um einen weiteren Schritt hinzuzufügen -->
       <div size="12" class="hinzufuegen-div">
         <ion-button (click)="schrittHinzufuegen()" class="hinzufuegen"><ion-icon slot="icon-only" name="add"></ion-icon></ion-button>
       </div>

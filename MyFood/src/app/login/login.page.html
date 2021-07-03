@@ -1,6 +1,7 @@
 <app-header [titel]="seitentitel"></app-header>
 
 <ion-content>
+  <!-- Inputs Email und Passwort -->
   <ion-list>
     <ion-item class="item-email item">
       <ion-label position="stacked">Email</ion-label>
@@ -10,9 +11,11 @@
       <ion-label position="stacked">Passwort</ion-label>
       <ion-input type="password" [(ngModel)]="user.passwort" required></ion-input>
     </ion-item>
+    <!-- Button Passwort vergessen -->
     <div class="btn btn-forget">
       <a (click)="passwortVergessen()">Passwort vergessen</a>
     </div>
+    <!-- Buttons Login und Registrierung -->
     <div class="btn-collection">
       <ion-button class="btn-login btn" (click)="login()">Login</ion-button>
       <ion-button class="btn-register btn" fill="outline" routerLink="/registrierung">Registrieren</ion-button>

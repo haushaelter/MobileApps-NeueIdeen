@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ComponentsModule } from '../components/components.module';
+import { Component } from '@angular/core';
 import { Rezept } from '../models/rezepte/rezept.model';
 import { User } from '../models/user/user.model';
 import { AuthService } from '../services/auth.service';
@@ -13,7 +12,7 @@ import { FirebaseService } from '../services/firebase.service';
 /**
  * Autor: Anika Haushälter
  */
-export class FavoritenPage implements OnInit {
+export class FavoritenPage {
   readonly seitentitel = "Favoriten";
 
   //Inhalte aus der Datenbank
@@ -50,10 +49,6 @@ export class FavoritenPage implements OnInit {
     
     this.filter = this.rezepte;
   }
-
-  ngOnInit() {
-  }
-
   
   /**
    * Autor: Anika Haushälter

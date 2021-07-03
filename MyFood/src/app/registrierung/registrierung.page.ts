@@ -8,6 +8,9 @@ import { HelperService } from '../services/helper.service';
   templateUrl: './registrierung.page.html',
   styleUrls: ['./registrierung.page.scss'],
 })
+/**
+ * Autor: Anika Haushälter und Adrian Przybilla
+ */
 export class RegistrierungPage implements OnInit {
   readonly seitentitel = "Registrierung";
 
@@ -19,22 +22,39 @@ export class RegistrierungPage implements OnInit {
     private aes: AesService
   ) { }
 
+  /**
+  * Autor: Anika Haushälter
+  * 
+  * Aufruf beim Betreten der Seite
+  */
   ngOnInit() {
+    // Navigation nicht anzeigen
     document.getElementById("footer").style.display = "none";
   }
 
   /**
-   * Registrieren. Untersucht Input-Felder, ob diese Ausgefüllt wurden und gibt ggf. eine passende Fehlermeldung über einen Toast aus.
-   * Autor: Adrian Przybilla
+   * Autor: Anika Haushälter
+   * 
+   * Aufruf beim Verlassen der Seite
    */
-  registrieren() {
+  ngOnDestroy() {
+    // Navigation wieder anzeigen
+    document.getElementById("footer").style.display = "block"
+  }
+
+  /**
+   * Autor: Adrian Przybilla
+   * 
+   * Registrieren. Untersucht Input-Felder, ob diese Ausgefüllt wurden und gibt ggf. eine passende Fehlermeldung über einen Toast aus.
+   */
+  private registrieren() {
     if (this.user.email && this.user.passwort) {
       if (this.user.passwort === this.user.passwortWiederholung) {
         this.authService.registrieren(this.user.email, this.aes.encrypt(this.user.passwort));
       } else {
         this.logging.zeigeToast("Passwörter stimmen nicht überein");
       }
-    } else if(this.user.email){
+    } else if (this.user.email) {
       this.logging.zeigeToast("Bitte Passwort eingeben");
     } else {
       this.logging.zeigeToast("Bitte E-Mail eingeben");

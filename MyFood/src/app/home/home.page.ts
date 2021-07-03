@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Rezept } from '../models/rezepte/rezept.model';
 import { User } from '../models/user/user.model';
 import { FirebaseService } from '../services/firebase.service';

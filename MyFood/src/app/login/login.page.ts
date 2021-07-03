@@ -9,11 +9,21 @@ import { HelperService } from '../services/helper.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
+/**
+ * Autor: Anika Haushälter und Adrian Przybilla
+ */
 export class LoginPage implements OnInit {
   readonly seitentitel = "Login";
 
   user:any = {};
   
+  /**
+   * @ignore
+   * @param authService 
+   * @param logging 
+   * @param navCtrl 
+   * @param aes 
+   */
   constructor(
     private authService: AuthService,
     private logging: HelperService,
@@ -21,15 +31,32 @@ export class LoginPage implements OnInit {
     private aes: AesService
   ) {}
 
+  /**
+   * Autor: Anika Haushälter
+   * 
+   * Aufruf beim Betreten der Seite
+   */
   ngOnInit() {
+    // Navigation nicht anzeigen
     document.getElementById("footer").style.display = "none";
   }
 
   /**
-   * Prüft alle Input-Felder und führt Login durch oder gibt eine passende Fehlermeldung als Toast aus
-   * Autor: Adrian Przybilla
+   * Autor: Anika Haushälter
+   * 
+   * Aufruf beim Verlassen der Seite
    */
-  login(){
+  ngOnDestroy(){
+    // Navigation wieder anzeigen
+    document.getElementById("footer").style.display = "block"
+  }
+
+  /**
+   * Autor: Adrian Przybilla
+   * 
+   * Prüft alle Input-Felder und führt Login durch oder gibt eine passende Fehlermeldung als Toast aus
+   */
+  private login(){
     if(this.user.email && this.user.passwort) {
       this.authService.login(this.user.email, this.aes.encrypt(this.user.passwort));
     } else if(this.user.email){
@@ -39,7 +66,12 @@ export class LoginPage implements OnInit {
     }
   }
 
-  passwortVergessen(){
+  /**
+   * Autor: Adrian Przybilla
+   * 
+   * Navigiert zur Seite Passwort vergessen
+   */
+  private passwortVergessen(){
     this.navCtrl.navigateForward('/passwort-vergessen');
   }
 
