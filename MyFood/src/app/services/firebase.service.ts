@@ -15,6 +15,9 @@ import { FileStorageService } from './file-storage.service';
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Autor: Anika Haushälter und Adrian Przybilla
+ */
 export class FirebaseService {
 
   //unveränderliche Konstante mit den Namen der Collections
@@ -27,6 +30,12 @@ export class FirebaseService {
     zutaten: "zutaten"
   }
 
+  /**
+   * @ignore
+   * @param firestore 
+   * @param logger 
+   * @param fileStorage 
+   */
   constructor(
     private firestore: AngularFirestore,
     private logger: HelperService,
@@ -34,11 +43,12 @@ export class FirebaseService {
   ) { }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * SnapshotChanges haben unterschiedliche Types. Je nachdem welcher Typ übergeben wird, wird das neue Objekt dem Array hinzugefuegt, gelöscht oder überschreibt einen Index
    * @param type Snapshot-Type, welcher aussagt, ob das neue Item aufgenommen werden soll oder nicht
    * @param arr Array, dem ein Wert hinzugefügt werden soll
    * @param neuesObject Neues Object, welches eventuell dem Array hinzugefügt werden soll oder ein aktuelles Object überschreiben soll
-   * Autor: Adrian Przybilla
    */
   arraySnapshotBearbeiten(type: string, arr: Array<any>, neuesObject: any) {
     if (type == "added") {
@@ -63,9 +73,10 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Datenbankabfrage aller Rezepte
    * @returns Array mit allen Rezepten der Datenbank
-   * Autor: Adrian Przybilla
    */
   getAlleRezepte(): Array<Rezept> {
     let rezepte: Array<Rezept> = [];
@@ -102,9 +113,10 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Liest alle Rezept-Ids aus und gibt sie als Array zurück
    * @returns Alle Rezept-Ids in der Firestore-Collection "Rezepte"
-   * Autor: Adrian Przybilla
    */
   getAlleRezeptIds(): Array<string> {
     let names: Array<string> = [];
@@ -119,12 +131,13 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Abfrage einer beliebigen Anzahl an Rezepten
    * @param names Multidimensionales Array. Array-Aufbau beispielhaft erklärt:
    *  [["Feld-Id, wie in Rezept-Model", "Wert1", "Wert2"],
    *  ["Feld-Id, wie in Rezept-Model", "Wert1", "Wert2"]]
    * @returns angefragte Rezepte
-   * Autor: Adrian Przybilla
    */
   getRezepte(filter: string[][]): Array<Rezept> {
     let rezepte: Array<Rezept> = [];
@@ -174,10 +187,11 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Liest einzelnes Rezept aus
    * @param name Rezept-Id
    * @returns Rezept-Object
-   * Autor: Adrian Przybilla
    */
   getRezept(name: string): Rezept {
     let rezept: Rezept = new Rezept();
@@ -208,9 +222,10 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Neues Rezept erstellen oder vorhandenes Rezept überschreiben
    * @param rezept Rezept-Object
-   * Autor: Adrian Przybilla
    */
   setRezept(rezept: Rezept): void {
     // Rezept setzen
@@ -249,9 +264,10 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Einzelne Rezepte löschen
    * @param id Rezept-Id
-   * Autor: Adrian Przybilla
    */
   deleteRezept(id: string): void {
     console.log("Löschen")
@@ -295,13 +311,14 @@ export class FirebaseService {
         eigeneRezepte: rezepte
       });
     })
-    
+
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Alle User erhalten
    * @returns Array mit allen Usern als User-Object
-   * Autor: Adrian Przybilla
    */
   getAlleUser(): Array<User> {
     let user: User, users: Array<User> = [];
@@ -329,10 +346,11 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Beliebige Anzahl an Usern anfragen
    * @param names gewünschte User-Ids
    * @returns Array mit allen angefragten Usern als User-Object
-   * Autor: Adrian Przybilla
    */
   getUsers(names: Array<string>): Array<User> {
     let user: Array<User> = new Array<User>();
@@ -345,10 +363,11 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Einzelnen User anfragen
    * @param name User-Id
    * @returns User-Object
-   * Autor: Adrian Przybilla
    */
   getUser(name: string): User {
     let user: User = new User();
@@ -371,9 +390,10 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Neuen User setzen oder User überschreiben
    * @param user User-Object
-   * Autor: Adrian Przybilla
    */
   setUser(user: User): void {
     this.firestore.doc(`${this.collections.user}/${user.id}`).set({
@@ -390,22 +410,24 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Speichert eine Notiz, die ein User erstellt. Wenn das Rezept nicht in der Collection Individuelle Angaben ist, wird es hinzugefügt
    * @param rezeptName {string} RezeptID, für das die Notiz ist
    * @param userId {string} ID des Users, der eine Notiz speichert
    * @param notiz {string} String, der als Notiz gespeichert werden soll
-   * Autor: Anika Haushälter
    */
   setNotiz(rezeptName: string, userId: string, notiz: string) {
     this.firestore.doc(`${this.collections.user}/${userId}/${this.collections.nutzerangaben}/${rezeptName}`).set({
       notizen: notiz
-    }, {merge: true})
+    }, { merge: true })
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Alle Zutaten anfragen
    * @returns Array aus Zutat-Objects
-   * Autor: Adrian Przybilla
    */
   getAlleZutaten(): Array<Zutat> {
     let zutaten: Array<Zutat> = [];
@@ -421,9 +443,10 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Alle Zutaten anfragen
    * @returns Object aus Zutat-Objects
-   * Autor: Adrian Przybilla
    */
   getAlleZutatenAlsObject(): Object {
     let zutaten = {};
@@ -441,10 +464,11 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Erhalte beliebig viele Zutaten
    * @param names 
    * @returns Array aus Zutat-Objects
-   * Autor: Adrian Przybilla
    */
   getZutaten(names: Array<string>): Array<Zutat> {
     let zutat: Array<Zutat> = [];
@@ -457,10 +481,11 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Erhalte einzelne Zutat
    * @param name zutat-Id
    * @returns Zutat-Object
-   * Autor: Adrian Przybilla
    */
   getZutat(name: string): Zutat {
     let zutat: Zutat = new Zutat();
@@ -473,19 +498,21 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Erstelle neue Zutat oder überschreibe existierende Zutat
    * @param zutat Zutat-Object
-   * Autor: Adrian Przybilla
    */
   setZutat(zutat: Zutat): void {
     this.firestore.collection(this.collections.zutaten).doc(zutat.id).set(JSON.parse(JSON.stringify(zutat)));
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Füge Favorit dem Array hinzu
    * @param rezeptName Rezept-Id
    * @param userId user-uid
-   * Autor: Adrian Przybilla
    */
   setFavorit(rezeptName: string, userId: string) {
     let favoritenArr: Array<string>;
@@ -506,10 +533,11 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Entfernt ein Favorit aus dem Array
    * @param rezeptName Rezept-id
    * @param userId user-id
-   * Autor: Adrian Przybilla
    */
   removeFavorit(rezeptName: string, userId: string) {
     let favoritenArr: Array<string>;
@@ -530,10 +558,11 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Gibt alle favorisierten Rezepte in einem Array als Promise zurück
    * @param userId 
    * @returns Promise mit Array aus Rezept-Objects
-   * Autor: Adrian Przybilla
    */
   async getAlleFavoriten(userId: string): Promise<Array<Rezept>> {
     let returnVal: Array<Rezept> = [];
@@ -547,9 +576,10 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Speichern eines neuen Kochbuches
    * @param kochbuch Zu speicherndes Kochbuch als Typ Kochbuch
-   * Autor: Anika Haushälter
    */
   setKochbuch(kochbuch: Kochbuch): void {
     this.firestore.collection(this.collections.kochbuecher).doc(kochbuch.id).set(JSON.parse(JSON.stringify(kochbuch)));
@@ -571,9 +601,10 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Aufrufen aller Kochbücher
    * @returns Liste aller Kochbücher
-   * Autor: Anika Haushälter
    */
   getAlleKochbuecher(): Array<Kochbuch> {
     let kochbuecher: Array<Kochbuch> = [];
@@ -589,10 +620,11 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Aufrufen mehrere Kochbücher durch Namen
    * @param names Array mit strings der Namen der gewünschten Kochbücher
    * @returns Liste der gewünschten Bücher
-   * Autor: Anika Haushälter
    */
   getKochbuecher(names: Array<string>): Array<Kochbuch> {
     let zutat: Array<Kochbuch> = [];
@@ -605,11 +637,12 @@ export class FirebaseService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Setzen einer Bewertung eines Users
    * @param bewertung Nummer, die gesetzt wurde
    * @param user User, der bewertet
    * @param rezeptId Rezept, welches bewertet wurde
-   * Autor: Adrian Przybilla
    */
   setBewertung(bewertung: number, user: User, rezeptId: string) {
     //Überprüfen, ob der User bereits eine Bewertung hatte

@@ -2,28 +2,31 @@ import { Injectable } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 /**
  * Autor: Anika Haushälter
  */
 export class HelperService {
-    
+
     /**
      * @ignore
      */
     constructor(private alertCtrl: AlertController, private toastCtrl: ToastController) { }
 
     /**
+     * Autor: Anika Haushälter 
+     * 
      * Methode zum Schreiben von logs
      * @param nachricht {string} nachricht, welche geschrieben werden soll
      */
-    logging(nachricht: string):void {
-
+    logging(nachricht: string): void {
         console.log(`${(new Date()).toLocaleTimeString()} ${nachricht}`);
     }
 
     /**
+     * Autor: Anika Haushälter 
+     * 
      * Methode zum Anzeigen von Toasts. Die Nachricht wird auch geloggt
      * @param nachricht {string} nachricht, die angezeigt werden soll
      */
@@ -43,6 +46,8 @@ export class HelperService {
     }
 
     /**
+     * Autor: Anika Haushälter 
+     * 
      * Methode zum Anzeigen von Dialogen. Die Nachricht wird auch geloggt
      * @param titel {string} titel, der den Titel des Dialoges abbildet
      * @param nachricht {string}  nachricht, die eine Nachricht darstellt

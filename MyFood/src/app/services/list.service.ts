@@ -4,6 +4,9 @@ import { HelperService } from './helper.service';
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Autor: Anika Haushälter
+ */
 export class ListService {
 
   constructor(
@@ -11,6 +14,8 @@ export class ListService {
   ) { }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * Überprüft, ob ein übergebener Wert nicht undefined oder null ist
    * @param suche //Wonach wird untersucht (Titel, Vertrag)
    * @param ergebnis //Was wurde gefunden
@@ -26,6 +31,8 @@ export class ListService {
   }
 
   /**
+   * Autor: Anika Haushälter
+   * 
    * überprüft, ob ein übergebener Wert vom Typ number ist
    * @param num //zu überprüfende Nummer
    * @returns übergebene Nummer oder 0
@@ -40,6 +47,7 @@ export class ListService {
   }
 
   /**
+   * Autor: Anika Haushälter
    * 
    * @param bewertung //Anzahl der Bewertungen, die bei dem Rezept bereits gemacht wurden
    * @returns Array der Länge 5, der Bezeichnungen für Icons enthält

@@ -4,17 +4,25 @@ import { AngularFireStorage } from "@angular/fire/storage";
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Autor: Adrian Przybilla
+ */
 export class FileStorageService {
 
+  /**
+   * @ignore
+   * @param firebase 
+   */
   constructor(
     private firebase: AngularFireStorage,
   ) { }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Liest Bild aus Firebase Storage aus. Ordner: rezepte
    * @param rezeptId 
    * @returns Referenz eines Bild aus dem Firebase Storage als URL
-   * Autor: Adrian Przybilla
    */
   getRezeptFile(rezeptId: string) {
     const path = "rezepte";
@@ -32,11 +40,12 @@ export class FileStorageService {
   }
 
   /**
-   * Setzt Bild in Firebase Storage. Ordern: rezepte
-   * @param event 
    * Autor: Adrian Przybilla
+   * 
+   * Setzt Bild in Firebase Storage. Ordner: rezepte
+   * @param event 
    */
-  setRezeptFile(event) {
+  private setRezeptFile(event) {
     const file = event.target.files[0];
     const filePath = event.target.title;
     const path = "rezepte";
@@ -51,10 +60,11 @@ export class FileStorageService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Löschen eines Bild in Firebase Storage
    * @param rezeptId 
    * @returns Promise zur Bestätigung des Löschvorgang
-   * Autor: Adrian Przybilla
    */
   removeRezeptFile(rezeptId: string) {
     const path = "rezepte";
@@ -65,10 +75,11 @@ export class FileStorageService {
   }
   
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Liest Bild aus Firebase Storage aus. Ordner: kochbuecher
    * @param rezeptId 
    * @returns Referenz eines Bild aus dem Firebase Storage als URL
-   * Autor: Adrian Przybilla
    */
   getKochbuchFile(rezeptId: string) {
     const path = "kochbuecher";
@@ -85,9 +96,10 @@ export class FileStorageService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Setzt Bild in Firebase Storage. Ordner: kochbuecher
    * @param event Trigger-Event
-   * Autor: Adrian Przybilla
    */
   setKochbuchFile(event) {
     const file = event.target.files[0];

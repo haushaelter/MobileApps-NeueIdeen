@@ -9,10 +9,22 @@ import { HelperService } from "./helper.service";
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Autor: Anika Haushälter und Adrian Przybilla
+ */
 export class AuthService {
 
   private aktuellerUser;
 
+  /**
+   * Autor: Adrian Przybilla
+   * 
+   * überprüft direkt den Status des aktuellen Users
+   * @param auth 
+   * @param router 
+   * @param logging 
+   * @param firebase 
+   */
   constructor(
     private auth: AngularFireAuth,
     private router: Router,
@@ -23,10 +35,11 @@ export class AuthService {
   }
 
   /**
+   * Autor: Anika Haushälter und Adrian Przybilla
+   * 
    * Überprüft den Status des aktuellen Users.
-   * Autor: Anika Haushälter & Adrian Przybilla
    */
-  checkAuthState() {
+  private checkAuthState() {
     this.auth.onAuthStateChanged(user => {
       this.setAktuellerUser(user);
       if (user) {
@@ -38,15 +51,18 @@ export class AuthService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Prüft, ob ein User eingeloggt ist
    * @returns true bei eingeloggtem User
-   * Autor: Adrian Przybilla
    */
   isLoggedIn() {
     return (this.aktuellerUser) ? true : false;
   }
 
   /**
+   * Autor: Adrian Przybilla 
+   * 
    * Registrierung, ohne Prüfung, ob alle Felder korrekt ausgefüllt wurden
    * @param email 
    * @param passwort 
@@ -54,12 +70,14 @@ export class AuthService {
   registrieren(email, passwort) {
     this.auth.createUserWithEmailAndPassword(email, passwort).then((res) => {
       this.logging.logging("Registrierung durchgeführt.");
+      //Anlegen des neuen Users in der Datenbank
       let userModel = new User().deserialize({
         id: res.user.uid,
         favoriten: [],
         eigeneRezepte: []
       });
       this.firebase.setUser(userModel);
+      //Automatischer Login
       this.login(email, passwort);
     }).catch(e => {
       switch (e.code) {
@@ -87,10 +105,11 @@ export class AuthService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Login, ohne Prüfung, ob alle Felder korrekt ausgefüllt wurden
    * @param email 
    * @param passwort 
-   * Autor: Adrian Przybilla
    */
   login(email, passwort) {
     this.auth.signInWithEmailAndPassword(email, passwort).then((res) => {
@@ -124,9 +143,10 @@ export class AuthService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Passwort zurücksetzen, ohne Prüfung, ob alle Felder korrekt ausgefüllt wurden
    * @param email 
-   * Autor: Adrian Przybilla
    */
   passwortVergessen(email, altesPasswort, neuesPasswort) {
     this.auth.signInWithEmailAndPassword(email, altesPasswort).then(() => {
@@ -159,8 +179,9 @@ export class AuthService {
   }
 
   /**
-   * Ausloggen des aktuell angemeldeten User
    * Autor: Adrian Przybilla
+   * 
+   * Ausloggen des aktuell angemeldeten User
    */
   logout() {
     this.auth.signOut().then(() => {
@@ -171,18 +192,20 @@ export class AuthService {
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Set-Methode für aktuellerUser
    * @param user 
-   * Autor: Adrian Przybilla
    */
   private setAktuellerUser(user: object): void {
     this.aktuellerUser = user;
   }
 
   /**
+   * Autor: Adrian Przybilla
+   * 
    * Get-Methode für aktuellerUser
    * @returns aktuellerUser als Object
-   * Autor: Adrian Przybilla
    */
   getAktuellerUser() {
     return this.aktuellerUser;

@@ -5,6 +5,9 @@ import * as CryptoJS from 'crypto-js';
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Autor: Adrian Przybilla
+ */
 export class AesService {
 
   private AesKey: string = CryptoJS.enc.Hex.parse('4931EF6C91609BBAD576318450ED988F');
@@ -12,10 +15,11 @@ export class AesService {
   private iv: string = CryptoJS.enc.Hex.parse('C58CC2E8509CB49D7F219DD9A0177FE1');
 
   /**
-   * Verschlüsselung von einzelnen Nachrichten. AES-Verschlüsselung, mit IV für immer gleiche Verschlüsselung
-   * @param cryptMessage 
-   * @returns 
    * Autor: Adrian Przybilla
+   * 
+   * Verschlüsselung von einzelnen Nachrichten. AES-Verschlüsselung, mit IV für immer gleiche Verschlüsselung
+   * @param cryptMessage {string} Nachricht, die verschlüsselt werden soll
+   * @returns {string} verschlüsselte Nachricht
    */
   encrypt(cryptMessage: string): string {
 
