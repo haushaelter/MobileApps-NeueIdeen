@@ -72,8 +72,9 @@
             cancelText="Abbrechen" 
             okText="Auswählen" 
             placeholder="Keine Zutaten ausgewählt" 
-            controllName="zutaten" 
-            class="schritteZutaten">
+            formControlName="zutaten" 
+            class="schritteZutaten"
+            >
             <!-- Checkboxen, für jede Zutat die oben hinzugefügt wurde -->
               <ion-select-option 
               *ngFor="let zutatOption of this.rezeptForm['controls']['zutaten']['controls']" 
