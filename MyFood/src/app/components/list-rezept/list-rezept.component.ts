@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, NavController, ToastController } from '@ionic/angular';
+import { Component, Input } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Rezept } from 'src/app/models/rezepte/rezept.model';
 import { User } from 'src/app/models/User/user.model';
-import { AuthService } from 'src/app/services/auth.service';
 import { FileStorageService } from 'src/app/services/file-storage.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { ListService } from 'src/app/services/list.service';
@@ -14,19 +13,26 @@ import { HelperService } from '../../services/helper.service';
   templateUrl: './list-rezept.component.html',
   styleUrls: ['./list-rezept.component.scss'],
 })
-export class ListRezeptComponent implements OnInit {
+/**
+ * Autor: Anika Haushälter
+ */
+export class ListRezeptComponent {
   readonly aktuelleUserId = localStorage.getItem('user');
  
+  //vollständiges Rezept
   private data:Rezept;
-
+  
+  //Variablen für angepasste Anzeigestrings
   private _anzahlText = "keine Bewertungen";
   private _sterne = Array<String>();
   private _fav:string = "star-outline";
   private _bearbeitet = false;
-  private _bewertung = 'bewertung';
   private bild: Observable<string | null>;
     
-  
+  /**
+   * Autor: Anika Haushälter
+   * Entgegennehmen von Rezept. Überprüft, ob die enthaltenen Daten vorhanden sind und ersetzt falls nicht
+   */
   @Input() 
   set rezept (rezept:Rezept){
     
@@ -51,6 +57,10 @@ export class ListRezeptComponent implements OnInit {
     }
   }
 
+  /**
+   * Autor: Anika Haushälter
+   * Entgegennehmen von User. Überprüft auf wichtige Eigenschaften und passt bei eigener Bewertung diese in der Variablen data an
+   */
   @Input()
   set user(user:User){
     if(user.favoriten?.includes(this.data.id)){
@@ -65,22 +75,28 @@ export class ListRezeptComponent implements OnInit {
     
   }
 
+  /**
+   * @ignore
+   * @param logging 
+   * @param listService 
+   * @param firebase 
+   * @param navCtrl 
+   * @param filestorage 
+   */
   constructor(
     private logging: HelperService,
     private listService: ListService,
     private firebase: FirebaseService,
-    private auth: AuthService,
     private navCtrl: NavController,
     private filestorage: FileStorageService
     ) {}
 
-  ngOnInit() {}
-
   /**
+   * Autor: Anika Haushälter
    * Favorisieren von Rezept. Verwendet Rezept und eingeloggten User
    * @returns void
    */
-  setFavorit():void{    
+  private setFavorit():void{    
     if(this.data.id==undefined || this.aktuelleUserId==undefined){
       this.logging.zeigeToast("Es ist ein Fehler beim favorisieren aufgetreten.");
       this.logging.logging(`Rezeptid = ${this.data.id} und Userid = ${this.aktuelleUserId}`);
@@ -98,10 +114,11 @@ export class ListRezeptComponent implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
    * OnClick Listener für Rezepte. Navigiert zum entsprechendem Rezept
    * @returns void
    */
-  rezeptAufrufen():void{
+  private rezeptAufrufen():void{
     if(this.data.id==undefined){
       this.logging.zeigeToast("Es ist ein Fehler beim Aufrufen des Rezeptes aufgetreten.")
       return;

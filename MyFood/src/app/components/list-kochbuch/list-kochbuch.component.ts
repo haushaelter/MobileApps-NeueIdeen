@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Kochbuch } from 'src/app/models/kochbuecher/kochbuch';
@@ -11,7 +11,10 @@ import { HelperService } from '../../services/helper.service';
   templateUrl: './list-kochbuch.component.html',
   styleUrls: ['./list-kochbuch.component.scss'],
 })
-export class ListKochbuchComponent implements OnInit {
+/**
+ * Autor: Anika Haushälter
+ */
+export class ListKochbuchComponent {
   private data:Kochbuch;
   private bild: Observable<string | null>;
   _sterne = Array<String>();
@@ -34,6 +37,14 @@ export class ListKochbuchComponent implements OnInit {
 
     this.bild = this.storage.getKochbuchFile(this.data.id);
   }
+
+  /**
+   * @ignore
+   * @param logging {HelperService} Dependency Injection
+   * @param listService {ListService} Dependency Injection
+   * @param navCtrl {NavController} Dependency Injection
+   * @param storage {FileStorageService} Dependency Injection
+   */
   constructor(
     private logging: HelperService,
     private listService: ListService,
@@ -41,12 +52,12 @@ export class ListKochbuchComponent implements OnInit {
     private storage: FileStorageService
   ) {}
 
-  ngOnInit() {}
-
   /**
+   * Autor: Anika Haushälter
    * Aufrufen von Buch. Navigiert zur Seite Kochbuch
+   * @returns {void}
    */
-  buchAufrufen():void{
+  private buchAufrufen():void{
     if(this.data.id==undefined){
       this.logging.zeigeToast("Es ist ein Fehler beim Aufrufen aufgetreten.")
     }

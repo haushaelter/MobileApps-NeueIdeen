@@ -6,21 +6,28 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
-
-  private _titel:string;
+/**
+ * Autor: Adrian Przybilla
+ */
+export class HeaderComponent{
 
   @Input() 
-  set titel(titel:string){
-    this._titel=titel;
-  }
+  private titel:string;
 
+  /**
+   * @ignore
+   * @param auth {AuthService}
+   */
   constructor(
     private auth: AuthService
   ) { }
 
-  ngOnInit() {}
-
-  logout() {this.auth.logout();
+  /**
+   * Autor: Adrian Przybilla
+   * Loggt den User aus
+   * @returns {void}
+   */
+  private logout():void {
+    this.auth.logout();
   }
 }

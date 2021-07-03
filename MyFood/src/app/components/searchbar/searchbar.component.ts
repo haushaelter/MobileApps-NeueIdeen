@@ -9,7 +9,10 @@ import { HelperService } from 'src/app/services/helper.service';
   templateUrl: './searchbar.component.html',
   styleUrls: ['./searchbar.component.scss'],
 })
-export class SearchbarComponent implements OnInit {
+/**
+ * Autor: Anika Haushälter
+ */
+export class SearchbarComponent {
   private rezepte: Array<Rezept>
   private suchListe: Array<Rezept>;
   private filterListe: Array<Rezept>;
@@ -28,6 +31,7 @@ export class SearchbarComponent implements OnInit {
   private stringListe:Array<string>;
 
   /**
+   * Autor: Anika Haushälter
    * Input für vollständige Rezepte
    */
   @Input()
@@ -41,22 +45,28 @@ export class SearchbarComponent implements OnInit {
   private user: User;
   
 
-  //Output für neue angepasste Liste mit vollständigen Rezepten
+  /**
+   * Output für neue angepasste Liste mit vollständigen Rezepten
+   */
   @Output()
   newRezeptListe = new EventEmitter<Array<Rezept>>();
 
+  /**
+   * @ignore
+   * @param navCtrl 
+   * @param logging 
+   */
   constructor(
     private navCtrl: NavController,
     private logging: HelperService
   ) { }
 
-  ngOnInit() {}
-
   /**
+   * Autor: Anika Haushälter
    * Funktion, um zufälliges Rezept auszugeben. Navigiert zum zufälligen Rezept
-   * @returns 
+   * @returns {void}
    */
-  zufall(): void{    
+  private zufall(): void{    
     let liste:Array<Rezept> = new Array();
     this.suchListe.forEach(rezept => {
       if(this.filterListe.includes(rezept)){
@@ -77,10 +87,12 @@ export class SearchbarComponent implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
    * Methode zum filtern/suchen
    * @param event 
+   * @returns {void}
    */
-  suche(event){
+  private suche(event):void{
     //Suchterm filtern
     let suchTerm = event.srcElement.value.toLowerCase();
 
@@ -102,10 +114,12 @@ export class SearchbarComponent implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
    * Anpassen der Outputvariable
    * @param liste 
+   * @returns {void}
    */
-  filterRezepte(){
+  private filterRezepte(): void{
     let liste:Array<Rezept> = new Array();
     this.suchListe.forEach(rezept => {
       if(this.filterListe.includes(rezept)){
@@ -116,10 +130,11 @@ export class SearchbarComponent implements OnInit {
   }
 
   /**
+   * Autor: Anika Haushälter
    * Filtern von Rezepten mit ausgewählten Kriterien
    * @param event 
    */
-  filter(event){    
+  private filter(event){    
     let options:Array<string> = event.detail.value;
     this.logging.logging(`Filter ${options} gesetzt`)
     this.filterListe = this.rezepte;

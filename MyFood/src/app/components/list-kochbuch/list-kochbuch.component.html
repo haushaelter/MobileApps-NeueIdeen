@@ -1,15 +1,17 @@
 <ion-card class="ion-card" (click)="buchAufrufen()" button routerDirection="forward">
 
   <ion-card-header>
+    <!-- Bild -->
     <ion-item>
       <img [src]="bild | async" />
     </ion-item>
-
+    <!-- Titel des Buches -->
     <ion-card-title>
       {{data.id}}
     </ion-card-title>
   </ion-card-header>
 
+  <!-- Informationen, wie Verlag und Bewertungen -->
   <ion-card-content>
 
     <ion-item>
