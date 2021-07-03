@@ -15,11 +15,8 @@ export class SearchbarComponent implements OnInit {
   private filterListe: Array<Rezept>;
 
   private filterOptions = [
-    "vegetarisch",
-    "vegan",
-    "mit Fleisch",
     "über 100 Bewertungen",
-    "durchschnittliche Bewertung von mindestens 4 Sternen",
+    "mindestens 4 Sternen",
     "mit eigener Bewertung",
     "Favorit"
   ]
@@ -127,27 +124,12 @@ export class SearchbarComponent implements OnInit {
     this.logging.logging(`Filter ${options} gesetzt`)
     this.filterListe = this.rezepte;
 
-    if(options.includes("vegetarisch")){
-      this.filterListe = this.filterListe.filter(aktuellesRezept =>{
-        this.logging.logging("vegetarisch noch nicht vorhanden");
-      });
-    }
-    if(options.includes("vegan")){
-      this.filterListe = this.filterListe.filter(aktuellesRezept =>{
-        this.logging.logging("vegan noch nicht vorhanden");
-      });
-    }
-    if(options.includes("mit Fleisch")){
-      this.filterListe = this.filterListe.filter(aktuellesRezept =>{
-        this.logging.logging("mit Fleisch noch nicht vorhanden");
-      });
-    }
     if(options.includes("über 100 Bewertungen")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
         return (aktuellesRezept.inhalte?.bewertung?.anzahl>100);
       });
     }
-    if(options.includes("durchschnittliche Bewertung von mindestens 4 Sternen")){
+    if(options.includes("mindestens 4 Sternen")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
         return (aktuellesRezept.inhalte?.bewertung?.bewertung >= 4);
       });
