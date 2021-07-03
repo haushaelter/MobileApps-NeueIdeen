@@ -341,12 +341,12 @@ export class NeuesRezeptPage implements OnInit {
        *  menge: 0
        * }
        */
-      rezeptJson.zutaten[rezeptJson.zutaten[i].id] = {
+      rezeptJson.zutaten[rezeptJson.zutaten[i].id.trim()] = {
         menge: rezeptJson.zutaten[i].menge
       }
       
       //Überprüfen der Datenbank, ob die Zutaten vorhanden sind und speichern falls nicht
-      this.checkZutatVorhanden(rezeptJson.zutaten[i]);
+      this.checkZutatVorhanden(rezeptJson.zutaten[i].id.trim());
 
       //Entfernen der Nummer aus der JSON
       delete rezeptJson.zutaten[i];
