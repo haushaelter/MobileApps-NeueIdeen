@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { User } from '../models/user/user.model';
+import { FirebaseService } from './firebase.service';
 import { HelperService } from "./helper.service";
 
 
@@ -14,7 +16,8 @@ export class AuthService {
   constructor(
     private auth: AngularFireAuth,
     private router: Router,
-    private logging: HelperService
+    private logging: HelperService,
+    private firebase: FirebaseService
   ) {
     this.checkAuthState();
   }
@@ -51,6 +54,12 @@ export class AuthService {
   registrieren(email, passwort) {
     this.auth.createUserWithEmailAndPassword(email, passwort).then((res) => {
       this.logging.logging("Registrierung durchgeführt.");
+      let userModel = new User().deserialize({
+        id: res.user.uid,
+        favoriten: [],
+        eigeneRezepte: []
+      });
+      this.firebase.setUser(userModel);
       this.login(email, passwort);
     }).catch(e => {
       switch (e.code) {

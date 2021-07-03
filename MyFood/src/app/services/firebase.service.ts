@@ -11,7 +11,6 @@ import { first } from 'rxjs/operators';
 import { RezeptReferenz } from '../models/user/rezept-referenz.model';
 import { HelperService } from './helper.service';
 import { FileStorageService } from './file-storage.service';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,8 +30,7 @@ export class FirebaseService {
   constructor(
     private firestore: AngularFirestore,
     private logger: HelperService,
-    private fileStorage: FileStorageService,
-    private auth: AuthService
+    private fileStorage: FileStorageService
   ) { }
 
   /**
@@ -290,9 +288,10 @@ export class FirebaseService {
     });
 
     // Rezept aus "eigeneRezepte"-Array in dem User löschen
-    this.firestore.doc(`${this.collections.user}/${this.auth.getAktuellerUser().uid}`).get().toPromise().then((res) => {
+    let userId = localStorage.getItem("user");
+    this.firestore.doc(`${this.collections.user}/${userId}`).get().toPromise().then((res) => {
       let rezepte = res.data()["eigeneRezepte"].filter(data => data != id);
-      this.firestore.doc(`${this.collections.user}/${this.auth.getAktuellerUser().uid}`).update({
+      this.firestore.doc(`${this.collections.user}/${userId}`).update({
         eigeneRezepte: rezepte
       });
     })
