@@ -270,7 +270,6 @@ export class FirebaseService {
    * @param id Rezept-Id
    */
   deleteRezept(id: string): void {
-    console.log("Löschen")
     //Bild löschen
     this.fileStorage.removeRezeptFile(id).then(() => {
       this.logger.logging(`${id}-Bild gelöscht.`);
