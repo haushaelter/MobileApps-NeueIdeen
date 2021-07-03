@@ -265,7 +265,7 @@ export class NeuesRezeptPage implements OnInit {
     // Zutaten in die Form fügen. Die bereits vorhandene, leere Zutat wird gelöscht
     this.entferneZutat(0);
     for(let zutat in this.data.zutaten){
-      this.zutatHinzufuegen(zutat, this.data.zutaten[zutat]['Menge']);
+      this.zutatHinzufuegen(zutat, this.data.zutaten[zutat]['menge']);
     }
 
     // Schritte in die Form fügen. Der bereits vorhandene, leere Schritt wird gelöscht
