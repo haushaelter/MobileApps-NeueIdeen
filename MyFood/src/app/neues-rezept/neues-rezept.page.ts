@@ -276,8 +276,8 @@ export class NeuesRezeptPage implements OnInit {
 
     //Verarbeiten der Schritte
     for(let i = 0; i<rezeptJson.inhalte.schritte.length; i++){
-      rezeptJson.inhalte[i+1] = (rezeptJson.inhalte.schritte[i]);      
-      rezeptJson.inhalte[i+1].zutaten = rezeptJson.inhalte[i+1].zutaten.split(', ');      
+      rezeptJson.inhalte[i+1] = (rezeptJson.inhalte.schritte[i]);
+      rezeptJson.inhalte[i+1].zutaten = rezeptJson.inhalte[i+1].zutaten.split(',');   
     }
     delete rezeptJson.inhalte["schritte"];
     
