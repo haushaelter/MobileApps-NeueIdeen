@@ -1,13 +1,16 @@
 <div class="searchbar-div">
   <ion-searchbar class="searchbar-bar" placeholder="Suche" (ionInput)="suche($event)"></ion-searchbar>
   <!-- Button für Zufall. Abhängig von der Displaygröße wird Z oder Zufall angezeigt -->
-  <ion-button class="searchbar-btn btn-small" (click)="zufall()">Z</ion-button>
-  <ion-button class="searchbar-btn btn-medium" (click)="zufall()">Zufall</ion-button>
-  <ion-item>
+  <ion-button class="searchbar-btn btn-small" fill="clear" (click)="zufall()">Z</ion-button>
+  <ion-button class="searchbar-btn btn-medium" fill="clear"  (click)="zufall()">Zufall</ion-button>
+  <div class="filter">
     <!-- Filter -->
-    <ion-label>Filter</ion-label> 
     <ion-select multiple="true" cancelText="Abbrechen" okText="Suchen" (ionChange)="filter($event)">
       <ion-select-option *ngFor="let filterOption of filterOptions" [value]="filterOption">{{filterOption}}</ion-select-option>
     </ion-select>
-  </ion-item>
+  </div>
+</div>
+<!-- Anzeigen der ausgewählten Filter -->
+<div class="optionslabel">
+  <ion-label *ngFor="let option of options">{{option}}</ion-label>
 </div>

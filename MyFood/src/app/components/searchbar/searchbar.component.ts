@@ -15,7 +15,8 @@ import { HelperService } from 'src/app/services/helper.service';
 export class SearchbarComponent {
   private rezepte: Array<Rezept>
   private suchListe: Array<Rezept>;
-  private filterListe: Array<Rezept>;
+  private filterListe: Array<Rezept>;    
+  private options:Array<string>
 
   private filterOptions = [
     "über 100 Bewertungen",
@@ -23,6 +24,11 @@ export class SearchbarComponent {
     "mit eigener Bewertung",
     "Favorit"
   ]
+
+  test(option, options){
+    console.log(typeof(option))
+    console.log(options)
+  }
 
   /**
    * Input für Liste von ids. Dadurch kann Button Zufall mit Filtern arbeiten
@@ -135,26 +141,26 @@ export class SearchbarComponent {
    * @param event 
    */
   private filter(event){    
-    let options:Array<string> = event.detail.value;
-    this.logging.logging(`Filter ${options} gesetzt`)
+    this.options = event.detail.value;
+    this.logging.logging(`Filter ${this.options} gesetzt`)
     this.filterListe = this.rezepte;
 
-    if(options.includes("über 100 Bewertungen")){
+    if(this.options.includes("über 100 Bewertungen")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
         return (aktuellesRezept.inhalte?.bewertung?.anzahl>100);
       });
     }
-    if(options.includes("mindestens 4 Sternen")){
+    if(this.options.includes("mindestens 4 Sternen")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
         return (aktuellesRezept.inhalte?.bewertung?.bewertung >= 4);
       });
     }
-    if(options.includes("mit eigener Bewertung")){
+    if(this.options.includes("mit eigener Bewertung")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
         return (this.user?.individuelleAngaben[aktuellesRezept.id]?.bewertung ?? false);
       });
     }
-    if(options.includes("Favorit")){
+    if(this.options.includes("Favorit")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
         return (this.user?.favoriten?.includes(aktuellesRezept.id) ?? false);
       });
