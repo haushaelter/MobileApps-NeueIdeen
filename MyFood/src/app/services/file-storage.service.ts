@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from "@angular/fire/storage";
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { HelperService } from './helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +15,15 @@ export class FileStorageService {
   /**
    * @ignore
    * @param firebase 
+   * @param logging
    */
   constructor(
     private firebase: AngularFireStorage,
+    private logging: HelperService
   ) { }
 
   /**
-   * Autor: Adrian Przybilla
+   * Autor: Anika Haushälter und Adrian Przybilla
    * 
    * Liest Bild aus Firebase Storage aus. Ordner: rezepte
    * @param rezeptId 
@@ -29,7 +34,10 @@ export class FileStorageService {
     const fileName = rezeptId;
 
     // Rückgabe des Bild als Observable
-    return this.firebase.ref(`${path}/${fileName}`).getDownloadURL();
+    return this.firebase.ref(`${path}/${fileName}`)?.getDownloadURL().pipe(catchError(error => {
+      this.logging.logging(`Fehler: Bild für ${fileName} nicht gefunden`);
+      return of(null);
+    }));
 
     /*
     Bild auslesen und in Variable speichern
@@ -73,7 +81,7 @@ export class FileStorageService {
     // Rückgabe des Bild als Observable
     return this.firebase.ref(`${path}/${fileName}`).delete().toPromise();
   }
-  
+
   /**
    * Autor: Adrian Przybilla
    * 
