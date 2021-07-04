@@ -85,10 +85,8 @@ export class RezeptPage {
     private logging: HelperService
   ) {
     this.id = this.id.replace("%20", " ");
-    //this.data = firebase.getRezept(this.id);
-    this.data = this.rezept1;
-    // this.aktuellerUser = firebase.getUser(this.aktuelleUserId);
-    this.aktuellerUser = this.user1;
+    this.data = firebase.getRezept(this.id);
+    this.aktuellerUser = firebase.getUser(this.aktuelleUserId);
     this.bild = this.filestorage.getRezeptFile(this.id);
     this.zutatenObj = this.firebase.getAlleZutatenAlsObject();
   }
@@ -247,73 +245,5 @@ export class RezeptPage {
       }
     };
     this.router.navigate(['neues-rezept'], navigationExtras);
-  }
-
-  rezept1 = new Rezept().deserialize({
-    id: "Fleischkäse mit Spiegelei",
-    ersteller: "Olf7J48ZKgWCCjW3wfICFSFkerh1",
-    inhalte: new Inhalte().deserialize({
-      basis: {
-        beschreibung: "Fleischkäse mit Spiegelei und Bratkartoffeln",
-        titel: "Fleischkäse mit Spiegelei"
-      },
-      bewertung: {
-        anzahl: 5,
-        bewertung: 3
-      },
-      1: new Schritt().deserialize({
-        beschreibung: "Die Kartoffeln waschen",
-        zutaten: [
-          "Kartoffeln",
-        ]
-      }),
-    }),
-    zutaten: {
-      Kartoffeln: new ZutatReferenz().deserialize({
-        Menge: 750,
-        id: "Kartoffeln"
-      }),
-      Salz: new ZutatReferenz().deserialize({
-        Menge: 1,
-        id: "Salz"
-      }),
-      Pfeffer: new ZutatReferenz().deserialize({
-        Menge: 1,
-        id: "Pfeffer"
-      }),
-      Butter: new ZutatReferenz().deserialize({
-        Menge: 2,
-        id: "Butter"
-      }),
-      Fleischkäse: new ZutatReferenz().deserialize({
-        Menge: 4,
-        id: "Fleischkäse"
-      }),
-      "Ei M": new ZutatReferenz().deserialize({
-        Menge: 4,
-        id: "Ei M"
-      }),
-      Gewürzgurken: new ZutatReferenz().deserialize({
-        Menge: 2,
-        id: "Gewürzgurken"
-      })
-    }
-  });
-user1 = new User().deserialize({
-    id: "Olf7J48ZKgWCCjW3wfICFSFkerh1",
-    eigeneRezepte: [
-      "Paprika-Tomaten-Gemüse",
-    ],
-    favoriten: [
-      "Fleischkäse mit Spiegelei",
-      "Paprika-Tomaten-Gemüse"
-    ],
-    individuelleAngaben: new IndividuelleAngaben().deserialize({
-      "Fleischkäse mit Spiegelei": new RezeptReferenz().deserialize({
-        bewertung: 5,
-        notizen: "Dat schmeggt."
-      }),
-    }),
-  });
-  
+  }  
 }
