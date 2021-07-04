@@ -2,8 +2,12 @@ import { Component, Input } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { Inhalte } from '../models/rezepte/inhalte.model';
 import { Rezept } from '../models/rezepte/rezept.model';
 import { Schritt } from '../models/rezepte/schritt.model';
+import { ZutatReferenz } from '../models/rezepte/zutat-referenz.model';
+import { IndividuelleAngaben } from '../models/user/individuelle-angaben.model';
+import { RezeptReferenz } from '../models/user/rezept-referenz.model';
 import { User } from '../models/user/user.model';
 import { FileStorageService } from '../services/file-storage.service';
 import { FirebaseService } from '../services/firebase.service';
@@ -28,15 +32,10 @@ export class RezeptPage {
   private data: Rezept;
 
   // Variablen für Darstellung
-  private schritte: Array<Schritt> = new Array;
-  private bewertungText:string;
+  private bewertungText: string;
   // Sternicon
   private sterne: Array<string>;
-  private _fav:string = "star-outline";
-
-  // boolean für eigene oder Gesamtbewertung
-  private eigeneBewertung: boolean = false;
-  private gesamtbewertung: boolean = true;
+  private _fav: string = "star-outline";
 
   // Bild
   private bild: Observable<string | null>;
@@ -45,24 +44,24 @@ export class RezeptPage {
   private zutatenEinheit = [];
   private zutatenObj;
 
-  @Input() 
-  set rezept (rezept:Rezept){
+  @Input()
+  set rezept(rezept: Rezept) {
     this.data = rezept;
   }
 
   @Input()
-  set user (user:User){
-    if(user.favoriten!=undefined){      
-      if(user.favoriten.includes(this.data.id)){
-        this._fav="star";
+  set user(user: User) {
+    if (user.favoriten != undefined) {
+      if (user.favoriten.includes(this.data.id)) {
+        this._fav = "star";
         return;
       }
     }
-    this._fav="star-outline";
+    this._fav = "star-outline";
   }
 
   /**
-   * Autor: Anika Haushälter
+   * Autor: Anika Haushälter & Adrian Przybilla
    * 
    * Constructor
    * 
@@ -86,8 +85,10 @@ export class RezeptPage {
     private logging: HelperService
   ) {
     this.id = this.id.replace("%20", " ");
-    this.data = firebase.getRezept(this.id);
-    this.aktuellerUser = firebase.getUser(this.aktuelleUserId);
+    //this.data = firebase.getRezept(this.id);
+    this.data = this.rezept1;
+    // this.aktuellerUser = firebase.getUser(this.aktuelleUserId);
+    this.aktuellerUser = this.user1;
     this.bild = this.filestorage.getRezeptFile(this.id);
     this.zutatenObj = this.firebase.getAlleZutatenAlsObject();
   }
@@ -95,43 +96,10 @@ export class RezeptPage {
    * 
    * @returns {void}
    */
-  private readData(): void{    
-    this.data.id = this.listService.checkString("Titel", this.data.id);    
-
-    this.data.inhalte.bewertung.anzahl = this.listService.checkNumber(this.data.inhalte.bewertung.anzahl);
-
-    this.data.inhalte.bewertung.bewertung = this.listService.checkNumber(this.data.inhalte.bewertung.bewertung);
-
-    this.schritte = new Array;
-    for(let item in this.data.inhalte){
-      
-      this.schritte.push(this.data.inhalte[item]);
-      
-    }
-
-    if(this.aktuellerUser.individuelleAngaben!=undefined){
-      if(this.aktuellerUser.individuelleAngaben[this.data.id]!=undefined){
-        this.eigeneBewertung=true;
-      }
-    }
-
-    if(this.eigeneBewertung){
-      this.bewertungText="eigene Bewertung";
-    }
-
-    if(this.gesamtbewertung){
-      if(this.data.inhalte.bewertung.anzahl==1){
-        this.bewertungText = `${this.data.inhalte.bewertung.anzahl} Bewertung`;
-      } else {
-        this.bewertungText = `${this.data.inhalte.bewertung.anzahl} Bewertungen`;
-      }
-    }
-    
-    this.sterne = this.listService.checkStars(this.data.inhalte.bewertung.bewertung);
-
-    if(this.aktuellerUser.favoriten!=undefined){      
-      if(this.aktuellerUser.favoriten.includes(this.data.id)){
-        this._fav="star";
+  private readData(): void {
+    if (this.aktuellerUser.favoriten != undefined) {
+      if (this.aktuellerUser.favoriten.includes(this.data.id)) {
+        this._fav = "star";
         return;
       }
     }
@@ -139,27 +107,42 @@ export class RezeptPage {
   }
 
   /**
-   * Autor: Anika Haushälter
+   * Autor: Adrian Przybilla
+   * 
+   * Gibt zurück ob das Favoriten-Icon ausgefüllt oder leer sein soll
+   * @returns name für ion-icon
+   */
+  private favStar(){
+    return this.aktuellerUser.favoriten.includes(this.data.id) ? "star" : "star-outline";
+  }
+
+  private bewertung() {
+    let temp: number;
+    let tempAnzahl: number;
+    
+    if (this.aktuellerUser?.individuelleAngaben[this.data.id]) {
+      this.bewertungText = "eigene Bewertung";
+      
+      temp = this.listService.checkNumber(this.aktuellerUser?.individuelleAngaben[this.data.id].bewertung);
+      this.sterne = this.listService.checkStars(temp);
+    } else {
+      tempAnzahl = this.data?.inhalte?.bewertung?.anzahl ? this.data.inhalte.bewertung.anzahl : 0;
+      this.bewertungText = `${tempAnzahl} ${tempAnzahl <= 1 ? "Bewertung" : "Bewertungen"}`;
+
+      temp = this.listService.checkNumber(this.data.inhalte.bewertung.bewertung);
+      this.sterne = this.listService.checkStars(this.data.inhalte.bewertung.bewertung);
+    }
+  }
+
+  /**
+   * Autor: Anika Haushälter & Adrian Przybilla
    * 
    * Setzt eine Bewertung mit der Übergebenen id+1, dem aktuellen User und dem Rezept
    * @param id {number} id des Sterns
    */
-  private bewerten(id:number){    
-    this.firebase.setBewertung((id+1), this.aktuellerUser, this.data.id);
+  private async bewerten(id: number) {
+    await this.firebase.setBewertung((id + 1), this.aktuellerUser, this.data.id)
     this.aktuellerUser = this.firebase.getUser(this.aktuelleUserId);
-    this.data.inhalte.bewertung.bewertung = id+1;
-    this.eigeneBewertung = true;
-    this.gesamtbewertung = false;
-  }
-
-  /**
-   * Autor: Anika Haushälter
-   * 
-   * setzt booleans so, dass eine eigene Bewertung vorgenommen wurde
-   */
-  private aktualisiereBewertungstext(){
-    this.eigeneBewertung = true;
-    this.gesamtbewertung = false;
   }
 
   /**
@@ -169,15 +152,15 @@ export class RezeptPage {
    * @param zutaten 
    * @returns 
    */
-  private zutatenString(zutaten){
+  private zutatenString(zutaten) {
     let returnString: string = "";
-    for(let i = 0; i<zutaten.length; i++){
+    for (let i = 0; i < zutaten.length; i++) {
       returnString = returnString + zutaten[i];
-      if(zutaten[i+1]!=undefined){
+      if (zutaten[i + 1] != undefined) {
         returnString = returnString + ", ";
       }
     }
-    return returnString;    
+    return returnString;
   }
 
   /**
@@ -185,8 +168,8 @@ export class RezeptPage {
    * 
    * Löscht nach einer Sicherheitsabfrage das Rezept. Der Button ist normalerweise nur für den Ersteller sichtbar, dennoch wird der Ersteller nochmals geprüft
    */
-  private rezeptLoeschen(){
-    if(this.data.ersteller != this.aktuelleUserId){
+  private rezeptLoeschen() {
+    if (this.data.ersteller != this.aktuelleUserId) {
       this.logging.zeigeToast("Nur der Ersteller des Rezeptes kann löschen");
     } else {
       let okButton = {
@@ -201,14 +184,14 @@ export class RezeptPage {
       let abbrechenButton = {
         text: "Abbrechen",
         role: "Cancel",
-        handler: () =>{
+        handler: () => {
           this.logging.zeigeToast("Vorgang abgebrochen");
         }
       }
 
       this.logging.zeigeDialog(
-        "Löschen", 
-        `Willst du wirklich das Rezept ${this.data.id} löschen? Gelöschte Rezepte können nicht wieder hergestellt werden!`, 
+        "Löschen",
+        `Willst du wirklich das Rezept ${this.data.id} löschen? Gelöschte Rezepte können nicht wieder hergestellt werden!`,
         [okButton, abbrechenButton]
       );
     }
@@ -220,13 +203,14 @@ export class RezeptPage {
    * Favorisieren von Rezept. Verwendet Rezept und eingeloggten User
    * @returns void
    */
-   private setFavorit():void{    
-    if(this.data.id==undefined || this.aktuelleUserId==undefined){
+  private setFavorit(e): void {
+    let fav = e.target.name;
+    if (this.data.id == undefined || this.aktuelleUserId == undefined) {
       this.logging.zeigeToast("Es ist ein Fehler beim Favorisieren aufgetreten.");
       this.logging.logging(`Rezeptid = ${this.data.id} und Userid = ${this.aktuelleUserId}`);
       return;
     }
-    if(this._fav=="star-outline"){
+    if (this._fav == "star-outline") {
       this.firebase.setFavorit(this.data.id, this.aktuelleUserId);
       this._fav = "star";
       this.logging.logging(`Favorit ${this.data.id} bei User ${this.aktuelleUserId} gesetzt`);
@@ -237,13 +221,17 @@ export class RezeptPage {
     }
   }
 
+  favorit(){
+    this._fav = this.aktuellerUser.favoriten.includes(this.data.id) ? 'star' : 'star-outline'
+  }
+
   /**
    * Autor: Anika Haushälter
    * 
    * Speichert die Notizen, die der User eingegeben hat
    * @param event 
    */
-  private notizenSpeichern(event){
+  private notizenSpeichern(event) {
     this.firebase.setNotiz(this.data.id, this.aktuelleUserId, event.detail.srcElement.defaultValue);
   }
 
@@ -252,7 +240,7 @@ export class RezeptPage {
    * 
    * Ruft die Seite "neues-rezept" auf und übergibt das aktuelle Rezept, damit es überarbeitet werden kann
    */
-  private rezeptBearbeiten(): void{
+  private rezeptBearbeiten(): void {
     let navigationExtras: NavigationExtras = {
       state: {
         rezept: this.data
@@ -260,5 +248,72 @@ export class RezeptPage {
     };
     this.router.navigate(['neues-rezept'], navigationExtras);
   }
+
+  rezept1 = new Rezept().deserialize({
+    id: "Fleischkäse mit Spiegelei",
+    ersteller: "Olf7J48ZKgWCCjW3wfICFSFkerh1",
+    inhalte: new Inhalte().deserialize({
+      basis: {
+        beschreibung: "Fleischkäse mit Spiegelei und Bratkartoffeln",
+        titel: "Fleischkäse mit Spiegelei"
+      },
+      bewertung: {
+        anzahl: 5,
+        bewertung: 3
+      },
+      1: new Schritt().deserialize({
+        beschreibung: "Die Kartoffeln waschen",
+        zutaten: [
+          "Kartoffeln",
+        ]
+      }),
+    }),
+    zutaten: {
+      Kartoffeln: new ZutatReferenz().deserialize({
+        Menge: 750,
+        id: "Kartoffeln"
+      }),
+      Salz: new ZutatReferenz().deserialize({
+        Menge: 1,
+        id: "Salz"
+      }),
+      Pfeffer: new ZutatReferenz().deserialize({
+        Menge: 1,
+        id: "Pfeffer"
+      }),
+      Butter: new ZutatReferenz().deserialize({
+        Menge: 2,
+        id: "Butter"
+      }),
+      Fleischkäse: new ZutatReferenz().deserialize({
+        Menge: 4,
+        id: "Fleischkäse"
+      }),
+      "Ei M": new ZutatReferenz().deserialize({
+        Menge: 4,
+        id: "Ei M"
+      }),
+      Gewürzgurken: new ZutatReferenz().deserialize({
+        Menge: 2,
+        id: "Gewürzgurken"
+      })
+    }
+  });
+user1 = new User().deserialize({
+    id: "Olf7J48ZKgWCCjW3wfICFSFkerh1",
+    eigeneRezepte: [
+      "Paprika-Tomaten-Gemüse",
+    ],
+    favoriten: [
+      "Fleischkäse mit Spiegelei",
+      "Paprika-Tomaten-Gemüse"
+    ],
+    individuelleAngaben: new IndividuelleAngaben().deserialize({
+      "Fleischkäse mit Spiegelei": new RezeptReferenz().deserialize({
+        bewertung: 5,
+        notizen: "Dat schmeggt."
+      }),
+    }),
+  });
   
 }

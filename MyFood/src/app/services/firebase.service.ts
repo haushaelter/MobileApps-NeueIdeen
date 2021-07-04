@@ -643,48 +643,51 @@ export class FirebaseService {
    * @param user User, der bewertet
    * @param rezeptId Rezept, welches bewertet wurde
    */
-  setBewertung(bewertung: number, user: User, rezeptId: string) {
+  setBewertung(bewertung: number, user: User, rezeptId: string): Promise<any> {
     //Überprüfen, ob der User bereits eine Bewertung hatte
-    let vorhanden = false;
-    let bewAlt = 0
-    if (user.individuelleAngaben[rezeptId] != undefined) {
-      if (user.individuelleAngaben[rezeptId].bewertung != undefined) {
-        vorhanden = true;
-        bewAlt = user.individuelleAngaben[rezeptId].bewertung;
-      }
+    let bewertungVorhanden: boolean = false;
+    let alteBewertung = 0;
+
+    if(user?.individuelleAngaben[rezeptId]?.bewertung){
+      bewertungVorhanden = true;
+      alteBewertung = user.individuelleAngaben[rezeptId].bewertung;
     }
 
     //neue durchschnittliche Bewertung berechnen
     let durchschnittlicheBewertung;
     let anzahl;
 
-    this.firestore.doc(`${this.collections.rezepte}/${rezeptId}/${this.collections.rezeptinhalte}/bewertung`).get().subscribe(res => {
-      anzahl = res.data()["anzahl"];
-      durchschnittlicheBewertung = res.data()["bewertung"] * res.data()["anzahl"];
+      this.firestore.doc(`${this.collections.rezepte}/${rezeptId}/${this.collections.rezeptinhalte}/bewertung`).get().toPromise().then(res => {
+        anzahl = res.data()["anzahl"];
+        durchschnittlicheBewertung = res.data()["bewertung"] * res.data()["anzahl"];
 
-      //bei Bedarf Anzahl der Bewertungen erhöhen
-      if (!vorhanden) {
-        ++anzahl;
-      }
-      //neue durchschnittliche Bewertung berechnen
-      durchschnittlicheBewertung = durchschnittlicheBewertung - bewAlt + bewertung;
+        //bei Bedarf Anzahl der Bewertungen erhöhen
+        if (!bewertungVorhanden) {
+          ++anzahl;
+        }
 
+        //neue durchschnittliche Bewertung berechnen
+        durchschnittlicheBewertung = durchschnittlicheBewertung - alteBewertung + bewertung;
 
-      //neue Rezeptreferenz erstellen
-      let rezeptReferenz: RezeptReferenz = new RezeptReferenz().deserialize({
-        bewertung: bewertung
+        //neue Rezeptreferenz erstellen
+        let rezeptReferenz: RezeptReferenz = new RezeptReferenz().deserialize({
+          bewertung: bewertung
+        });
+
+        //updaten der durchschnittlichen Bewertung des Rezeptes
+        this.firestore.doc(`${this.collections.rezepte}/${rezeptId}/${this.collections.rezeptinhalte}/bewertung`).set({
+          bewertung: (durchschnittlicheBewertung / anzahl),
+          anzahl: anzahl
+        });
+
+        //updaten des Users mit der neuen Bewertung (bei Bedarf wird das Dokument neu angelegt)
+        return this.firestore.doc(`${this.collections.user}/${user.id}/${this.collections.nutzerangaben}/${rezeptId}`).set(JSON.parse(JSON.stringify(rezeptReferenz)));
+
       });
 
-      //updaten der durchschnittlichen Bewertung des Rezeptes
-      this.firestore.doc(`${this.collections.rezepte}/${rezeptId}/${this.collections.rezeptinhalte}/bewertung`).set({
-        bewertung: (durchschnittlicheBewertung / anzahl),
-        anzahl: anzahl
+      return new Promise((resolve, reject) => {
+        resolve("Text und so");
       });
-
-      //updaten des Users mit der neuen Bewertung (bei Bedarf wird das Dokument neu angelegt)
-      this.firestore.doc(`${this.collections.user}/${user.id}/${this.collections.nutzerangaben}/${rezeptId}`).set(JSON.parse(JSON.stringify(rezeptReferenz)));
-
-    });
 
   }
 }

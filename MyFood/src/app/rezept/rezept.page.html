@@ -6,7 +6,7 @@
 
     <!-- Titel -->
     <ion-row class="row-titel">
-      <ion-col>{{data.id}}</ion-col>
+      <ion-col>{{ data.inhalte.basis.titel ? data.inhalte.basis.titel : "Titel nicht gefunden" }}</ion-col>
     </ion-row>
 
     <ion-row class="grid-row-infos">
@@ -14,14 +14,16 @@
         <ion-row class="row-infos-inner">
           <!-- Favoriticon -->
           <ion-col class="row-col-inner">
-            <ion-icon *ngIf="_fav!==undefined" class="icon fav-icon" [name]="_fav" (click)="setFavorit()"></ion-icon>
+            <ion-icon *ngIf="_fav!==undefined" class="icon fav-icon" [name]="favStar()" (click)="setFavorit($event)"></ion-icon>
           </ion-col>
         </ion-row>
 
         <!-- Bewertungssterne -->
         <ion-row class="row-infos-inner">
+          {{ bewertung() }}
           <ion-icon *ngFor="let item of sterne; let i = index" [name]="item" id="'stern-icon-'+{{i}}"
-            (click)="bewerten(i)"></ion-icon>
+            (click)="bewerten(i)">
+          </ion-icon>
         </ion-row>
 
         <!-- Bewertungstext (Anzahl Bewertungen/eigene Bewertung) -->
@@ -53,8 +55,7 @@
     <!-- Zutatenliste -->
     <ion-row *ngFor="let eintrag of data.zutaten | keyvalue" class="zutaten unterstrich">
       <ion-col *ngIf="zutatenObj[eintrag.key]!=undefined" class="zutatenMenge" size="3">
-        {{eintrag.value["menge"]}} 
-        {{ zutatenObj[eintrag.key]["standardeinheit"] }}
+        {{eintrag.value["menge"]}} {{ zutatenObj[eintrag.key]["standardeinheit"] }}
       </ion-col>
       <ion-col size="7">{{eintrag.key}}</ion-col>
     </ion-row>
@@ -89,7 +90,9 @@
         <ion-icon name="clipboard-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab>
-    <ion-textarea class="notiz-input" autoGrow="true" maxlength="200" placeholder="Gib hier deine persönliche Notizen ein" (ionChange)="notizenBearbeiten($event)" (ionBlur)="notizenSpeichern($event)" [(ngModel)]="aktuellerUser.individuelleAngaben[id].notizen"></ion-textarea>
+    <ion-textarea class="notiz-input" autoGrow="true" maxlength="200"
+      placeholder="Gib hier deine persönliche Notizen ein" (ionChange)="notizenBearbeiten($event)"
+      (ionBlur)="notizenSpeichern($event)" [(ngModel)]="aktuellerUser.individuelleAngaben[id].notizen"></ion-textarea>
   </div>
 
   <!-- Bearbeiten Button -->
@@ -102,7 +105,7 @@
   <!-- Löschen Button -->
   <ion-fab *ngIf="data.ersteller == aktuelleUserId" slot="fixed" class="delete-btn">
     <ion-fab-button color="danger" (click)="rezeptLoeschen()">
-      <ion-icon name="trash" ></ion-icon>
+      <ion-icon name="trash"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
