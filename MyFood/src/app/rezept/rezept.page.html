@@ -3,6 +3,8 @@
 <ion-content>
   <ion-grid class="grid" *ngIf="data.id!==undefined && data.inhalte.bewertung!==undefined">
     {{readData()}}
+
+    <!-- Titel -->
     <ion-row class="row-titel">
       <ion-col>{{data.id}}</ion-col>
     </ion-row>
@@ -10,19 +12,19 @@
     <ion-row class="grid-row-infos">
       <ion-col class="row-col-inner">
         <ion-row class="row-infos-inner">
+          <!-- Favoriticon -->
           <ion-col class="row-col-inner">
             <ion-icon *ngIf="_fav!==undefined" class="icon fav-icon" [name]="_fav" (click)="setFavorit()"></ion-icon>
           </ion-col>
-          <ion-col class="row-col-inner">
-            <ion-icon *ngIf="_bearbeitet" name="brush-outline"></ion-icon>
-          </ion-col>
         </ion-row>
 
+        <!-- Bewertungssterne -->
         <ion-row class="row-infos-inner">
           <ion-icon *ngFor="let item of sterne; let i = index" [name]="item" id="'stern-icon-'+{{i}}"
             (click)="bewerten(i)"></ion-icon>
         </ion-row>
 
+        <!-- Bewertungstext (Anzahl Bewertungen/eigene Bewertung) -->
         <ion-row *ngIf="this.aktuellerUser.individuelleAngaben!=undefined" class="row-infos-inner">
           <span *ngIf="this.aktuellerUser.individuelleAngaben[data.id]!=undefined; else elseBlock">
             {{aktualisiereBewertungstext()}} {{bewertungText}}
@@ -31,21 +33,24 @@
         </ion-row>
       </ion-col>
 
+      <!-- Bild -->
       <ion-col class="grid-col-pic">
         <ion-img alt="Picture" [src]="bild | async"></ion-img>
       </ion-col>
     </ion-row>
 
+    <!-- Beschreibung -->
     <ion-row>
       <span>
         {{data.inhalte.basis.beschreibung}}
       </span>
     </ion-row>
 
+    <!-- Zutaten -->
     <ion-row class="row-ueberschrift">
       Zutaten
     </ion-row>
-
+    <!-- Zutatenliste -->
     <ion-row *ngFor="let eintrag of data.zutaten | keyvalue" class="zutaten unterstrich">
       <ion-col *ngIf="zutatenObj[eintrag.key]!=undefined" class="zutatenMenge" size="3">
         {{eintrag.value["menge"]}} 
@@ -54,16 +59,18 @@
       <ion-col size="7">{{eintrag.key}}</ion-col>
     </ion-row>
 
+    <!-- Schritte - Liste -->
     <ion-row *ngFor="let eintrag of data.inhalte | keyvalue" class="unterstrich">
       <div *ngIf="eintrag.key!=='basis' && eintrag.key!=='bewertung'">
+        <!-- Schritt - Überschrift -->
         <ion-row class="row-ueberschrift">
           <ion-col>Schritt {{eintrag.key}}</ion-col>
         </ion-row>
-
+        <!-- Schritt - Zutaten -->
         <ion-row class="row-zutaten-doing">
           <ion-col>{{zutatenString(eintrag.value.zutaten)}}</ion-col>
         </ion-row>
-
+        <!-- Schritt - Beschreibung -->
         <ion-row class="row-doing">
           <ion-col>{{eintrag.value.beschreibung}}</ion-col>
         </ion-row>
@@ -75,6 +82,7 @@
     <ion-infinite-scroll-content loadingSpinner="none"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
+  <!-- Notizen -->
   <div *ngIf="aktuellerUser.individuelleAngaben!=undefined" class="notiz">
     <ion-fab slot="fixed" class="notiz-btn">
       <ion-fab-button>
@@ -84,12 +92,14 @@
     <ion-textarea class="notiz-input" autoGrow="true" maxlength="200" placeholder="Gib hier deine persönliche Notizen ein" (ionChange)="notizenBearbeiten($event)" (ionBlur)="notizenSpeichern($event)" [(ngModel)]="aktuellerUser.individuelleAngaben[id].notizen"></ion-textarea>
   </div>
 
+  <!-- Bearbeiten Button -->
   <ion-fab *ngIf="data.ersteller == aktuelleUserId" slot="fixed" class="bearbeiten-btn">
     <ion-fab-button (click)="rezeptBearbeiten()">
       <ion-icon name="create"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
+  <!-- Löschen Button -->
   <ion-fab *ngIf="data.ersteller == aktuelleUserId" slot="fixed" class="delete-btn">
     <ion-fab-button color="danger" (click)="rezeptLoeschen()">
       <ion-icon name="trash" ></ion-icon>

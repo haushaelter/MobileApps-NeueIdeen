@@ -2,15 +2,18 @@
 
   <ion-row class="grid-row" *ngIf="data!==undefined">
 
+    <!-- Favoriticon -->
     <ion-col class="grid-col-first" size="2">
       <ion-icon *ngIf="_fav!==undefined" class="icon fav-icon" [name]="_fav" (click)="setFavorit()"></ion-icon>
     </ion-col>
 
+    <!-- Titel -->
     <ion-col class="grid-col-second" (click)="rezeptAufrufen()" size="5">
       <ion-label>{{data.id}}</ion-label>
       <ion-icon class="icon" *ngIf="_bearbeitet" name="clipboard-outline"></ion-icon>
     </ion-col>
 
+    <!-- Bild -->
     <ion-col (click)="rezeptAufrufen()" class="image" size="5">
       <ion-img alt="Picture" class="grid-col-pic" [src]="bild | async"></ion-img>
     </ion-col>
@@ -19,10 +22,12 @@
 
   <ion-row class="grid-row grid-row2">
 
+    <!-- Sterne -->
     <ion-col class="grid-col-first" size="auto">
       <ion-icon *ngFor="let eintrag of _sterne" [name]="eintrag" class="icon bewertung-icon"></ion-icon>
     </ion-col>
 
+    <!-- Anzahl der Bewertungen -->
     <ion-col class="grid-col-second" (click)="rezeptAufrufen()">
       <ion-label>{{_anzahlText}}</ion-label>
     </ion-col>
