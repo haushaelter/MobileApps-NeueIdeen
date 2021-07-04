@@ -48,7 +48,9 @@ export class LoginPage implements OnInit {
    */
   ngOnDestroy(){
     // Navigation wieder anzeigen
-    document.getElementById("footer").style.display = "block"
+    document.getElementById("footer").style.display = "block";
+    this.user.email = "";
+    this.user.passwort = "";
   }
 
   /**
