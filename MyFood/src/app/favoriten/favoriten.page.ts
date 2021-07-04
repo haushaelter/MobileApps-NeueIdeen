@@ -21,7 +21,7 @@ export class FavoritenPage {
   private liste: Array<string>;
 
   //Variable, die gefilterte Liste enthält
-  filter: Array<Rezept>;
+  filter: Array<Rezept> = new Array();
 
   /**
    * @ignore
