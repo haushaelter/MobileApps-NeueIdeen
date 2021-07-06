@@ -149,6 +149,7 @@ export class RezeptPage {
    * @returns 
    */
   private zutatenString(zutaten) {
+    console.log(this.data.inhalte);
     let returnString: string = "";
     for (let i = 0; i < zutaten.length; i++) {
       returnString = returnString + zutaten[i];

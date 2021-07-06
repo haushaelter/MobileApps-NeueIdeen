@@ -324,7 +324,7 @@ export class NeuesRezeptPage implements OnInit {
     //Verarbeiten der Schritte
     for(let i = 0; i<rezeptJson.inhalte.schritte.length; i++){
       rezeptJson.inhalte[i+1] = (rezeptJson.inhalte.schritte[i]);
-      rezeptJson.inhalte[i+1].zutaten = rezeptJson.inhalte.schritte[i].zutaten;
+      rezeptJson.inhalte[i+1].zutaten = rezeptJson.inhalte.schritte[i].zutaten.replace(", ", ",").replace(" ,", ",").split(',');
     }
     delete rezeptJson.inhalte["schritte"];
     
@@ -370,7 +370,7 @@ export class NeuesRezeptPage implements OnInit {
         rezept: rezept
       }
     };
-    this.router.navigate([`rezept`], navigationExtras);
+    // this.router.navigate([`rezept`], navigationExtras);
     //this.navCtrl.navigateForward(`/rezept?id=${rezeptJson.id}`);
     
   }
