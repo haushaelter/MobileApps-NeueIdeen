@@ -98,29 +98,6 @@ export class RezeptPage {
   }
 
   /**
- * Autor: Anika Haushälter
- * 
- * Wird ausgeführt, sobald die Seite betreten wurde
- */
-  ngOnInit() {
-    
-  }
-
-  /**
-   * 
-   * @returns {void}
-   */
-  private readData(): void {
-    if (this.aktuellerUser.favoriten != undefined) {
-      if (this.aktuellerUser.favoriten.includes(this.data.id)) {
-        this._fav = "star";
-        return;
-      }
-    }
-    this._fav = "star-outline";
-  }
-
-  /**
    * Autor: Adrian Przybilla
    * 
    * Gibt zurück ob das Favoriten-Icon ausgefüllt oder leer sein soll
