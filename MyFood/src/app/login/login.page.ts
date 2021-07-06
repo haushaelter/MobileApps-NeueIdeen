@@ -47,8 +47,7 @@ export class LoginPage implements OnInit {
    * Aufruf beim Verlassen der Seite
    */
   ngOnDestroy(){
-    // Navigation wieder anzeigen
-    document.getElementById("footer").style.display = "block";
+    
     this.user.email = "";
     this.user.passwort = "";
   }

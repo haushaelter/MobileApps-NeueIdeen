@@ -33,16 +33,6 @@ export class RegistrierungPage implements OnInit {
   }
 
   /**
-   * Autor: Anika Haushälter
-   * 
-   * Aufruf beim Verlassen der Seite
-   */
-  ngOnDestroy() {
-    // Navigation wieder anzeigen
-    document.getElementById("footer").style.display = "block"
-  }
-
-  /**
    * Autor: Adrian Przybilla
    * 
    * Registrieren. Untersucht Input-Felder, ob diese Ausgefüllt wurden und gibt ggf. eine passende Fehlermeldung über einen Toast aus.

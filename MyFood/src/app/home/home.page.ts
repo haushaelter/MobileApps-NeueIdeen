@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Rezept } from '../models/rezepte/rezept.model';
 import { User } from '../models/user/user.model';
 import { FirebaseService } from '../services/firebase.service';
@@ -12,7 +12,7 @@ import { FirebaseService } from '../services/firebase.service';
 /**
  * Autor: Anika Haushälter
  */
-export class HomePage {
+export class HomePage implements OnInit {
   readonly seitentitel = "Suche";
 
   //Inhalte aus der Datenbank
@@ -35,6 +35,11 @@ export class HomePage {
     this.user = firebase.getUser(localStorage.getItem('user'));
     this.liste = firebase.getAlleRezeptIds();
     this.filter = this.rezepte;
+  }
+
+  ngOnInit(){
+    // Navigation wieder anzeigen
+    document.getElementById("footer").style.display = "block";
   }
 
   /**

@@ -29,7 +29,7 @@
         <!-- Bewertungstext (Anzahl Bewertungen/eigene Bewertung) -->
         <ion-row *ngIf="this.aktuellerUser.individuelleAngaben!=undefined" class="row-infos-inner">
           <span *ngIf="this.aktuellerUser.individuelleAngaben[data.id]!=undefined; else elseBlock">
-            {{aktualisiereBewertungstext()}} {{bewertungText}}
+            {{bewertungText}}
           </span>
           <ng-template #elseBlock>{{bewertungText}}</ng-template>
         </ion-row>

@@ -51,13 +51,8 @@ export class RezeptPage {
 
   @Input()
   set user(user: User) {
-    if (user.favoriten != undefined) {
-      if (user.favoriten.includes(this.data.id)) {
-        this._fav = "star";
-        return;
-      }
-    }
-    this._fav = "star-outline";
+    console.log(user)
+    // notizen = user.individuelleAngaben
   }
 
   /**
@@ -114,6 +109,11 @@ export class RezeptPage {
     return this.aktuellerUser.favoriten.includes(this.data.id) ? "star" : "star-outline";
   }
 
+  /**
+   * Autor: Anika Haushälter & Adrian Przybilla
+   * 
+   * Methode setzt Werte für die Anzeige der Bewertung, anhand daran, ob eine individuelle Bewertung vorhanden ist
+   */
   private bewertung() {
     let temp: number;
     let tempAnzahl: number;
