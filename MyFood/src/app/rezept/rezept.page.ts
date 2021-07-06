@@ -79,12 +79,33 @@ export class RezeptPage {
     private navCtrl: NavController,
     private logging: HelperService
   ) {
-    this.id = this.id.replace("%20", " ");
-    this.data = firebase.getRezept(this.id);
+    //Überprüft, ob ein Rezept übergeben wurde
+    let paramUebergeben: boolean = false;
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.data = this.router.getCurrentNavigation().extras.state.rezept;
+        paramUebergeben = true;
+      }
+    });
+
+    if(this.id!=undefined && !paramUebergeben){
+      this.id = this.id.replace("%20", " ");
+      this.data = firebase.getRezept(this.id);
+    }    
     this.aktuellerUser = firebase.getUser(this.aktuelleUserId);
     this.bild = this.filestorage.getRezeptFile(this.id);
     this.zutatenObj = this.firebase.getAlleZutatenAlsObject();
   }
+
+  /**
+ * Autor: Anika Haushälter
+ * 
+ * Wird ausgeführt, sobald die Seite betreten wurde
+ */
+  ngOnInit() {
+    
+  }
+
   /**
    * 
    * @returns {void}
@@ -105,7 +126,7 @@ export class RezeptPage {
    * Gibt zurück ob das Favoriten-Icon ausgefüllt oder leer sein soll
    * @returns name für ion-icon
    */
-  private favStar(){
+  private favStar() {
     return this.aktuellerUser.favoriten.includes(this.data.id) ? "star" : "star-outline";
   }
 
@@ -117,10 +138,10 @@ export class RezeptPage {
   private bewertung() {
     let temp: number;
     let tempAnzahl: number;
-    
+
     if (this.aktuellerUser?.individuelleAngaben[this.data.id]) {
       this.bewertungText = "eigene Bewertung";
-      
+
       temp = this.listService.checkNumber(this.aktuellerUser?.individuelleAngaben[this.data.id].bewertung);
       this.sterne = this.listService.checkStars(temp);
     } else {
@@ -219,7 +240,7 @@ export class RezeptPage {
     }
   }
 
-  favorit(){
+  favorit() {
     this._fav = this.aktuellerUser.favoriten.includes(this.data.id) ? 'star' : 'star-outline'
   }
 
@@ -245,5 +266,5 @@ export class RezeptPage {
       }
     };
     this.router.navigate(['neues-rezept'], navigationExtras);
-  }  
+  }
 }

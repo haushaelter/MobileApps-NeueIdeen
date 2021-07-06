@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl} from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Rezept } from '../models/rezepte/rezept.model';
 import { Zutat } from '../models/zutaten/zutat.model';
@@ -329,7 +329,9 @@ export class NeuesRezeptPage implements OnInit {
     delete rezeptJson.inhalte["schritte"];
     
     //Verarbeiten der Zutaten
+    let tempId;
     for(let i = 0; i<rezeptJson.zutaten.length; i++){
+      tempId = rezeptJson.zutaten[i].id.trim();
       /**
        * Zutaten kommen an als:
        * 0: {
@@ -341,12 +343,12 @@ export class NeuesRezeptPage implements OnInit {
        *  menge: 0
        * }
        */
-      rezeptJson.zutaten[rezeptJson.zutaten[i].id.trim()] = {
+      rezeptJson.zutaten[tempId] = {
         menge: rezeptJson.zutaten[i].menge
       }
       
       //Überprüfen der Datenbank, ob die Zutaten vorhanden sind und speichern falls nicht
-      this.checkZutatVorhanden(rezeptJson.zutaten[i].id.trim());
+      this.checkZutatVorhanden(tempId);
 
       //Entfernen der Nummer aus der JSON
       delete rezeptJson.zutaten[i];
@@ -363,7 +365,13 @@ export class NeuesRezeptPage implements OnInit {
     this.basisForm.reset();
 
     //navigieren zu neuem Rezept
-    this.navCtrl.navigateForward(`/rezept?id=${rezeptJson.id}`);
+    let navigationExtras: NavigationExtras = {
+      state: {
+        rezept: rezept
+      }
+    };
+    this.router.navigate([`rezept`], navigationExtras);
+    //this.navCtrl.navigateForward(`/rezept?id=${rezeptJson.id}`);
     
   }
 
@@ -372,12 +380,12 @@ export class NeuesRezeptPage implements OnInit {
    * Überprüft, ob die Zutat in der Datenbank vorhanden ist. Falls nicht, wird sie gespeichert
    * @param zutat 
    */
-  private checkZutatVorhanden(zutat: JSON): void {
+  private checkZutatVorhanden(zutat: string): void {
     let contains: boolean = false;
 
     //Überprüfen, ob die Zutat in der Datenbank vorhanden ist
     this.alleZutaten.forEach(item => {
-      if(zutat["id"] == item.id){
+      if(zutat == item.id){
         contains = true;
       }
     });
@@ -385,10 +393,12 @@ export class NeuesRezeptPage implements OnInit {
     //Falls die Zutat nicht gefunden wurde, wird sie gespeichert
     if(!contains){
       let newZutat = new Zutat();
+
       newZutat.deserialize({
-        id: zutat["id"],
+        id: zutat,
         standardeinheit: "g"
-      })
+      });
+
       this.firebase.setZutat(newZutat);
     }
   }

@@ -9,7 +9,7 @@
 
     <!-- Titel -->
     <ion-col class="grid-col-second" (click)="rezeptAufrufen()" size="5">
-      <ion-label>{{data.id}}</ion-label>
+      <ion-label>{{data.inhalte.basis.titel}}</ion-label>
       <ion-icon class="icon" *ngIf="_bearbeitet" name="clipboard-outline"></ion-icon>
     </ion-col>
 

@@ -22,13 +22,9 @@ export class SearchbarComponent {
     "über 100 Bewertungen",
     "mindestens 4 Sternen",
     "mit eigener Bewertung",
-    "Favorit"
+    "Favorit",
+    "Eigene Rezepte"
   ]
-
-  test(option, options){
-    console.log(typeof(option))
-    console.log(options)
-  }
 
   /**
    * Input für Liste von ids. Dadurch kann Button Zufall mit Filtern arbeiten
@@ -163,6 +159,11 @@ export class SearchbarComponent {
     if(this.options.includes("Favorit")){
       this.filterListe = this.filterListe.filter(aktuellesRezept =>{
         return (this.user?.favoriten?.includes(aktuellesRezept.id) ?? false);
+      });
+    }
+    if(this.options.includes("Eigene Rezepte")){
+      this.filterListe = this.filterListe.filter(aktuellesRezept =>{
+        return (this.user?.eigeneRezepte.includes(aktuellesRezept.id) ?? false);
       });
     }
 
