@@ -24,13 +24,13 @@
       <ion-grid *ngFor="let zutat of rezeptForm.get('zutaten')['controls']; let i = index" formArrayName="zutaten" class="unterstrich zutaten">
         <ion-row [formGroupName]="i">
           <!-- Menge der Zutat -->
-          <ion-col class="zutatenMenge background" size="3"><ion-input formControlName="menge" type="number" placeholder="Menge"></ion-input></ion-col>
+          <ion-col class="zutatenMenge background" size="4"><ion-input formControlName="menge" type="number" placeholder="Menge"></ion-input></ion-col>
           <!-- Einheit der Zutat -->
-          <ion-col class="zutatenEinheit" size="1">
+          <ion-col class="zutatenEinheit" size="2">
             <ion-label>{{ standardeinheitAnzeigen(zutat.value.id) }}</ion-label>
           </ion-col>
           <!-- Name der Zutat. Bietet Vorschläge aus der Datenbank -->
-          <ion-col size="7" class="zutatenName-col background">
+          <ion-col size="8" class="zutatenName-col background">
             <input formControlName="id" type="text" placeholder="Name" list="zutaten" class="zutatenName ">
             <datalist id="zutaten" class="zutatenList">
               <option *ngFor="let zutatRef of alleZutaten" [value]="zutatRef.id"></option>
