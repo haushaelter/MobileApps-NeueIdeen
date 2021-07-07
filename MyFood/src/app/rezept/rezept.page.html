@@ -85,13 +85,13 @@
   <!-- Notizen -->
   <div *ngIf="aktuellerUser.individuelleAngaben!=undefined" class="notiz">
     <ion-fab slot="fixed" class="notiz-btn">
-      <ion-fab-button>
+      <ion-fab-button (click)="notizPruefen()">
         <ion-icon name="clipboard-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab>
     <ion-textarea class="notiz-input" autoGrow="true" maxlength="200"
-      placeholder="Gib hier deine persönliche Notizen ein" (ionChange)="notizenBearbeiten($event)"
-      (ionBlur)="notizenSpeichern($event)" [(ngModel)]="aktuellerUser.individuelleAngaben[id].notizen"></ion-textarea>
+      placeholder="Gib hier deine persönliche Notizen ein"
+      (ionBlur)="notizenSpeichern($event)" [(ngModel)]="notiz"></ion-textarea>
   </div>
 
   <!-- Bearbeiten Button -->
