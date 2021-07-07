@@ -5,11 +5,11 @@
   <ion-list>
     <ion-item class="item-email item">
       <ion-label position="stacked">Email</ion-label>
-      <ion-input type="email" [(ngModel)]="user.email" required></ion-input>
+      <ion-input type="email" [(ngModel)]="user.email" required id="email"(keyup.enter)="focusPasswort()"></ion-input>
     </ion-item>
     <ion-item class="item-passwort item">
       <ion-label position="stacked">Passwort</ion-label>
-      <ion-input type="password" [(ngModel)]="user.passwort" required></ion-input>
+      <ion-input type="password" [(ngModel)]="user.passwort" required id="passwort" (keyup.enter)="login()"></ion-input>
     </ion-item>
     <!-- Button Passwort vergessen -->
     <div class="btn btn-forget">

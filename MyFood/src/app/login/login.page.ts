@@ -42,24 +42,15 @@ export class LoginPage implements OnInit {
   }
 
   /**
-   * Autor: Anika Haushälter
-   * 
-   * Aufruf beim Verlassen der Seite
-   */
-  ngOnDestroy(){
-    
-    this.user.email = "";
-    this.user.passwort = "";
-  }
-
-  /**
-   * Autor: Adrian Przybilla
+   * Autor: Adrian Przybilla und Anika Haushälter
    * 
    * Prüft alle Input-Felder und führt Login durch oder gibt eine passende Fehlermeldung als Toast aus
    */
   private login(){
     if(this.user.email && this.user.passwort) {
       this.authService.login(this.user.email, this.aes.encrypt(this.user.passwort));
+      this.user.email = "";
+      this.user.passwort = "";
     } else if(this.user.email){
       this.logging.zeigeToast("Bitte Passwort eingeben");
     } else {
@@ -74,6 +65,10 @@ export class LoginPage implements OnInit {
    */
   private passwortVergessen(){
     this.navCtrl.navigateForward('/passwort-vergessen');
+  }
+
+  private focusPasswort(){
+    (document.getElementById("passwort") as HTMLIonInputElement).setFocus();
   }
 
 }
