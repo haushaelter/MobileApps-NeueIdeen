@@ -1,4 +1,4 @@
-<app-header [titel]="this.data.id"></app-header>
+<app-header *ngIf="data.inhalte !=undefined" [titel]="data.inhalte.basis.titel ? data.inhalte.basis.titel : 'Titel nicht gefunden'"></app-header>
 
 <ion-content>
   <ion-grid class="grid" *ngIf="data.id!==undefined && data.inhalte.bewertung!==undefined">
