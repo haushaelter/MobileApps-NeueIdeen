@@ -42,19 +42,6 @@ export class LoginPage implements OnInit {
   }
 
   /**
-   * Autor: Anika Haushälter
-   * 
-   * Aufruf beim Verlassen der Seite
-   */
-  ngOnDestroy(){
-    console.log("destroy")
-    this.user.email = "";
-    this.user.passwort = "";
-    (document.getElementById("email") as HTMLIonInputElement).value = "";
-    (document.getElementById("passwort") as HTMLIonInputElement).value = "";
-  }
-
-  /**
    * Autor: Adrian Przybilla und Anika Haushälter
    * 
    * Prüft alle Input-Felder und führt Login durch oder gibt eine passende Fehlermeldung als Toast aus
