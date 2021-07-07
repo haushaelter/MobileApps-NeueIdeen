@@ -44,6 +44,9 @@ export class RezeptPage {
   private zutatenEinheit = [];
   private zutatenObj;
 
+  // Notiz
+  private notiz = "";
+
   @Input()
   set rezept(rezept: Rezept) {
     this.data = rezept;
@@ -51,7 +54,8 @@ export class RezeptPage {
 
   @Input()
   set user(user: User) {
-    console.log(user)
+    console.log("User:________________")
+    console.log(user);
     // notizen = user.individuelleAngaben
   }
 
@@ -88,6 +92,7 @@ export class RezeptPage {
       }
     });
 
+    // Daten werden von der Datenbank angefragt, wenn sie nicht per Parameter übergeben werden
     if(this.id!=undefined && !paramUebergeben){
       this.id = this.id.replace("%20", " ");
       this.data = firebase.getRezept(this.id);
@@ -149,7 +154,6 @@ export class RezeptPage {
    * @returns 
    */
   private zutatenString(zutaten) {
-    console.log(this.data.inhalte);
     let returnString: string = "";
     for (let i = 0; i < zutaten.length; i++) {
       returnString = returnString + zutaten[i];
@@ -218,8 +222,24 @@ export class RezeptPage {
     }
   }
 
+  /**
+   * Autor: Adrian Przybilla
+   * 
+   * setzt das Icon für den Favorit
+   */
   favorit() {
     this._fav = this.aktuellerUser.favoriten.includes(this.data.id) ? 'star' : 'star-outline'
+  }
+
+  /**
+   * Autor: Adrian Przybilla
+   * 
+   * Damit kein Error kommt, falls noch keine Notiz existiert, wird die Notiz hier nur dann verlinkt mit der Notiz in der Datenbank, wenn sie auch vorhanden ist
+   */
+  notizPruefen(){
+    if(this.aktuellerUser?.individuelleAngaben[this.data.id]?.notizen){
+      this.notiz = this.aktuellerUser?.individuelleAngaben[this.data.id]?.notizen
+    }
   }
 
   /**
