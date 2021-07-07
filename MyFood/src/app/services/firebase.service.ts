@@ -84,6 +84,7 @@ export class FirebaseService {
 
     // Anfrage der kompletten Rezept-Collection. SnapshotChanges-Anfrage schickt sofort aktualisierungen der Datenbank
     this.firestore.collection(this.collections.rezepte).snapshotChanges().subscribe(res => {
+      //Überprüfen, ob Objekte aus der Datenbank entfernt wurden
       if(rezepte.length>res.length){
         let includes = false;
         rezepte.forEach(item => {
@@ -118,14 +119,12 @@ export class FirebaseService {
               rezept.zutaten[item.id] = new ZutatReferenz().deserialize(item.data());
             });
 
+            // Wert je nach Type dem Array hinzufügen, löschen oder überschreiben lassen
             if(rezepte.includes(rezept)){
               this.arraySnapshotBearbeiten("modified", rezepte, rezept);
             } else {
               this.arraySnapshotBearbeiten(ele.type, rezepte, rezept);
             }
-
-            // Wert je nach Type dem Array hinzufügen, löschen oder überschreiben lassen
-            // this.arraySnapshotBearbeiten(ele.type, rezepte, rezept); 
           });
         });
       });
