@@ -26,7 +26,7 @@
           <!-- Menge der Zutat -->
           <ion-col class="zutatenMenge background" size="4"><ion-input formControlName="menge" type="number" placeholder="Menge"></ion-input></ion-col>
           <!-- Einheit der Zutat -->
-          <ion-col class="zutatenEinheit" size="2">
+          <ion-col class="zutatenEinheit" size="3">
             <ion-label>{{ standardeinheitAnzeigen(zutat.value.id) }}</ion-label>
           </ion-col>
           <!-- Name der Zutat. Bietet Vorschläge aus der Datenbank -->
@@ -37,7 +37,7 @@
             </datalist>
           </ion-col>
           <!-- Button (x) zum entfernen einer Zutat -->
-          <ion-col (click)="entferneZutat(i)" size="1.5" class="entfernen-icon"><ion-icon name="close" class="icon"></ion-icon></ion-col>
+          <ion-col (click)="entferneZutat(i)" class="entfernen-icon" size="2"><ion-icon name="close" class="icon"></ion-icon></ion-col>
 
         </ion-row>
       </ion-grid>
