@@ -122,4 +122,34 @@ export class FileStorageService {
     <input type="file" title={{data.id}} (change)="filestorage.setKochbuchFile($event)">
     */
   }
+
+  /**
+   * Autor: Adrian Przybilla
+   * 
+   * 
+   * @param rezeptId 
+   * @returns Referenz eines Bild aus dem Firebase Storage als URL
+   */
+  getKochbuchPDF(rezeptId: string) {
+    const path = "kochbuecher_PDF";
+    const fileName = rezeptId;
+
+    // Rückgabe des Bild als Observable
+    return this.firebase.ref(`${path}/${fileName}`).getDownloadURL().toPromise();
+
+    /*
+    Bild auslesen und in Variable speichern
+    profileUrl: Observable<string | null>;
+    this.profileUrl = this.filestorage.getKochbuchFile(kochbuchId);
+    */
+  }
+
+  setKochbuchPDF(event) {
+    const file = event.target.files[0];
+    const filePath = event.target.title;
+    const path = "kochbuecher_PDF";
+
+    // Bild speichern
+    this.firebase.ref(`${path}/${filePath}`).put(file);
+  }
 }

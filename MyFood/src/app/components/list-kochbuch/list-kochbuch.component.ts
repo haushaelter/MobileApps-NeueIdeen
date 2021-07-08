@@ -63,6 +63,9 @@ export class ListKochbuchComponent {
     }
     
     this.navCtrl.navigateForward(`/kochbuch?id=${this.data.id}`, {state: {buch: this.data}});
-    
+  }
+
+  private async getPDF(){
+    window.open(await this.storage.getKochbuchPDF(this.data.id));
   }
 }

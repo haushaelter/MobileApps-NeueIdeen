@@ -1,6 +1,6 @@
-<ion-card class="ion-card" (click)="buchAufrufen()" button routerDirection="forward">
+<ion-card class="ion-card" button routerDirection="forward">
 
-  <ion-card-header>
+  <ion-card-header (click)="buchAufrufen()">
     <!-- Bild -->
     <ion-item>
       <img [src]="bild | async" />
@@ -15,11 +15,11 @@
   <ion-card-content>
 
     <ion-item>
-      <ion-label class="col-verlag col-info">{{data.verlag}}</ion-label>
-      <ion-button fill="outline" slot="end">PDF</ion-button>
+      <ion-label class="col-verlag col-info" (click)="buchAufrufen()">{{data.verlag}}</ion-label>
+      <ion-button fill="outline" slot="end" (click)="getPDF()">PDF</ion-button>
     </ion-item>
 
-    <ion-item>
+    <ion-item (click)="buchAufrufen()">
       <ion-icon *ngFor="let eintrag of _sterne" [name]="eintrag" class="icon col-sterne col-info"></ion-icon>
       <ion-label class="col-anzahl col-info">{{data.bewertung.anzahl}} Bewertungen</ion-label>
     </ion-item>
