@@ -65,6 +65,11 @@ export class ListKochbuchComponent {
     this.navCtrl.navigateForward(`/kochbuch?id=${this.data.id}`, {state: {buch: this.data}});
   }
 
+  /**
+   * Autor: Adrian Przybilla und Anika Haushälter
+   * 
+   * Holt die PDF anhand der BuchID aus der Datenbank und öffnet sie direkt
+   */
   private async getPDF(){
     window.open(await this.storage.getKochbuchPDF(this.data.id));
   }

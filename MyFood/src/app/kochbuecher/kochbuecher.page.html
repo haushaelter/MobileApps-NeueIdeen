@@ -2,8 +2,6 @@
 <app-header [titel]="seitentitel"></app-header>
 
 <ion-content [fullscreen]="true">
-  <!-- Searchbar -->
-  <app-searchbar></app-searchbar>
   <!-- Liste aller Kochbücher -->
   <ion-list>
     <app-list-kochbuch *ngFor="let eintrag of kochbuecher" [buch]="eintrag"></app-list-kochbuch>
