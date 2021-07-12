@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators, FormControl} from '@angu
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Rezept } from '../models/rezepte/rezept.model';
+import { User } from '../models/user/user.model';
 import { Zutat } from '../models/zutaten/zutat.model';
 import { FileStorageService } from '../services/file-storage.service';
 import { FirebaseService } from '../services/firebase.service';
@@ -19,6 +20,9 @@ import { HelperService } from '../services/helper.service';
  */
 export class NeuesRezeptPage implements OnInit {
   readonly seitentitel = "Neues Rezept";
+
+  // variable für übergabe beim speichern
+  private user: User;
 
   //Variable für Rezept, das ggfs für Überarbeitungen übergeben wurde
   private data: Rezept;
@@ -78,6 +82,8 @@ export class NeuesRezeptPage implements OnInit {
         zutaten: this.formBuilder.array([this.erstelleZutat()])
       })
     }
+
+    this.user = this.firebase.getUser(this.userId);
   }
 
   /**
@@ -373,11 +379,11 @@ export class NeuesRezeptPage implements OnInit {
     //navigieren zu neuem Rezept
     let navigationExtras: NavigationExtras = {
       state: {
-        rezept: rezept
+        rezept: rezept,
+        user: this.user
       }
     };
     this.router.navigate([`rezept`], navigationExtras);
-    
   }
 
   /**

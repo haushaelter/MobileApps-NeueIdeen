@@ -52,12 +52,7 @@ export class RezeptPage {
     this.data = rezept;
   }
 
-  @Input()
-  set user(user: User) {
-    console.log("User:________________")
-    console.log(user);
-    // notizen = user.individuelleAngaben
-  }
+  @Input() user;
 
   /**
    * Autor: Anika Haushälter & Adrian Przybilla
@@ -88,6 +83,7 @@ export class RezeptPage {
     this.activatedRoute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.data = this.router.getCurrentNavigation().extras.state.rezept;
+        this.user = this.router.getCurrentNavigation().extras.state.user;
         paramUebergeben = true;
       }
     });
@@ -121,7 +117,7 @@ export class RezeptPage {
     let temp: number;
     let tempAnzahl: number;
 
-    if (this.aktuellerUser?.individuelleAngaben[this.data.id]) {
+    if (this.aktuellerUser?.individuelleAngaben[this.data.id] != undefined) {
       this.bewertungText = "eigene Bewertung";
 
       temp = this.listService.checkNumber(this.aktuellerUser?.individuelleAngaben[this.data.id].bewertung);
