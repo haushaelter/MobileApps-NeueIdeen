@@ -89,10 +89,10 @@ export class RezeptPage {
     });
 
     // Daten werden von der Datenbank angefragt, wenn sie nicht per Parameter übergeben werden
-    if(this.id!=undefined && !paramUebergeben){
+    if (this.id != undefined && !paramUebergeben) {
       this.id = this.id.replace("%20", " ");
       this.data = firebase.getRezept(this.id);
-    }    
+    }
     this.aktuellerUser = firebase.getUser(this.aktuelleUserId);
     this.bild = this.filestorage.getRezeptFile(this.id);
     this.zutatenObj = this.firebase.getAlleZutatenAlsObject();
@@ -105,7 +105,7 @@ export class RezeptPage {
    * @returns name für ion-icon
    */
   private favStar() {
-    return this.aktuellerUser.favoriten.includes(this.data.id) ? "star" : "star-outline";
+    return this.aktuellerUser?.favoriten?.includes(this.data.id) ? "star" : "star-outline";
   }
 
   /**
@@ -117,17 +117,19 @@ export class RezeptPage {
     let temp: number;
     let tempAnzahl: number;
 
-    if (this.aktuellerUser?.individuelleAngaben[this.data.id] != undefined) {
-      this.bewertungText = "eigene Bewertung";
+    if (this.aktuellerUser?.individuelleAngaben) {
+      if (this.aktuellerUser?.individuelleAngaben[this.data.id] ?? false) {
+        this.bewertungText = "eigene Bewertung";
 
-      temp = this.listService.checkNumber(this.aktuellerUser?.individuelleAngaben[this.data.id].bewertung);
-      this.sterne = this.listService.checkStars(temp);
-    } else {
-      tempAnzahl = this.data?.inhalte?.bewertung?.anzahl ? this.data.inhalte.bewertung.anzahl : 0;
-      this.bewertungText = `${tempAnzahl} ${tempAnzahl <= 1 ? "Bewertung" : "Bewertungen"}`;
+        temp = this.listService.checkNumber(this.aktuellerUser?.individuelleAngaben[this.data.id].bewertung);
+        this.sterne = this.listService.checkStars(temp);
+      } else {
+        tempAnzahl = this.data?.inhalte?.bewertung?.anzahl ? this.data.inhalte.bewertung.anzahl : 0;
+        this.bewertungText = `${tempAnzahl} ${tempAnzahl <= 1 ? "Bewertung" : "Bewertungen"}`;
 
-      temp = this.listService.checkNumber(this.data.inhalte.bewertung.bewertung);
-      this.sterne = this.listService.checkStars(this.data.inhalte.bewertung.bewertung);
+        temp = this.listService.checkNumber(this.data.inhalte.bewertung.bewertung);
+        this.sterne = this.listService.checkStars(this.data.inhalte.bewertung.bewertung);
+      }
     }
   }
 
@@ -232,8 +234,8 @@ export class RezeptPage {
    * 
    * Damit kein Error kommt, falls noch keine Notiz existiert, wird die Notiz hier nur dann verlinkt mit der Notiz in der Datenbank, wenn sie auch vorhanden ist
    */
-  notizPruefen(){
-    if(this.aktuellerUser?.individuelleAngaben[this.data.id]?.notizen){
+  notizPruefen() {
+    if (this.aktuellerUser?.individuelleAngaben[this.data.id]?.notizen) {
       this.notiz = this.aktuellerUser?.individuelleAngaben[this.data.id]?.notizen
     }
   }
