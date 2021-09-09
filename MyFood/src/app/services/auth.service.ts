@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
 import { User } from '../models/user/user.model';
 import { FirebaseService } from './firebase.service';
 import { HelperService } from "./helper.service";
@@ -29,9 +30,11 @@ export class AuthService {
     private auth: AngularFireAuth,
     private router: Router,
     private logging: HelperService,
-    private firebase: FirebaseService
+    private firebase: FirebaseService,
+    private storage: Storage
   ) {
     this.checkAuthState();
+    this.storage.create();
   }
 
   /**
@@ -111,12 +114,16 @@ export class AuthService {
    * @param email 
    * @param passwort 
    */
-  login(email, passwort) {
+  login(email, passwort, erinnern = false) {
     this.auth.signInWithEmailAndPassword(email, passwort).then((res) => {
       this.logging.logging("Nutzer eingeloggt.");
       //Anzeigen von footer
       document.getElementById("footer").style.display = "block";
       this.router.navigateByUrl("/home");
+
+      if(erinnern){
+        this.setInIonicStorage(email, passwort);
+      }
     }).catch(e => {
       switch (e.code) {
         case "auth/invalid-email":
@@ -209,5 +216,41 @@ export class AuthService {
    */
   getAktuellerUser() {
     return this.aktuellerUser;
+  }
+
+  /**
+   * Speichern der Login-Daten im IonicStorage, damit sich Nutzer nicht jedes Mal neu anmelden müssen
+   * @param email Email des Nutzers
+   * @param passwort verschlüsseltes Passwort des Nutzers
+   */
+  setInIonicStorage(email, passwort){
+    this.storage.set("email", email);
+    this.storage.set("passwort", passwort);
+  }
+
+  /**
+   * Löschen der gespeicherten Daten
+   */
+  deleteVonIonicStorage(){
+    this.storage.remove("email");
+    this.storage.remove("passwort");
+  }
+
+  /**
+   * Login mit im Storage gespeicherten Daten
+   */
+  async getMitIonicStorage(){
+    try{  
+      let email = await this.storage.get("email");
+      let passwort = await this.storage.get("passwort");
+      if(email!==null && passwort!==null){
+        this.login(email, passwort, true);
+      }
+      return true;
+    } catch(error){
+      this.logging.logging("Fehler mit IonicStorage:" + error);
+      return false;
+    }
+
   }
 }
