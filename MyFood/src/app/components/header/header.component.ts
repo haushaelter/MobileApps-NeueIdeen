@@ -29,5 +29,7 @@ export class HeaderComponent{
    */
   private logout():void {
     this.auth.logout();
+    this.auth.deleteVonIonicStorage();
+    document.getElementById("footer").style.display = "none";
   }
 }

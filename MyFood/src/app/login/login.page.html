@@ -11,6 +11,10 @@
       <ion-label position="stacked">Passwort</ion-label>
       <ion-input type="password" [(ngModel)]="user.passwort" required id="passwort" (keyup.enter)="login()"></ion-input>
     </ion-item>
+    <div class="checkbox">
+      <ion-checkbox [(ngModel)]="checked"></ion-checkbox>
+      <ion-label>Eingeloggt bleiben</ion-label>
+    </div>
     <!-- Button Passwort vergessen -->
     <div class="btn btn-forget">
       <a (click)="passwortVergessen()">Passwort vergessen</a>

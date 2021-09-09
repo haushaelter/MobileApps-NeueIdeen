@@ -15,6 +15,8 @@ import { HelperService } from '../services/helper.service';
 export class LoginPage implements OnInit {
   readonly seitentitel = "Login";
 
+  private checked: boolean = false;
+
   user:any = {};
   
   /**
@@ -39,6 +41,7 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     // Navigation nicht anzeigen
     document.getElementById("footer").style.display = "none";
+    this.authService.getMitIonicStorage();
   }
 
   /**
@@ -48,7 +51,7 @@ export class LoginPage implements OnInit {
    */
   private login(){
     if(this.user.email && this.user.passwort) {
-      this.authService.login(this.user.email, this.aes.encrypt(this.user.passwort));
+      this.authService.login(this.user.email, this.aes.encrypt(this.user.passwort), this.checked);
       this.user.email = "";
       this.user.passwort = "";
     } else if(this.user.email){

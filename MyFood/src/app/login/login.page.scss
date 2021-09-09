@@ -11,6 +11,16 @@ ion-list{
     margin-top: 0;
 }
 
+.checkbox{
+    margin-left: 2rem;
+    margin-top: 1rem;
+    display: flex;
+
+    ion-label{
+        margin-left: 1rem;
+    }
+}
+
 .btn-collection{
     width: 100%;
 }
