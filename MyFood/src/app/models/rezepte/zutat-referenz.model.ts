@@ -7,6 +7,7 @@ import { Deserialize } from "../deserialize";
  */
 export class ZutatReferenz implements Deserialize {
     menge: number;
+    einheit: string;
     id: string;
 
     deserialize(input: any) {

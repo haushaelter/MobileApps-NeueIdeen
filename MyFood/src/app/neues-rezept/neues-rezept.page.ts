@@ -108,6 +108,7 @@ export class NeuesRezeptPage implements OnInit {
     try{
       return this.alleZutaten.filter(filterZutat => filterZutat.id === item)[0].standardeinheit;
     } catch(e) {
+      //this.logging.logging("Fehler mit Zutat: " + e)
       return "";
     };
   }
@@ -117,13 +118,15 @@ export class NeuesRezeptPage implements OnInit {
    * 
    * Erstellt eine neue Zutat für die FormGroup
    * @param id {string} Id der Zutat. Standardmäßig leer
-   * @param menge {menge} Menge der Zutat. Standardmäßig null
+   * @param menge {number} Menge der Zutat. Standardmäßig null
+   * @param einheit {string} Einheit der Zutat. Standardmäßig leer. Im HTML wird Standard als Defaulteinheit gesetzt
    * @returns {FormGroup} Neue Zutat
    */
-  private erstelleZutat(id: string = "", menge: number = null): FormGroup{
-    return this.formBuilder.group({
+  private erstelleZutat(id: string = "", menge: number = null, einheit:string = ""): FormGroup{
+        return this.formBuilder.group({
       id: id,
-      menge: menge
+      menge: menge,
+      einheit: einheit
     });
   }
 
@@ -348,15 +351,18 @@ export class NeuesRezeptPage implements OnInit {
        * Zutaten kommen an als:
        * 0: {
        *  id: "meineId",
-       *  menge: 0
+       *  menge: 0,
+       *  einheit: "g"
        * }
        * und werden verwandelt in 
        * meineId: {
-       *  menge: 0
+       *  menge: 0,
+       *  einheit: "g"
        * }
        */
       rezeptJson.zutaten[tempId] = {
-        menge: rezeptJson.zutaten[i].menge
+        menge: rezeptJson.zutaten[i].menge,
+        einheit: rezeptJson.zutaten[i].einheit
       }
       
       //Überprüfen der Datenbank, ob die Zutaten vorhanden sind und speichern falls nicht

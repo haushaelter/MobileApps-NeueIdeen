@@ -54,7 +54,8 @@
     <!-- Zutatenliste -->
     <ion-row *ngFor="let eintrag of data.zutaten | keyvalue" class="zutaten unterstrich">
       <ion-col *ngIf="zutatenObj[eintrag.key]!=undefined" class="zutatenMenge" size="3">
-        {{eintrag.value["menge"]}} {{ zutatenObj[eintrag.key]["standardeinheit"] }}
+        <div *ngIf="eintrag.value['einheit'] !==undefined; else elseZutaten">{{eintrag.value["menge"]}} {{eintrag.value["einheit"]}}</div>
+        <ng-template #elseZutaten>{{eintrag.value["menge"]}} {{ zutatenObj[eintrag.key]["standardeinheit"] }}</ng-template>
       </ion-col>
       <ion-col size="7">{{eintrag.key}}</ion-col>
     </ion-row>

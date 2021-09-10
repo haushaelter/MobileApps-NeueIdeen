@@ -27,7 +27,17 @@
           <ion-col class="zutatenMenge background" size="4"><ion-input formControlName="menge" type="number" placeholder="Menge"></ion-input></ion-col>
           <!-- Einheit der Zutat -->
           <ion-col class="zutatenEinheit" size="3">
-            <ion-label>{{ standardeinheitAnzeigen(zutat.value.id) }}</ion-label>
+            <ion-select value="{{ standardeinheitAnzeigen(zutat.value.id) }}" formControlName="einheit">
+              <ion-select-option value="EL">EL</ion-select-option>
+              <ion-select-option value="g">g</ion-select-option>
+              <ion-select-option value="kg">kg</ion-select-option>
+              <ion-select-option value="l">l</ion-select-option>
+              <ion-select-option value="ml">ml</ion-select-option>
+              <ion-select-option value="Prise">Prise</ion-select-option>
+              <ion-select-option value="Stück">Stück</ion-select-option>
+              <ion-select-option value="TL">TL</ion-select-option>
+              <ion-select-option value="Tropfen">Tropfen</ion-select-option>
+            </ion-select>
           </ion-col>
           <!-- Name der Zutat. Bietet Vorschläge aus der Datenbank -->
           <ion-col size="8" class="zutatenName-col background">
